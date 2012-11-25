@@ -122,12 +122,11 @@ $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.198
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 9418 -j ACCEPT
 # snmpd
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol udp -d 10.4.0.20 --dport 161 -j ACCEPT
+$IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol udp -d 10.4.0.20 --dport 161 -j ACCEPT
 # apache
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.206 --dport 443 -j ACCEPT
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.198 --dport 443 -j ACCEPT
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 443 -j ACCEPT
-# SNMP
-$IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 161 -j ACCEPT
 
 #
 # Portforwarding
