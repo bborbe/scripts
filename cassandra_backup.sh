@@ -1,12 +1,8 @@
-f [ -f /home/bborbe/bridge.war ]; then
-mv /home/bborbe/bridge.war /home/bborbe/bb.war
-/etc/init.d/tomcat6 stop
-rm -rf /var/lib/tomcat6/webapps/bb*
-cp /home/bborbe/bb.war /var/lib/tomcat6/webapps/bb.war
-/etc/init.d/tomcat6 start
-fi
-root@bb-a:/root/scripts# cat backup.sh 
 #!/bin/sh
+
+# add in /etc/crontab
+# 4 15 * * * root sh /root/scripts/backup.sh >/dev/null 2>&1
+
 # backup_20120102
 BACKUP_NAME=`date '+backup_%Y%m%d'`
 KEYSPACE=bb
@@ -23,3 +19,4 @@ cd $CASSANDRA_DATA_DIR && tar -czvf $BACKUP_DIR/cassandra_$BACKUP_NAME.tgz `find
 #clear snapshot:
 echo "clear snapshot"
 nodetool -h 127.0.0.1  -p 7199 clearsnapshot $KEYSPACE -t $BACKUP_NAME
+
