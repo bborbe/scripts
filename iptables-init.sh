@@ -126,6 +126,8 @@ $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol udp -d 10.4.0.20 --dp
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.206 --dport 443 -j ACCEPT
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.198 --dport 443 -j ACCEPT
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 443 -j ACCEPT
+# SNMP
+$IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 163 -j ACCEPT
 
 #
 # Portforwarding
