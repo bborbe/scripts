@@ -1,5 +1,7 @@
 #!/bin/sh
 
+echo "cassandra backup: started"
+
 # add in /etc/crontab
 # 4 15 * * * root sh /root/scripts/backup.sh >/dev/null 2>&1
 
@@ -25,3 +27,4 @@ cd $CASSANDRA_DATA_DIR && tar -czvf $BACKUP_DIR/cassandra_$BACKUP_NAME.tgz `find
 echo "clear snapshot"
 nodetool -h 127.0.0.1  -p 7199 clearsnapshot $KEYSPACE -t $BACKUP_NAME
 
+echo "cassandra backup: finished"
