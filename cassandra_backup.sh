@@ -9,6 +9,11 @@ KEYSPACE=bb
 BACKUP_DIR="/var/backups"
 CASSANDRA_DATA_DIR="/var/lib/cassandra/data"
 
+# cleanup
+echo "compact & flush"
+nodetool -h 127.0.0.1 compact
+nodetool -h 127.0.0.1 flush
+
 # create snapshot:
 echo "create snapshot"
 nodetool -h 127.0.0.1 -p 7199 snapshot $KEYSPACE -t $BACKUP_NAME
