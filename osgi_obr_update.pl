@@ -30,7 +30,7 @@ sub get_bundle_id {
 	foreach my $line (@$procs) {
 		$line =~ /^\s*\[\s*(\d+)\s*\].*?Benjamin\sBorbe/i;
 		if ( $1 && index( lc($line), lc($filter) ) != -1 ) {
-#			print 'update ' . $line;
+			print 'update ' . $line."\n";
 			push( @result, $1 );
 		}
 	}
