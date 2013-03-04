@@ -144,7 +144,7 @@ $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dp
 # Squid
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 77.244.108.198 --dport 80 -j DNAT --to-destination 10.4.0.20:3128
 $IPTABLES -t nat -A PREROUTING -i eth1 -p tcp -d 10.4.0.20 --dport 80 -j DNAT --to-destination 10.4.0.20:3128
-$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 77.244.108.198 --dport 443 -j DNAT --to-destination 10.4.0.20:3128
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 77.244.108.206 --dport 443 -j DNAT --to-destination 10.4.0.20:3128
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 77.244.108.198 --dport 3128 -j DNAT --to-destination 10.4.0.20:3128
 # SSH
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 77.244.108.198 --dport 10420 -j DNAT --to-destination 10.4.0.20:22
