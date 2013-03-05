@@ -127,6 +127,9 @@ $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dp
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol udp -d 10.4.0.20 --dport 161 -j ACCEPT
 $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol udp -d 10.4.0.20 --dport 161 -j ACCEPT
 # apache
+$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.206 --dport 80 -j ACCEPT
+$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.198 --dport 80 -j ACCEPT
+$IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 80 -j ACCEPT
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.206 --dport 443 -j ACCEPT
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.198 --dport 443 -j ACCEPT
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 443 -j ACCEPT
@@ -142,8 +145,8 @@ $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dp
 # Portforwarding
 #
 # Squid
-$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 77.244.108.198 --dport 80 -j DNAT --to-destination 10.4.0.20:3128
-$IPTABLES -t nat -A PREROUTING -i eth1 -p tcp -d 10.4.0.20 --dport 80 -j DNAT --to-destination 10.4.0.20:3128
+#$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 77.244.108.198 --dport 80 -j DNAT --to-destination 10.4.0.20:3128
+#$IPTABLES -t nat -A PREROUTING -i eth1 -p tcp -d 10.4.0.20 --dport 80 -j DNAT --to-destination 10.4.0.20:3128
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 77.244.108.206 --dport 443 -j DNAT --to-destination 10.4.0.20:3128
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 77.244.108.198 --dport 3128 -j DNAT --to-destination 10.4.0.20:3128
 # SSH
