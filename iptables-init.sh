@@ -109,11 +109,11 @@ $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp --dport 1022 -j A
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 563 -j ACCEPT
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 563 -j ACCEPT
 # Bind
-$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.198 --dport 53 -j ACCEPT
+#$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.198 --dport 53 -j ACCEPT
+#$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol udp -d 77.244.108.198 --dport 53 -j ACCEPT
+#$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.198 --dport 953 -j ACCEPT
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 53 -j ACCEPT
-$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol udp -d 77.244.108.198 --dport 53 -j ACCEPT
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol udp -d 10.4.0.20 --dport 53 -j ACCEPT
-$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.198 --dport 953 -j ACCEPT
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 953 -j ACCEPT
 # Tomcat
 #$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.198 --dport 8180 -j ACCEPT
