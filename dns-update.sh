@@ -3,9 +3,9 @@ SERVER='ns.rocketnews.de'
 TTL='86400'
 KEY='/root/keys/Kserver1-ddns-key.+157+36654'
 cmd=add 
-zone=$2
-node=$3
-data=$4
+zone=$1
+node=$2
+data=$3
 class='A'
 tmpfile=$(mktemp)
 cat >$tmpfile <<END
