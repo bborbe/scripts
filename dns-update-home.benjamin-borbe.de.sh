@@ -1,6 +1,7 @@
 #!/bin/bash
 SERVER='ns.rocketnews.de'
-TTL='86400'
+#TTL='86400'
+TTL='60'
 KEY='/root/keys/Kserver1-ddns-key.+157+36654'
 zone=benjamin-borbe.de 
 node=home
