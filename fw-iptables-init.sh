@@ -4,13 +4,13 @@ IPTABLES=/sbin/iptables
 # IP-Forwarding im Kernel einschalten
 /bin/echo 1 > /proc/sys/net/ipv4/ip_forward
 
-# 
+#
 # Firewallregeln loeschen
 #
 $IPTABLES -F
 $IPTABLES -F -t nat
 $IPTABLES -X
-$IPTABLES -X -t nat 
+$IPTABLES -X -t nat
 
 #
 # Standardregel DROP
@@ -37,8 +37,7 @@ $IPTABLES -t nat -A POSTROUTING -o eth0 -s 10.4.0.0/8 -j MASQUERADE
 #
 # Transparent Proxy
 #
-#$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 3128
-#$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp --dport 8888 -j REDIRECT --to-port 3128
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 3128
 
 #
 # Allow localhost
@@ -105,24 +104,16 @@ $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp --dport 22 -j ACC
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp --dport 1022 -j ACCEPT
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp --dport 1022 -j ACCEPT
 $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp --dport 1022 -j ACCEPT
-# OpenVPN 
+# OpenVPN
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 563 -j ACCEPT
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 563 -j ACCEPT
 # Bind
-#$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.198 --dport 53 -j ACCEPT
-#$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol udp -d 77.244.108.198 --dport 53 -j ACCEPT
-#$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.198 --dport 953 -j ACCEPT
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 53 -j ACCEPT
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol udp -d 10.4.0.20 --dport 53 -j ACCEPT
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 953 -j ACCEPT
 $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 53 -j ACCEPT
 $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol udp -d 10.4.0.20 --dport 53 -j ACCEPT
 $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 953 -j ACCEPT
-# Tomcat
-#$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.198 --dport 8180 -j ACCEPT
-# FTP
-#$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 10.4.0.22 --dport 21 -j ACCEPT
-#$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 10.4.0.22 --dport 63000:63999 -j ACCEPT
 # Git
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.198 --dport 9418 -j ACCEPT
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 9418 -j ACCEPT
@@ -132,32 +123,36 @@ $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol udp -d 10.4.0.20 --dp
 # apache
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.206 --dport 80 -j ACCEPT
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.198 --dport 80 -j ACCEPT
-$IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 80 -j ACCEPT
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.206 --dport 443 -j ACCEPT
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.198 --dport 443 -j ACCEPT
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 443 -j ACCEPT
+$IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.23 --dport 443 -j ACCEPT
+# squid
+$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.206 --dport 3128 -j ACCEPT
+$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.198 --dport 3128 -j ACCEPT
 # openfire / xmpp
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.206 --dport 5222 -j ACCEPT
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.198 --dport 5222 -j ACCEPT
-$IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 5222 -j ACCEPT
+$IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.23 --dport 5222 -j ACCEPT
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.206 --dport 5269 -j ACCEPT
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.198 --dport 5269 -j ACCEPT
-$IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 5269 -j ACCEPT
+$IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.23 --dport 5269 -j ACCEPT
 # cassandra
 $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 9160 -j ACCEPT
-# amanda-client
-$IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp --dport 11000:11040 -j ACCEPT
-$IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol udp --dport 10080 -j ACCEPT
-$IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp --dport 11000:11040 -j ACCEPT
 
 #
 # Portforwarding
 #
 # Squid
-#$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 77.244.108.198 --dport 80 -j DNAT --to-destination 10.4.0.20:3128
-#$IPTABLES -t nat -A PREROUTING -i eth1 -p tcp -d 10.4.0.20 --dport 80 -j DNAT --to-destination 10.4.0.20:3128
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 77.244.108.198 --dport 443 -j DNAT --to-destination 10.4.0.23:443
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 77.244.108.206 --dport 443 -j DNAT --to-destination 10.4.0.20:3128
-$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 77.244.108.198 --dport 3128 -j DNAT --to-destination 10.4.0.20:3128
+
+# OpenFire
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 77.244.108.198 --dport 5222 -j DNAT --to-destination 10.4.0.23:5222
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 77.244.108.206 --dport 5222 -j DNAT --to-destination 10.4.0.23:5222
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 77.244.108.198 --dport 5269 -j DNAT --to-destination 10.4.0.23:5269
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 77.244.108.206 --dport 5269 -j DNAT --to-destination 10.4.0.23:5269
+
 # SSH
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 77.244.108.198 --dport 10420 -j DNAT --to-destination 10.4.0.20:22
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 77.244.108.198 --dport 10421 -j DNAT --to-destination 10.4.0.21:22
@@ -219,6 +214,3 @@ $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol udp --dport 6780 -j D
 $IPTABLES -A INPUT -j LOG --log-prefix="IPTABLES-INPUT: "
 $IPTABLES -A OUTPUT -j LOG --log-prefix="IPTABLES-OUTPUT: "
 $IPTABLES -A FORWARD -j LOG --log-prefix="IPTABLES-FORWARD: "
-
-# save rules
-#/etc/init.d/iptables save
