@@ -142,6 +142,7 @@ $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp -d 10.4.0.20 --dp
 # amanda-client
 $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp --dport 11000:11040 -j ACCEPT
 $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol udp --dport 10080 -j ACCEPT
+$IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp --dport 10080 -j ACCEPT
 $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp --dport 11000:11040 -j ACCEPT
 
 #
