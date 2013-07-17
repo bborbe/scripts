@@ -145,6 +145,10 @@ $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 77.244.108.198
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 5269 -j ACCEPT
 # cassandra
 $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 9160 -j ACCEPT
+# amanda-client
+$IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp --dport 11000:11040 -j ACCEPT
+$IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol udp --dport 10080 -j ACCEPT
+$IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp --dport 11000:11040 -j ACCEPT
 
 #
 # Portforwarding
