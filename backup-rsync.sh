@@ -16,6 +16,8 @@ EXCLUDE_FROM='/root/scripts/backup-rsync-exclude-from'
 # Script
 #
 
+echo "backup started"
+
 # lock script
 LOCKFILE=/var/run/backup-rsync.pid
 if [ -e ${LOCKFILE} ] && kill -0 `cat ${LOCKFILE}`; then
@@ -28,7 +30,6 @@ if [ "`mount |grep /rsync | wc -l`" -eq "0" ]; then
   mount /rsync
 fi
 
- 
 # make sure the lockfile is removed when we exit and then claim it
 trap "rm -f ${LOCKFILE}; exit" INT TERM EXIT
 echo $$ > ${LOCKFILE}
@@ -42,10 +43,10 @@ echo "TO: $RSYNC_TO"
 echo "LINK: $RSYNC_LINK"
 
 if [ ! -h $BACKUP_DIR/$CLIENT_HOST/current ]; then
-mkdir -p $BACKUP_DIR/$CLIENT_HOST/empty || exit
-ln -s \
-  $BACKUP_DIR/$CLIENT_HOST/empty \
-  $BACKUP_DIR/$CLIENT_HOST/current || exit
+  mkdir -p $BACKUP_DIR/$CLIENT_HOST/empty || exit
+  ln -s \
+    $BACKUP_DIR/$CLIENT_HOST/empty \
+    $BACKUP_DIR/$CLIENT_HOST/current || exit
 fi
 
 rm -rf $BACKUP_DIR/$CLIENT_HOST/incomplete-*
@@ -70,7 +71,9 @@ ln -s \
   $BACKUP_DIR/$CLIENT_HOST/$DATE \
   $BACKUP_DIR/$CLIENT_HOST/current || exit
 
-echo "done"  
 
 # remove lock
+echo "remove lock"
 rm -f ${LOCKFILE}
+
+echo "backup finished"  
