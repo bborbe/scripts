@@ -19,9 +19,15 @@ EXCLUDE_FROM='/root/scripts/backup-rsync-exclude-from'
 # lock script
 LOCKFILE=/var/run/backup-rsync.pid
 if [ -e ${LOCKFILE} ] && kill -0 `cat ${LOCKFILE}`; then
-    echo "already running"
-    exit
+  echo "already running"
+  exit
 fi
+
+# mount /rsync if needed
+if [ "`mount |grep /rsync | wc -l`" -eq "0" ]; then
+  mount /rsync
+fi
+
  
 # make sure the lockfile is removed when we exit and then claim it
 trap "rm -f ${LOCKFILE}; exit" INT TERM EXIT
