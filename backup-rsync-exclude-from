@@ -3,5 +3,6 @@
 - /cdrom
 - /sys
 - /tmp
+- /var/tmp
 - /media
 - /mnt/storage/backup
