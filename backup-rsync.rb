@@ -164,14 +164,19 @@ def backup (client_user, client_host, client_dir, exclude_from)
   system('mkdir -p ' + $BACKUP_DIR + '/' + client_host + '/incomplete-' + $DATE + client_dir)
 
   puts 'rsync'
-  system('rsync -azP --delete --delete-excluded --exclude-from=' + exclude_from + ' --link-dest=' + $RSYNC_LINK + ' ' + $RSYNC_FROM + ' ' + $RSYNC_TO) && return
+  if system('rsync -azP --delete --delete-excluded --exclude-from=' + exclude_from + ' --link-dest=' + $RSYNC_LINK + ' ' + $RSYNC_FROM + ' ' + $RSYNC_TO)
+    put 'rsync success'
+  else 
+    puts 'rsync failed'
+    return
+  end
 
   puts 'move incomplete from directory name'
-  system('mv ' + $BACKUP_DIR + '/' + client_host + '/incomplete-' + $DATE + ' ' + $BACKUP_DIR + '/' + client_host + '/' + $DATE) && return
+  system('mv ' + $BACKUP_DIR + '/' + client_host + '/incomplete-' + $DATE + ' ' + $BACKUP_DIR + '/' + client_host + '/' + $DATE)
  
   puts 'update current link'
   system('rm -f ' + $BACKUP_DIR + '/' + client_host + '/current')
-  system('ln -s ' + $BACKUP_DIR + '/' + client_host + '/' + $DATE + ' ' + $BACKUP_DIR + '/' + client_host + '/current') && return
+  system('ln -s ' + $BACKUP_DIR + '/' + client_host + '/' + $DATE + ' ' + $BACKUP_DIR + '/' + client_host + '/current')
 
   puts 'delete empty'
   system('rm -rf ' + $BACKUP_DIR + '/' + client_host + '/empty')
