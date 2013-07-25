@@ -121,6 +121,7 @@ def backup (client_user, client_host, client_dir, exclude_from)
 
 end
 
+# iterate of all configs
 configs.each { |config| 
   puts 'client_user:  ' + config['client_user']
   puts 'client_host:  ' + config['client_host']

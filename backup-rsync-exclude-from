@@ -4,5 +4,6 @@
 - /sys
 - /tmp
 - /var/tmp
+- /var/cache
 - /media
 - /mnt/storage/backup
