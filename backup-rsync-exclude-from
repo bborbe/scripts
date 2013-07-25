@@ -3,11 +3,16 @@
 - /cdrom
 - /sys
 - /tmp
+- /run
+- /var/run
+- /var/lock
 - /var/log
 - /var/tmp
 - /var/cache
+- /var/cache/apt/archives
 - /media
 - /mnt/storage/backup
 - /mnt/storage/rsync
 - /rsync
 - /amanda
+- /var/lib/lightdm/.gvfs
