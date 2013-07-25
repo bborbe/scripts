@@ -19,7 +19,70 @@ configs = [
   {
     'active'       => 'false',
     'client_user'  => 'root',
+    'client_host'  => 'proxy',
+    'client_dir'   => '/', 
+    'exclude_from' => '/root/scripts/backup-rsync-exclude-from',
+  },
+  {
+    'active'       => 'false',
+    'client_user'  => 'root',
     'client_host'  => '192.168.178.49',
+    'client_dir'   => '/', 
+    'exclude_from' => '/root/scripts/backup-rsync-exclude-from',
+  },
+  {
+    'active'       => 'false',
+    'client_user'  => 'root',
+    'client_host'  => 'sun.pn.benjamin-borbe.de',
+    'client_dir'   => '/', 
+    'exclude_from' => '/root/scripts/backup-rsync-exclude-from',
+  },
+  {
+    'active'       => 'false',
+    'client_user'  => 'root',
+    'client_host'  => 'backup.pn.benjamin-borbe.de',
+    'client_dir'   => '/', 
+    'exclude_from' => '/root/scripts/backup-rsync-exclude-from',
+  },
+  {
+    'active'       => 'false',
+    'client_user'  => 'root',
+    'client_host'  => 'fw.rn.benjamin-borbe.de',
+    'client_dir'   => '/', 
+    'exclude_from' => '/root/scripts/backup-rsync-exclude-from',
+  },
+  {
+    'active'       => 'false',
+    'client_user'  => 'root',
+    'client_host'  => 'a.rn.benjamin-borbe.de',
+    'client_dir'   => '/', 
+    'exclude_from' => '/root/scripts/backup-rsync-exclude-from',
+  },
+  {
+    'active'       => 'false',
+    'client_user'  => 'root',
+    'client_host'  => 'b.rn.benjamin-borbe.de',
+    'client_dir'   => '/', 
+    'exclude_from' => '/root/scripts/backup-rsync-exclude-from',
+  },
+  {
+    'active'       => 'false',
+    'client_user'  => 'root',
+    'client_host'  => 'cfn.rn.benjamin-borbe.de',
+    'client_dir'   => '/', 
+    'exclude_from' => '/root/scripts/backup-rsync-exclude-from',
+  },
+  {
+    'active'       => 'false',
+    'client_user'  => 'root',
+    'client_host'  => 'misc.rn.benjamin-borbe.de',
+    'client_dir'   => '/', 
+    'exclude_from' => '/root/scripts/backup-rsync-exclude-from',
+  },
+  {
+    'active'       => 'false',
+    'client_user'  => 'root',
+    'client_host'  => 'confluence.rn.benjamin-borbe.de',
     'client_dir'   => '/', 
     'exclude_from' => '/root/scripts/backup-rsync-exclude-from',
   },
@@ -80,7 +143,7 @@ def backup (client_user, client_host, client_dir, exclude_from)
   mounts = stdout.readline.chomp
   if mounts == '0'
     puts 'mount /rsync'
-    system('mount /rsync')
+    system('mount /rsync') && return
   else
     puts 'already mounted /rsync'
   end
@@ -90,28 +153,28 @@ def backup (client_user, client_host, client_dir, exclude_from)
     puts 'current link already exists'
   else
     puts 'current link exists not'
-    system('mkdir -p ' + $BACKUP_DIR + '/' + client_host + '/empty')
-    system('ln -s ' + $BACKUP_DIR + '/' + client_host + '/empty ' + $BACKUP_DIR + '/' + client_host + '/current')
+    system('mkdir -p ' + $BACKUP_DIR + '/' + client_host + '/empty') && return
+    system('ln -s ' + $BACKUP_DIR + '/' + client_host + '/empty ' + $BACKUP_DIR + '/' + client_host + '/current') && return
   end
 
   puts 'delete incomplete backups'
-  system('rm -rf ' + $BACKUP_DIR + '/' + client_host + '/incomplete-*')
+  system('rm -rf ' + $BACKUP_DIR + '/' + client_host + '/incomplete-*') && return
 
   puts 'mkdir target incomplete directory'
-  system('mkdir -p ' + $BACKUP_DIR + '/' + client_host + '/incomplete-' + $DATE + client_dir)
+  system('mkdir -p ' + $BACKUP_DIR + '/' + client_host + '/incomplete-' + $DATE + client_dir) && return
 
   puts 'rsync'
-  system('rsync -azP --delete --delete-excluded --exclude-from=' + exclude_from + ' --link-dest=' + $RSYNC_LINK + ' ' + $RSYNC_FROM + ' ' + $RSYNC_TO)
+  system('rsync -azP --delete --delete-excluded --exclude-from=' + exclude_from + ' --link-dest=' + $RSYNC_LINK + ' ' + $RSYNC_FROM + ' ' + $RSYNC_TO) && return
 
   puts 'move incomplete from directory name'
-  system('mv ' + $BACKUP_DIR + '/' + client_host + '/incomplete-' + $DATE + ' ' + $BACKUP_DIR + '/' + client_host + '/' + $DATE)
-
+  system('mv ' + $BACKUP_DIR + '/' + client_host + '/incomplete-' + $DATE + ' ' + $BACKUP_DIR + '/' + client_host + '/' + $DATE) && return
+ 
   puts 'update current link'
-  system('rm -f ' + $BACKUP_DIR + '/' + client_host + '/current')
-  system('ln -s ' + $BACKUP_DIR + '/' + client_host + '/' + $DATE + ' ' + $BACKUP_DIR + '/' + client_host + '/current')
+  system('rm -f ' + $BACKUP_DIR + '/' + client_host + '/current') && return
+  system('ln -s ' + $BACKUP_DIR + '/' + client_host + '/' + $DATE + ' ' + $BACKUP_DIR + '/' + client_host + '/current') && return
 
   puts 'delete empty'
-  system('rm -rf ' + $BACKUP_DIR + '/' + client_host + '/empty')
+  system('rm -rf ' + $BACKUP_DIR + '/' + client_host + '/empty') && return
 
   # # remove lock
   puts 'remove lock'
