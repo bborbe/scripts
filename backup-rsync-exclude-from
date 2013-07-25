@@ -8,5 +8,6 @@
 - /var/cache
 - /media
 - /mnt/storage/backup
+- /mnt/storage/rsync
 - /rsync
 - /amanda
