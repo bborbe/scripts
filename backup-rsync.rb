@@ -186,12 +186,12 @@ end
 
 # iterate of all configs
 configs.each { |config| 
-  puts 'client_user:  ' + config['client_user']
-  puts 'client_host:  ' + config['client_host']
-  puts 'client_dir:   ' + config['client_dir']
-  puts 'exclude_from: ' + config['exclude_from']
-  puts 'active:       ' + config['active']
   if config['active'] == 'true' 
+    puts 'client_user:  ' + config['client_user']
+    puts 'client_host:  ' + config['client_host']
+    puts 'client_dir:   ' + config['client_dir']
+    puts 'exclude_from: ' + config['exclude_from']
+    puts 'active:       ' + config['active']
     backup(config['client_user'], config['client_host'], config['client_dir'], config['exclude_from'])
   else 
     puts 'skip backup of ' + config['client_host']
