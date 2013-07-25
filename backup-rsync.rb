@@ -186,7 +186,7 @@ def backup_client (client_user, client_host, client_dir, exclude_from)
       puts 'mkdir empty directory failed'
       return
     end    
-#    if system('ln -s ' + $BACKUP_DIR + '/' + client_host + '/empty ' + $BACKUP_DIR + '/' + client_host + '/current')
+
     if system('ln -s empty ' + $BACKUP_DIR + '/' + client_host + '/current')
       puts 'link empty to current'
     else
@@ -234,7 +234,7 @@ def backup_client (client_user, client_host, client_dir, exclude_from)
     puts 'remove old current link failed'
     return
   end
-#  if system('ln -s ' + $BACKUP_DIR + '/' + client_host + '/' + $DATE + ' ' + $BACKUP_DIR + '/' + client_host + '/current')
+
   if system('ln -s ' + $DATE + ' ' + $BACKUP_DIR + '/' + client_host + '/current')
     puts 'create new current link success'
   else 
