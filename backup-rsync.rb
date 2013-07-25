@@ -143,7 +143,7 @@ def backup (client_user, client_host, client_dir, exclude_from)
   mounts = stdout.readline.chomp
   if mounts == '0'
     puts 'mount /rsync'
-    system('mount /rsync') && return
+    system('mount /rsync')
   else
     puts 'already mounted /rsync'
   end
@@ -153,15 +153,15 @@ def backup (client_user, client_host, client_dir, exclude_from)
     puts 'current link already exists'
   else
     puts 'current link exists not'
-    system('mkdir -p ' + $BACKUP_DIR + '/' + client_host + '/empty') && return
-    system('ln -s ' + $BACKUP_DIR + '/' + client_host + '/empty ' + $BACKUP_DIR + '/' + client_host + '/current') && return
+    system('mkdir -p ' + $BACKUP_DIR + '/' + client_host + '/empty')
+    system('ln -s ' + $BACKUP_DIR + '/' + client_host + '/empty ' + $BACKUP_DIR + '/' + client_host + '/current')
   end
 
   puts 'delete incomplete backups'
   system('rm -rf ' + $BACKUP_DIR + '/' + client_host + '/incomplete-*')
 
   puts 'mkdir target incomplete directory'
-  system('mkdir -p ' + $BACKUP_DIR + '/' + client_host + '/incomplete-' + $DATE + client_dir) && return
+  system('mkdir -p ' + $BACKUP_DIR + '/' + client_host + '/incomplete-' + $DATE + client_dir)
 
   puts 'rsync'
   system('rsync -azP --delete --delete-excluded --exclude-from=' + exclude_from + ' --link-dest=' + $RSYNC_LINK + ' ' + $RSYNC_FROM + ' ' + $RSYNC_TO) && return
