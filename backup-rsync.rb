@@ -158,7 +158,7 @@ def backup (client_user, client_host, client_dir, exclude_from)
   end
 
   puts 'delete incomplete backups'
-  system('rm -rf ' + $BACKUP_DIR + '/' + client_host + '/incomplete-*') && return
+  system('rm -rf ' + $BACKUP_DIR + '/' + client_host + '/incomplete-*')
 
   puts 'mkdir target incomplete directory'
   system('mkdir -p ' + $BACKUP_DIR + '/' + client_host + '/incomplete-' + $DATE + client_dir) && return
@@ -170,11 +170,11 @@ def backup (client_user, client_host, client_dir, exclude_from)
   system('mv ' + $BACKUP_DIR + '/' + client_host + '/incomplete-' + $DATE + ' ' + $BACKUP_DIR + '/' + client_host + '/' + $DATE) && return
  
   puts 'update current link'
-  system('rm -f ' + $BACKUP_DIR + '/' + client_host + '/current') && return
+  system('rm -f ' + $BACKUP_DIR + '/' + client_host + '/current')
   system('ln -s ' + $BACKUP_DIR + '/' + client_host + '/' + $DATE + ' ' + $BACKUP_DIR + '/' + client_host + '/current') && return
 
   puts 'delete empty'
-  system('rm -rf ' + $BACKUP_DIR + '/' + client_host + '/empty') && return
+  system('rm -rf ' + $BACKUP_DIR + '/' + client_host + '/empty')
 
   # # remove lock
   puts 'remove lock'
