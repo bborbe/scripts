@@ -3,6 +3,7 @@
 - /cdrom
 - /sys
 - /tmp
+- /var/log
 - /var/tmp
 - /var/cache
 - /media

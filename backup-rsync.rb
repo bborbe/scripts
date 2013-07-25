@@ -12,21 +12,28 @@ configs = [
   {
     'active'       => 'true',
     'client_user'  => 'root',
-    'client_host'  => 'fire',
+    'client_host'  => 'burn.hm.benjamin-borbe.de',
     'client_dir'   => '/', 
     'exclude_from' => '/root/scripts/backup-rsync-exclude-from',
   },
   {
     'active'       => 'false',
     'client_user'  => 'root',
-    'client_host'  => 'proxy',
+    'client_host'  => 'fire.hm.benjamin-borbe.de',
     'client_dir'   => '/', 
     'exclude_from' => '/root/scripts/backup-rsync-exclude-from',
   },
   {
     'active'       => 'false',
     'client_user'  => 'root',
-    'client_host'  => '192.168.178.49',
+    'client_host'  => 'proxy.hm.benjamin-borbe.de',
+    'client_dir'   => '/', 
+    'exclude_from' => '/root/scripts/backup-rsync-exclude-from',
+  },
+  {
+    'active'       => 'false',
+    'client_user'  => 'root',
+    'client_host'  => 'freenas.hm.benjamin-borbe.de',
     'client_dir'   => '/', 
     'exclude_from' => '/root/scripts/backup-rsync-exclude-from',
   },
@@ -45,7 +52,7 @@ configs = [
     'exclude_from' => '/root/scripts/backup-rsync-exclude-from',
   },
   {
-    'active'       => 'false',
+    'active'       => 'true',
     'client_user'  => 'root',
     'client_host'  => 'fw.rn.benjamin-borbe.de',
     'client_dir'   => '/', 
@@ -143,7 +150,12 @@ def backup (client_user, client_host, client_dir, exclude_from)
   mounts = stdout.readline.chomp
   if mounts == '0'
     puts 'mount /rsync'
-    system('mount /rsync')
+    if system('mount /rsync')
+      puts 'mount /rsync completed'
+    else 
+      puts 'mount /rsync failed'
+      return
+    end
   else
     puts 'already mounted /rsync'
   end
@@ -153,33 +165,75 @@ def backup (client_user, client_host, client_dir, exclude_from)
     puts 'current link already exists'
   else
     puts 'current link exists not'
-    system('mkdir -p ' + $BACKUP_DIR + '/' + client_host + '/empty')
-    system('ln -s ' + $BACKUP_DIR + '/' + client_host + '/empty ' + $BACKUP_DIR + '/' + client_host + '/current')
+    if system('mkdir -p ' + $BACKUP_DIR + '/' + client_host + '/empty')
+      puts 'mkdir empty directory'
+    else
+      puts 'mkdir empty directory failed'
+      return
+    end    
+#    if system('ln -s ' + $BACKUP_DIR + '/' + client_host + '/empty ' + $BACKUP_DIR + '/' + client_host + '/current')
+    if system('ln -s empty ' + $BACKUP_DIR + '/' + client_host + '/current')
+      puts 'link empty to current'
+    else
+      puts 'link empty to current failed'
+      return
+    end
   end
 
   puts 'delete incomplete backups'
-  system('rm -rf ' + $BACKUP_DIR + '/' + client_host + '/incomplete-*')
+  if system('rm -rf ' + $BACKUP_DIR + '/' + client_host + '/incomplete-*')
+    puts 'delete old incomplete backups'
+  else 
+    puts 'delete old incomplete backups failed'
+    return
+  end
 
   puts 'mkdir target incomplete directory'
-  system('mkdir -p ' + $BACKUP_DIR + '/' + client_host + '/incomplete-' + $DATE + client_dir)
+  if system('mkdir -p ' + $BACKUP_DIR + '/' + client_host + '/incomplete-' + $DATE + client_dir)
+    puts 'mkdir target incomplete directory success'
+  else
+    puts 'mkdir target incomplete directory failed'
+    return
+  end
 
   puts 'rsync'
   if system('rsync -azP --delete --delete-excluded --exclude-from=' + exclude_from + ' --link-dest=' + $RSYNC_LINK + ' ' + $RSYNC_FROM + ' ' + $RSYNC_TO)
-    put 'rsync success'
+    puts 'rsync success'
   else 
     puts 'rsync failed'
     return
   end
 
   puts 'move incomplete from directory name'
-  system('mv ' + $BACKUP_DIR + '/' + client_host + '/incomplete-' + $DATE + ' ' + $BACKUP_DIR + '/' + client_host + '/' + $DATE)
+  if system('mv ' + $BACKUP_DIR + '/' + client_host + '/incomplete-' + $DATE + ' ' + $BACKUP_DIR + '/' + client_host + '/' + $DATE)
+    puts 'move incomplete from directory name success'
+  else
+    puts 'move incomplete from directory name failed'
+    return
+  end
  
   puts 'update current link'
-  system('rm -f ' + $BACKUP_DIR + '/' + client_host + '/current')
-  system('ln -s ' + $BACKUP_DIR + '/' + client_host + '/' + $DATE + ' ' + $BACKUP_DIR + '/' + client_host + '/current')
+  if system('rm -f ' + $BACKUP_DIR + '/' + client_host + '/current')
+    puts 'remove old current link success'
+  else 
+    puts 'remove old current link failed'
+    return
+  end
+#  if system('ln -s ' + $BACKUP_DIR + '/' + client_host + '/' + $DATE + ' ' + $BACKUP_DIR + '/' + client_host + '/current')
+  if system('ln -s ' + $DATE + ' ' + $BACKUP_DIR + '/' + client_host + '/current')
+    puts 'create new current link success'
+  else 
+    puts 'create new current link failed'
+    return
+  end
 
   puts 'delete empty'
-  system('rm -rf ' + $BACKUP_DIR + '/' + client_host + '/empty')
+  if system('rm -rf ' + $BACKUP_DIR + '/' + client_host + '/empty')
+    puts 'delete empty directory success'
+  else 
+    puts 'delete empty directory failed'
+    return
+  end
 
   # # remove lock
   puts 'remove lock'
