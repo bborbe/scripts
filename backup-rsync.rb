@@ -6,9 +6,12 @@ require 'open3'
 # Config
 #
 
+$LOCKFILE = '/var/run/backup-rsync.pid'
+$BACKUP_DIR = '/rsync'
+$DEBUG = true
 
 # Slash at the end of client_dir is important!
-configs = [
+$CONFIGS = [
   # hm
   {
     'active'       => 'true',
@@ -27,14 +30,14 @@ configs = [
   {
     'active'       => 'true',
     'client_user'  => 'root',
-    'client_host'  => 'proxy',
+    'client_host'  => 'freenas',
     'client_dir'   => '/', 
     'exclude_from' => '/root/scripts/backup-rsync-exclude-from',
   },
   {
     'active'       => 'true',
     'client_user'  => 'root',
-    'client_host'  => 'freenas',
+    'client_host'  => 'proxy',
     'client_dir'   => '/', 
     'exclude_from' => '/root/scripts/backup-rsync-exclude-from',
   },
@@ -147,14 +150,17 @@ configs = [
   },
 ]
 
-def backup (client_user, client_host, client_dir, exclude_from)
-  $DEBUG = true
+#
+# Script
+#
+
+def backup_client (client_user, client_host, client_dir, exclude_from)
+  puts 'backup ' + client_host + ' started'
+
   $DATE = `date "+%Y-%m-%dT%H:%M:%S"`.chomp
-  $BACKUP_DIR = '/rsync'
   $RSYNC_FROM = client_user + '@' + client_host + ':' + client_dir
   $RSYNC_TO = $BACKUP_DIR + '/' + client_host + '/incomplete-' + $DATE + client_dir
   $RSYNC_LINK = $BACKUP_DIR + '/' + client_host + '/current' + client_dir
-  $LOCKFILE = '/var/run/backup-rsync.pid'
 
   if $DEBUG
     puts 'DATE         = "' + $DATE + '"'
@@ -167,49 +173,6 @@ def backup (client_user, client_host, client_dir, exclude_from)
     puts 'RSYNC_TO     = "' + $RSYNC_TO + '"'
     puts 'RSYNC_LINK   = "' + $RSYNC_LINK + '"'
     puts 'LOCKFILE     = "' + $LOCKFILE + '"'
-  end
-
-  #
-  # Script
-  #
-
-  puts 'backup-rsync started'
-
-  # lock script
-  if File.file?( $LOCKFILE ) 
-    puts 'lock exists'
-    file = File.open($LOCKFILE, "rb")
-    contents = file.read
-    if system('kill -0 '+contents)
-      puts 'already runnung'
-      exit
-    else 
-      puts 'not running'
-    end 
-  else
-    puts 'lock exists not'
-  end
-
-  # insert pid in lockfile
-  pid = Process.pid
-  puts 'pid = ' + pid.to_s
-  newFile = File.open($LOCKFILE, "w")
-  newFile.write(pid)
-  newFile.close
-
-  # mount /rsync if needed
-  stdin, stdout, stderr = Open3.popen3('mount |grep /rsync | wc -l')
-  mounts = stdout.readline.chomp
-  if mounts == '0'
-    puts 'mount /rsync'
-    if system('mount /rsync')
-      puts 'mount /rsync completed'
-    else 
-      puts 'mount /rsync failed'
-      return
-    end
-  else
-    puts 'already mounted /rsync'
   end
 
   # create current link if not already exists
@@ -287,25 +250,68 @@ def backup (client_user, client_host, client_dir, exclude_from)
     return
   end
 
-  # # remove lock
+  puts 'backup ' + client_host + ' finished'
+end
+
+def backup (configs) 
+  puts 'backup-rsync started'
+
+  # lock script
+  if File.file?( $LOCKFILE ) 
+    puts 'lock exists'
+    file = File.open($LOCKFILE, "rb")
+    contents = file.read
+    if system('kill -0 '+contents)
+      puts 'already runnung'
+      exit
+    else 
+      puts 'not running'
+    end 
+  else
+    puts 'lock exists not'
+  end
+
+  # insert pid in lockfile
+  pid = Process.pid
+  puts 'pid = ' + pid.to_s
+  newFile = File.open($LOCKFILE, "w")
+  newFile.write(pid)
+  newFile.close
+
+  # mount /rsync if needed
+  stdin, stdout, stderr = Open3.popen3('mount |grep /rsync | wc -l')
+  mounts = stdout.readline.chomp
+  if mounts == '0'
+    puts 'mount /rsync'
+    if system('mount /rsync')
+      puts 'mount /rsync completed'
+    else 
+      puts 'mount /rsync failed'
+      exit
+    end
+  else
+    puts 'already mounted /rsync'
+  end
+
+  # iterate of all configs
+  configs.each { |config| 
+    if config['active'] == 'true' 
+      puts 'client_user:  ' + config['client_user']
+      puts 'client_host:  ' + config['client_host']
+      puts 'client_dir:   ' + config['client_dir']
+      puts 'exclude_from: ' + config['exclude_from']
+      puts 'active:       ' + config['active']
+      backup_client(config['client_user'], config['client_host'], config['client_dir'], config['exclude_from'])
+    else 
+      puts 'skip backup of ' + config['client_host']
+    end
+  }
+
+  # remove lock
   puts 'remove lock'
   File.delete($LOCKFILE) if File.file?( $LOCKFILE ) 
 
   puts 'backup-rsync finished'
-
 end
 
-# iterate of all configs
-configs.each { |config| 
-  if config['active'] == 'true' 
-    puts 'client_user:  ' + config['client_user']
-    puts 'client_host:  ' + config['client_host']
-    puts 'client_dir:   ' + config['client_dir']
-    puts 'exclude_from: ' + config['exclude_from']
-    puts 'active:       ' + config['active']
-    backup(config['client_user'], config['client_host'], config['client_dir'], config['exclude_from'])
-  else 
-    puts 'skip backup of ' + config['client_host']
-  end
-}
-
+backup($CONFIGS)
