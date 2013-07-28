@@ -150,7 +150,6 @@ $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp --dport 11000:110
 # Portforwarding
 #
 # Squid
-$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 77.244.108.198 --dport 443 -j DNAT --to-destination 10.4.0.20:443
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 77.244.108.206 --dport 443 -j DNAT --to-destination 10.4.0.20:3128
 
 # OpenFire
