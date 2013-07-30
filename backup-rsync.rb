@@ -16,6 +16,13 @@ $CONFIGS = [
   {
     'active'       => 'true',
     'client_user'  => 'root',
+    'client_host'  => 'mobile-bb.hm.benjamin-borbe.de',
+    'client_dir'   => '/', 
+    'exclude_from' => '/root/scripts/backup-rsync-exclude-from',
+  },
+  {
+    'active'       => 'true',
+    'client_user'  => 'root',
     'client_host'  => 'burn.hm.benjamin-borbe.de',
     'client_dir'   => '/', 
     'exclude_from' => '/root/scripts/backup-rsync-exclude-from',
