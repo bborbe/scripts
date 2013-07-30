@@ -12,14 +12,6 @@ $DEBUG = true
 
 # Slash at the end of client_dir is important!
 $CONFIGS = [
-  # hm
-  {
-    'active'       => 'true',
-    'client_user'  => 'root',
-    'client_host'  => 'mobile-bb.hm.benjamin-borbe.de',
-    'client_dir'   => '/', 
-    'exclude_from' => '/root/scripts/backup-rsync-exclude-from',
-  },
   {
     'active'       => 'true',
     'client_user'  => 'root',
@@ -90,7 +82,6 @@ $CONFIGS = [
     'client_dir'   => '/', 
     'exclude_from' => '/root/scripts/backup-rsync-exclude-from',
   },
-  # pn
   {
     'active'       => 'true',
     'client_user'  => 'root',
@@ -112,7 +103,6 @@ $CONFIGS = [
     'client_dir'   => '/', 
     'exclude_from' => '/root/scripts/backup-rsync-exclude-from',
   },
-  # rn
   {
     'active'       => 'true',
     'client_user'  => 'root',
@@ -155,6 +145,13 @@ $CONFIGS = [
     'client_dir'   => '/', 
     'exclude_from' => '/root/scripts/backup-rsync-exclude-from',
   },
+  {
+    'active'       => 'true',
+    'client_user'  => 'root',
+    'client_host'  => 'mobile-bb.hm.benjamin-borbe.de',
+    'client_dir'   => '/', 
+    'exclude_from' => '/root/scripts/backup-rsync-exclude-from',
+  },  
 ]
 
 #
