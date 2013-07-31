@@ -163,7 +163,7 @@ def backup_client (client_user, client_host, client_dir, exclude_from)
 
   $DATE = `date "+%Y-%m-%dT%H:%M:%S"`.chomp
   $RSYNC_FROM = client_user + '@' + client_host + ':' + client_dir
-  $RSYNC_TO = $BACKUP_DIR + '/' + client_host + '/incomplete-' + $DATE + client_dir
+  $RSYNC_TO = $BACKUP_DIR + '/' + client_host + '/incomplete' + client_dir
   $RSYNC_LINK = $BACKUP_DIR + '/' + client_host + '/current' + client_dir
 
   if $DEBUG
@@ -208,7 +208,7 @@ def backup_client (client_user, client_host, client_dir, exclude_from)
   end
 
   puts 'mkdir target incomplete directory'
-  if system('mkdir -p ' + $BACKUP_DIR + '/' + client_host + '/incomplete-' + $DATE + client_dir)
+  if system('mkdir -p ' + $BACKUP_DIR + '/' + client_host + '/incomplete' + client_dir)
     puts 'mkdir target incomplete directory success'
   else
     puts 'mkdir target incomplete directory failed'
@@ -224,7 +224,7 @@ def backup_client (client_user, client_host, client_dir, exclude_from)
   end
 
   puts 'move incomplete from directory name'
-  if system('mv ' + $BACKUP_DIR + '/' + client_host + '/incomplete-' + $DATE + ' ' + $BACKUP_DIR + '/' + client_host + '/' + $DATE)
+  if system('mv ' + $BACKUP_DIR + '/' + client_host + '/incomplete' + ' ' + $BACKUP_DIR + '/' + client_host + '/' + $DATE)
     puts 'move incomplete from directory name success'
   else
     puts 'move incomplete from directory name failed'
