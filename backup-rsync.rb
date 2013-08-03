@@ -216,7 +216,11 @@ def backup_client (client_user, client_host, client_dir, exclude_from)
   end
 
   puts 'rsync'
-  if system('rsync -azP --delete --delete-excluded --exclude-from=' + exclude_from + ' --link-dest=' + $RSYNC_LINK + ' ' + $RSYNC_FROM + ' ' + $RSYNC_TO)
+  system('rsync -azP --delete --delete-excluded --exclude-from=' + exclude_from + ' --link-dest=' + $RSYNC_LINK + ' ' + $RSYNC_FROM + ' ' + $RSYNC_TO)
+  # 0 Success
+  # 24 Partial transfer due to vanished source files
+  status = $?.exitstatus
+  if status == 0 || status == 24 
     puts 'rsync success'
   else 
     puts 'rsync failed'
