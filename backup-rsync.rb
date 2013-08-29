@@ -161,12 +161,14 @@ $CONFIGS = [
 def backup_client (client_user, client_host, client_dir, exclude_from)
   puts 'backup ' + client_host + ' started'
 
-  $DATE = `date "+%Y-%m-%dT%H:%M:%S"`.chomp
+  $DATETIME = `date "+%Y-%m-%dT%H:%M:%S"`.chomp
+  $DATE = `date "+%Y-%m-%d"`.chomp
   $RSYNC_FROM = client_user + '@' + client_host + ':' + client_dir
   $RSYNC_TO = $BACKUP_DIR + '/' + client_host + '/incomplete' + client_dir
   $RSYNC_LINK = $BACKUP_DIR + '/' + client_host + '/current' + client_dir
 
   if $DEBUG
+    puts 'DATETIME     = "' + $DATETIME + '"'
     puts 'DATE         = "' + $DATE + '"'
     puts 'CLIENT_USER  = "' + client_user + '"'
     puts 'CLIENT_HOST  = "' + client_host + '"'
@@ -177,6 +179,17 @@ def backup_client (client_user, client_host, client_dir, exclude_from)
     puts 'RSYNC_TO     = "' + $RSYNC_TO + '"'
     puts 'RSYNC_LINK   = "' + $RSYNC_LINK + '"'
     puts 'LOCKFILE     = "' + $LOCKFILE + '"'
+  end
+
+  # only one backup per day
+  puts 'check existing backup for today'
+  stdin, stdout, stderr = Open3.popen3('ls -1 ' + $BACKUP_DIR + '/' + client_host + '/' + $DATE + 'T* | wc -l')
+  backups_today = stdout.readline.chomp
+  if backups_today == '0'
+    puts 'no backup found for date ' + $DATE + ' => continue'
+  else
+    puts 'backup already exists for date ' + $DATE + ' => skip'
+    return
   end
 
   # create current link if not already exists
@@ -228,7 +241,7 @@ def backup_client (client_user, client_host, client_dir, exclude_from)
   end
 
   puts 'move incomplete from directory name'
-  if system('mv ' + $BACKUP_DIR + '/' + client_host + '/incomplete' + ' ' + $BACKUP_DIR + '/' + client_host + '/' + $DATE)
+  if system('mv ' + $BACKUP_DIR + '/' + client_host + '/incomplete' + ' ' + $BACKUP_DIR + '/' + client_host + '/' + $DATETIME)
     puts 'move incomplete from directory name success'
   else
     puts 'move incomplete from directory name failed'
@@ -243,7 +256,7 @@ def backup_client (client_user, client_host, client_dir, exclude_from)
     return
   end
 
-  if system('ln -s ' + $DATE + ' ' + $BACKUP_DIR + '/' + client_host + '/current')
+  if system('ln -s ' + $DATETIME + ' ' + $BACKUP_DIR + '/' + client_host + '/current')
     puts 'create new current link success'
   else 
     puts 'create new current link failed'
