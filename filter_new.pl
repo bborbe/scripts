@@ -4,6 +4,8 @@
 # to delete old backup use:
 # ls -1 /var/backups/backup_*.tgz | perl filter_new.pl | xargs rm -f
 #
+# sudo apt-get install libdatetime-perl
+#
 
 use strict;
 use DateTime;
