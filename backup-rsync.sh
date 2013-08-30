@@ -25,14 +25,14 @@ if [ -e ${LOCKFILE} ] && kill -0 `cat ${LOCKFILE}`; then
   exit
 fi
 
+# make sure the lockfile is removed when we exit and then claim it
+trap "rm -f ${LOCKFILE}; exit" INT TERM EXIT
+echo $$ > ${LOCKFILE}
+
 # mount /rsync if needed
 if [ "`mount |grep /rsync | wc -l`" -eq "0" ]; then
   mount /rsync
 fi
-
-# make sure the lockfile is removed when we exit and then claim it
-trap "rm -f ${LOCKFILE}; exit" INT TERM EXIT
-echo $$ > ${LOCKFILE}
 
 RSYNC_FROM="$CLIENT_USER@$CLIENT_HOST:$CLIENT_DIR"
 RSYNC_TO="$BACKUP_DIR/$CLIENT_HOST/incomplete-$DATE$CLIENT_DIR"
