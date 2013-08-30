@@ -12,6 +12,11 @@ BACKUP_NAME=/var/backups/postgres_`date '+%Y%m%d'`.sql.gz
 
 echo "backup started"
 
+if [ -e $BACKUP_NAME ]; then
+	echo "backup already exists"
+	exit
+fi	
+
 # lock script
 if [ -e ${LOCKFILE} ] && kill -0 `cat ${LOCKFILE}`; then
   echo "already running"
