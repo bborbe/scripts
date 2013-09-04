@@ -15,6 +15,13 @@ $CONFIGS = [
   {
     'active'       => 'true',
     'client_user'  => 'root',
+    'client_host'  => 'rasp.hm.benjamin-borbe.de',
+    'client_dir'   => '/', 
+    'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
+  },
+  {
+    'active'       => 'true',
+    'client_user'  => 'root',
     'client_host'  => 'burn.hm.benjamin-borbe.de',
     'client_dir'   => '/', 
     'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
