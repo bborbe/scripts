@@ -1,4 +1,4 @@
-#!/bish/sh
+#!/bin/sh
 
 # add in /etc/crontab
 # 4 15 * * * root sh /root/scripts/backup_mysql.sh >/dev/null 2>&1
