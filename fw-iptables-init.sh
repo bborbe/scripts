@@ -70,6 +70,9 @@ $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp --dport 1022 -j A
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 563 -j ACCEPT
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 563 -j ACCEPT
 # Bind
+$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 53 -j ACCEPT
+$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol udp -d 10.4.0.20 --dport 53 -j ACCEPT
+$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 953 -j ACCEPT
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 53 -j ACCEPT
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol udp -d 10.4.0.20 --dport 53 -j ACCEPT
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 953 -j ACCEPT
@@ -112,15 +115,20 @@ $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp --dport 11000:110
 #
 # Portforwarding
 #
+# Bind
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 53 -j DNAT --to-destination 10.4.0.20:53
+$IPTABLES -t nat -A PREROUTING -i eth0 -p udp -d 144.76.187.199 --dport 53 -j DNAT --to-destination 10.4.0.20:53
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 953 -j DNAT --to-destination 10.4.0.20:953
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.200 --dport 53 -j DNAT --to-destination 10.4.0.20:53
+$IPTABLES -t nat -A PREROUTING -i eth0 -p udp -d 144.76.187.200 --dport 53 -j DNAT --to-destination 10.4.0.20:53
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.200 --dport 953 -j DNAT --to-destination 10.4.0.20:953
 # Squid
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.200 --dport 443 -j DNAT --to-destination 10.4.0.20:3128
-
 # OpenFire
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 5222 -j DNAT --to-destination 10.4.0.23:5222
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.200 --dport 5222 -j DNAT --to-destination 10.4.0.23:5222
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 5269 -j DNAT --to-destination 10.4.0.23:5269
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.200 --dport 5269 -j DNAT --to-destination 10.4.0.23:5269
-
 # SSH
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 10420 -j DNAT --to-destination 10.4.0.20:22
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 10421 -j DNAT --to-destination 10.4.0.21:22
