@@ -72,13 +72,10 @@ $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dp
 # Bind
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 53 -j ACCEPT
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol udp -d 10.4.0.20 --dport 53 -j ACCEPT
-$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 953 -j ACCEPT
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 53 -j ACCEPT
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol udp -d 10.4.0.20 --dport 53 -j ACCEPT
-$IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 953 -j ACCEPT
 $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 53 -j ACCEPT
 $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol udp -d 10.4.0.20 --dport 53 -j ACCEPT
-$IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 953 -j ACCEPT
 # Git
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 144.76.187.199 --dport 9418 -j ACCEPT
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 9418 -j ACCEPT
@@ -118,10 +115,8 @@ $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp --dport 11000:110
 # Bind
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 53 -j DNAT --to-destination 10.4.0.20:53
 $IPTABLES -t nat -A PREROUTING -i eth0 -p udp -d 144.76.187.199 --dport 53 -j DNAT --to-destination 10.4.0.20:53
-$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 953 -j DNAT --to-destination 10.4.0.20:953
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.200 --dport 53 -j DNAT --to-destination 10.4.0.20:53
 $IPTABLES -t nat -A PREROUTING -i eth0 -p udp -d 144.76.187.200 --dport 53 -j DNAT --to-destination 10.4.0.20:53
-$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.200 --dport 953 -j DNAT --to-destination 10.4.0.20:953
 # Squid
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.200 --dport 443 -j DNAT --to-destination 10.4.0.20:3128
 # OpenFire
