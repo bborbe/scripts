@@ -1,5 +1,5 @@
 #!/bin/bash
-SERVER='ns.rocketnews.de'
+SERVER='ns.rocketsource.de'
 #TTL='86400'
 TTL='60'
 KEY='/root/keys/Kserver1-ddns-key.+157+36654'
