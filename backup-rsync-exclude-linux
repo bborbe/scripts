@@ -11,6 +11,7 @@
 - /var/cache
 - /var/cache/apt/archives
 - /media
+- /mnt/old
 - /mnt/storage/backup
 - /mnt/storage/rsync
 - /rsync
