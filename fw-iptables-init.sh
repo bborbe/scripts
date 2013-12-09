@@ -108,6 +108,10 @@ $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp --dport 11000:110
 $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol udp --dport 10080 -j ACCEPT
 $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp --dport 10080 -j ACCEPT
 $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp --dport 11000:11040 -j ACCEPT
+# teamspeak
+$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol udp --dport 9987 -j ACCEPT
+$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp --dport 10011 -j ACCEPT
+$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp --dport 30033 -j ACCEPT
 
 #
 # Portforwarding
@@ -137,6 +141,10 @@ $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 10428 -j
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 10429 -j DNAT --to-destination 10.4.0.29:22
 # OpenVPN
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 563 -j DNAT --to-destination 10.4.0.20:563
+# teamspeak
+$IPTABLES -t nat -A PREROUTING -i eth0 -p udp -d 144.76.187.199 --dport 9987 -j DNAT --to-destination 10.4.0.23:9987
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 10011 -j DNAT --to-destination 10.4.0.23:10011
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 30033 -j DNAT --to-destination 10.4.0.23:30033
 
 #
 # Forward
