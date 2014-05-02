@@ -48,6 +48,8 @@ $IPTABLES -A INPUT -m state --state NEW --protocol tcp --dport 22 -j ACCEPT
 #
 # Forward
 #
+$IPTABLES -A FORWARD -i tap0 -o br0 -j ACCEPT
+$IPTABLES -A FORWARD -o tap0 -i br0 -j ACCEPT
 #$IPTABLES -A FORWARD -j ACCEPT
 
 #
