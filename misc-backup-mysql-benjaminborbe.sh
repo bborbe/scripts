@@ -7,23 +7,26 @@
 # GRANT SELECT ON harteslicht.* TO backup IDENTIFIED BY "AMwuzKJvh3ubCjrU";
 # GRANT SELECT ON harteslicht.* TO backup@localhost IDENTIFIED BY "AMwuzKJvh3ubCjrU";
 
-LOCKFILE=/var/run/backup_mysql.pid
-BACKUP_NAME=/var/backups/mysql_`date '+%Y%m%d'`.sql.gz
+DATABASE=benjaminborbe
+DATABASE_USERNAME=backup
+DATABASE_PASSWORD=AMwuzKJvh3ubCjrU
+LOCKFILE=/var/run/backup_mysql_${DATABASE}.pid
+BACKUP_NAME=/var/backups/mysql_${DATABASE}_`date '+%Y%m%d'`.sql.gz
 
 #
 # script below
 #
 
-echo "backup started"
+echo "backup ${DATABASE} started"
 
 if [ -e $BACKUP_NAME ]; then
-	echo "backup already exists"
+	echo "backup ${DATABASE} already exists"
 	exit
 fi	
 
 # lock script
 if [ -e ${LOCKFILE} ] && kill -0 `cat ${LOCKFILE}`; then
-  echo "already running"
+  echo "backup ${DATABASE} already running"
   exit
 fi
 
@@ -31,10 +34,10 @@ fi
 trap "rm -f ${LOCKFILE}; exit" INT TERM EXIT
 echo $$ > ${LOCKFILE}
 
-mysqldump --lock-tables=false -u backup --password=AMwuzKJvh3ubCjrU harteslicht | gzip -9 > $BACKUP_NAME
+mysqldump --lock-tables=false -u ${DATABASE_USERNAME} --password=${DATABASE_PASSWORD} ${DATABASE} | gzip -9 > $BACKUP_NAME
 
 # remove lock
-echo "remove lock"
+echo "backup ${DATABASE} remove lock"
 rm -f ${LOCKFILE}
 
-echo "backup finished"  
+echo "backup ${DATABASE} finished"  
