@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # add in /etc/crontab
-# 4 15 * * * root sh /root/scripts/backup_mysql.sh >/dev/null 2>&1
+# 4 15 * * * root sh /root/scripts/misc-backup-mysql-harteslicht.sh >/dev/null 2>&1
 #
 # add mysql backup user
 # GRANT SELECT ON harteslicht.* TO backup IDENTIFIED BY "AMwuzKJvh3ubCjrU";
