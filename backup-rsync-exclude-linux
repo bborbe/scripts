@@ -14,6 +14,7 @@
 - /mnt/old
 - /mnt/storage/backup
 - /mnt/storage/rsync
+- /mnt/storage/data/Temp
 - /rsync
 - /amanda
 - /var/lib/lightdm/.gvfs
