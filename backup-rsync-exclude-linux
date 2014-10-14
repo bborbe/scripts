@@ -12,6 +12,7 @@
 - /var/cache/apt/archives
 - /media
 - /mnt/old
+- /mnt/store
 - /mnt/storage/backup
 - /mnt/storage/rsync
 - /mnt/storage/data/Temp
