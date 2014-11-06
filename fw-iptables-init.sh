@@ -141,6 +141,7 @@ $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 10428 -j
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 10429 -j DNAT --to-destination 10.4.0.29:22
 # OpenVPN
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 563 -j DNAT --to-destination 10.4.0.20:563
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.200 --dport 563 -j DNAT --to-destination 10.4.0.20:563
 # teamspeak 2
 $IPTABLES -t nat -A PREROUTING -i eth0 -p udp -d 144.76.187.199 --dport 8767 -j DNAT --to-destination 10.4.0.23:8767
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 41144 -j DNAT --to-destination 10.4.0.23:41144
