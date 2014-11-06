@@ -121,8 +121,6 @@ $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 53 -j DN
 $IPTABLES -t nat -A PREROUTING -i eth0 -p udp -d 144.76.187.199 --dport 53 -j DNAT --to-destination 10.4.0.20:53
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.200 --dport 53 -j DNAT --to-destination 10.4.0.20:53
 $IPTABLES -t nat -A PREROUTING -i eth0 -p udp -d 144.76.187.200 --dport 53 -j DNAT --to-destination 10.4.0.20:53
-# Squid
-$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.200 --dport 443 -j DNAT --to-destination 10.4.0.20:3128
 # OpenFire
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 5222 -j DNAT --to-destination 10.4.0.23:5222
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.200 --dport 5222 -j DNAT --to-destination 10.4.0.23:5222
@@ -140,6 +138,7 @@ $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 10427 -j
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 10428 -j DNAT --to-destination 10.4.0.28:22
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 10429 -j DNAT --to-destination 10.4.0.29:22
 # OpenVPN
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.200 --dport 443 -j DNAT --to-destination 10.4.0.20:563
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 563 -j DNAT --to-destination 10.4.0.20:563
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.200 --dport 563 -j DNAT --to-destination 10.4.0.20:563
 # teamspeak 2
