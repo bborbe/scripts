@@ -21,3 +21,4 @@
 - /rsync
 - /amanda
 - /var/lib/lightdm/.gvfs
+- /var/lib/confluence/backups
