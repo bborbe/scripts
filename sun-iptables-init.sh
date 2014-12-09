@@ -43,7 +43,6 @@ $IPTABLES -A INPUT -p icmp --icmp-type 8 -j ACCEPT
 $IPTABLES -A INPUT -p icmp --icmp-type 11 -j ACCEPT
 # SSH
 $IPTABLES -A INPUT -m state --state NEW --protocol tcp --dport 22 -j ACCEPT
-#$IPTABLES -A INPUT -j ACCEPT
 
 #
 # Forward
@@ -53,13 +52,13 @@ $IPTABLES -A FORWARD -o tap0 -i br0 -j ACCEPT
 $IPTABLES -A FORWARD -i tap1 -o br0 -j ACCEPT
 $IPTABLES -A FORWARD -o tap1 -i br0 -j ACCEPT
 $IPTABLES -A FORWARD -o br0 -i br0 -j ACCEPT
-#$IPTABLES -A FORWARD -j ACCEPT
 
 #
 # Ports explizit sperren
 #
 $IPTABLES -A INPUT -m state --state NEW --protocol udp --dport 17500 -j DROP
 $IPTABLES -A INPUT -m state --state NEW --protocol tcp --dport 17500 -j DROP
+$IPTABLES -A INPUT -j DROP -d 224.0.0.0/24 
 
 #
 # Rest loggen
