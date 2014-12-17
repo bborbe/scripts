@@ -57,7 +57,10 @@ $IPTABLES -A FORWARD -o br0 -i br0 -j ACCEPT
 # Ports explizit sperren
 #
 $IPTABLES -A INPUT -m state --state NEW --protocol udp --dport 67 -j DROP
+$IPTABLES -A INPUT -m state --state NEW --protocol udp --dport 68 -j DROP
 $IPTABLES -A INPUT -m state --state NEW --protocol udp --dport 137 -j DROP
+$IPTABLES -A INPUT -m state --state NEW --protocol udp --dport 138 -j DROP
+$IPTABLES -A INPUT -m state --state NEW --protocol udp --dport 8612 -j DROP
 $IPTABLES -A INPUT -m state --state NEW --protocol udp --dport 17500 -j DROP
 $IPTABLES -A INPUT -m state --state NEW --protocol tcp --dport 17500 -j DROP
 $IPTABLES -A INPUT -j DROP -d 224.0.0.0/24 
