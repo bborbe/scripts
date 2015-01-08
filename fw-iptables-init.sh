@@ -149,8 +149,10 @@ $IPTABLES -t nat -A PREROUTING -i eth0 -p udp -d 144.76.187.199 --dport 9987 -j 
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 10011 -j DNAT --to-destination 10.4.0.23:10011
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 30033 -j DNAT --to-destination 10.4.0.23:30033
 # minecraft
-$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 25565 -j DNAT --to-destination 10.4.0.28:25565
-$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.200 --dport 25565 -j DNAT --to-destination 10.4.0.28:25565
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 20000 -j DNAT --to-destination 10.4.0.28:20000
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.200 --dport 20000 -j DNAT --to-destination 10.4.0.28:20000
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 20001 -j DNAT --to-destination 10.4.0.28:20001
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.200 --dport 20001 -j DNAT --to-destination 10.4.0.28:20001
 
 #
 # Forward
