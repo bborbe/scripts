@@ -153,6 +153,8 @@ $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 20000 -j
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.200 --dport 20000 -j DNAT --to-destination 10.4.0.28:20000
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 20001 -j DNAT --to-destination 10.4.0.28:20001
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.200 --dport 20001 -j DNAT --to-destination 10.4.0.28:20001
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 20002 -j DNAT --to-destination 10.4.0.28:20002
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.200 --dport 20002 -j DNAT --to-destination 10.4.0.28:20002
 
 #
 # Forward
