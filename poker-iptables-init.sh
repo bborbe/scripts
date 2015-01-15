@@ -15,9 +15,9 @@ $IPTABLES -X -t nat
 #
 # Standardregel 
 #
-$IPTABLES -P INPUT ACCEPT
-$IPTABLES -P FORWARD ACCEPT
-$IPTABLES -P OUTPUT ACCEPT
+$IPTABLES -P INPUT DROP
+$IPTABLES -P FORWARD DROP
+$IPTABLES -P OUTPUT DROP
 
 #
 # Allow localhost
@@ -44,7 +44,7 @@ $IPTABLES -A INPUT -p icmp --icmp-type 11 -j ACCEPT
 # SSH
 $IPTABLES -A INPUT -m state --state NEW --protocol tcp --dport 22 -j ACCEPT
 # Apache
-$IPTABLES -A INPUT -m state --state NEW --protocol tcp --dport 22 -j ACCEPT
+$IPTABLES -A INPUT -m state --state NEW --protocol tcp --dport 80 -j ACCEPT
 
 #
 # Forward
