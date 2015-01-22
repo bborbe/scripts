@@ -22,3 +22,4 @@
 - /amanda
 - /var/lib/lightdm/.gvfs
 - /var/lib/confluence/backups
+- /var/lib/jenkins/workspace
