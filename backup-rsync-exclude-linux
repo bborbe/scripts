@@ -22,6 +22,7 @@
 - /rsync
 - /amanda
 - /var/lib/lightdm/.gvfs
+- /opt/confluence/logs
 - /var/lib/confluence/backups
 - /var/lib/jenkins/workspace
 - /var/lib/confluence/plugin-cache
