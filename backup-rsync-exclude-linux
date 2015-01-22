@@ -10,6 +10,7 @@
 - /var/tmp
 - /var/cache
 - /var/cache/apt/archives
+- /var/backup
 - /media
 - /mnt/old
 - /mnt/store
