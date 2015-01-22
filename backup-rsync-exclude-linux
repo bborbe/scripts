@@ -23,3 +23,7 @@
 - /var/lib/lightdm/.gvfs
 - /var/lib/confluence/backups
 - /var/lib/jenkins/workspace
+- /var/lib/confluence/plugin-cache
+- /var/lib/confluence/plugins-cache
+- /var/lib/confluence/plugins-osgi-cache
+- /var/lib/confluence/plugins-temp
