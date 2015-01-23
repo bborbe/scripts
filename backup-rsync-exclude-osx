@@ -25,6 +25,7 @@
 - /private/var/folders/*
 - /private/var/vm/*
 - /private/tmp/*
+- /private/var/tmp/*
 - /cores
 - .Trash
 - .Trashes
@@ -38,4 +39,4 @@
 - /Users/bborbe/Pictures/20*
 - /Users/bborbe/Pictures/Tethered/*
 - /Users/bborbe/Downloads/*
-- /opt/local/var/squid/cache
+- /opt/local/var/squid/cache/*
