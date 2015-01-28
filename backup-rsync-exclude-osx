@@ -33,6 +33,7 @@
 - /.MobileBackups
 - /stuff/*
 - ._*
+- /Users/bborbe/Library/Application\ Support/MobileSync/Backup
 - /Users/Shared/Lightroom/Lightroom\ 5\ Catalog\ Previews.lrdata/*
 - /Users/bborbe/Library/Mobile\ Documents*
 - /Users/bborbe/Library/Caches/*
