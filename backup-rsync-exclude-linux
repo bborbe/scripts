@@ -23,6 +23,7 @@
 - /amanda
 - /var/lib/lightdm/.gvfs
 - /opt/confluence/logs
+- /opt/msm/archives/backups
 - /var/lib/confluence/backups
 - /var/lib/jenkins/workspace
 - /var/lib/confluence/plugin-cache
