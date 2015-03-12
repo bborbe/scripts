@@ -33,7 +33,10 @@
 - /.MobileBackups
 - /stuff/*
 - ._*
-- /Users/bborbe/Library/iTunes/iPhone Software Updates/*
+- /Users/bborbe/Library/iTunes/iPad\ Software\ Updates/*
+- /Users/bborbe/Library/iTunes/iPhone\ Carrier\ Support/*
+- /Users/bborbe/Library/iTunes/iPhone\ Software\ Updates/*
+- /Users/bborbe/Library/iTunes/iPod\ Software\ Updates/*
 - /Users/bborbe/Library/Application\ Support/MobileSync/Backup
 - /Users/Shared/Lightroom/Lightroom\ 5\ Catalog\ Previews.lrdata/*
 - /Users/bborbe/Library/Mobile\ Documents*
