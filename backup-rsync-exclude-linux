@@ -19,6 +19,7 @@
 - /mnt/storage/data/Temp
 - /mnt/storage/data/Series
 - /mnt/storage/data/Movie
+- /mnt/storage/data/.Trashes
 - /rsync
 - /amanda
 - /var/lib/lightdm/.gvfs
