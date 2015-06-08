@@ -14,6 +14,7 @@
 - /.fseventsd
 - /.hotfiles.btree
 - /private/var/db/dyld/dyld_*
+- /Library/Caches/*
 - /System/Library/Caches/*
 - /.com.apple.NetBootX
 - /Volumes/*
