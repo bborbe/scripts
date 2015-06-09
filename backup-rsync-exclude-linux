@@ -31,3 +31,4 @@
 - /var/lib/confluence/plugins-cache
 - /var/lib/confluence/plugins-osgi-cache
 - /var/lib/confluence/plugins-temp
+- */CaptureOne/Cache/*
