@@ -35,6 +35,7 @@
 - /stuff/*
 - ._*
 - /Applications/Adobe/AdobePatchFiles/*
+- /Users/bborbe/Library/Application\ Support/Steam/steamapps/common
 - /Users/bborbe/.vagrant.d/cache
 - /Users/bborbe/Library/iTunes/iPad\ Software\ Updates/*
 - /Users/bborbe/Library/iTunes/iPhone\ Carrier\ Support/*
