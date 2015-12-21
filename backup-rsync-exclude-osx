@@ -1,58 +1,58 @@
-- .HFS+\ Private\ Directory\ Data
-- /.journal
-- /.journal_info_block
 - .AppleDouble
-- /lost+found
-- .metadata_never_index
-- .com.apple.timemachine.donotpresent
-- .VolumeIcon.icns
-- /TheVolumeSettingsFolder
-- Saved\ Application\ State
 - .DocumentRevisions-V100
+- .HFS+\ Private\ Directory\ Data
 - .Spotlight-V100
-- .fseventsd
-- /.fseventsd
-- /.hotfiles.btree
-- /private/var/db/dyld/dyld_*
-- /Library/Caches/*
-- /System/Library/Caches/*
-- /.com.apple.NetBootX
-- /Volumes/*
-- /dev/*
-- /automount
-- /Network
-- /.vol/*
-- /net
-- /private/var/folders/*
-- /private/var/vm/*
-- /private/tmp/*
-- /private/var/tmp/*
-- /cores
 - .Trash
 - .Trashes
-- /Backups.backupdb
-- /.MobileBackups
-- /stuff/*
+- .VolumeIcon.icns
 - ._*
+- .com.apple.timemachine.donotpresent
+- .fseventsd
+- .metadata_never_index
+- /.MobileBackups
+- /.com.apple.NetBootX
+- /.fseventsd
+- /.hotfiles.btree
+- /.journal
+- /.journal_info_block
+- /.vol/*
 - /Applications/Adobe/AdobePatchFiles/*
-- /Users/bborbe/Library/Application\ Support/Steam/steamapps/common
-- /Users/bborbe/.vagrant.d/cache
+- /Backups.backupdb
+- /Library/Caches/*
+- /Network
+- /System/Library/Caches/*
+- /TheVolumeSettingsFolder
+- /Users/Shared/Lightroom/Lightroom\ Catalog\ Previews.lrdata/*
+- /Users/Shared/Lightroom\ 5/Lightroom\ 5\ Catalog\ Previews.lrdata/*
+- /Users/Shared/Lightroom\ CC/Lightroom\ CC\ Catalog\ Previews.lrdata/*
+- /Users/bborbe/.vagrant.d/*
+- /Users/bborbe/.vagrant.d/cache/*
+- /Users/bborbe/Downloads/*
+- /Users/bborbe/Library/Application\ Support/MobileSync/Backup/*
+- /Users/bborbe/Library/Application\ Support/Steam/steamapps/common/*
+- /Users/bborbe/Library/Caches/*
+- /Users/bborbe/Library/Mobile\ Documents*
 - /Users/bborbe/Library/iTunes/iPad\ Software\ Updates/*
 - /Users/bborbe/Library/iTunes/iPhone\ Carrier\ Support/*
 - /Users/bborbe/Library/iTunes/iPhone\ Software\ Updates/*
 - /Users/bborbe/Library/iTunes/iPod\ Software\ Updates/*
-- /Users/bborbe/Library/Application\ Support/MobileSync/Backup/*
-- /Users/Shared/Lightroom\ CC/Lightroom\ CC\ Catalog\ Previews.lrdata/*
-- /Users/Shared/Lightroom\ 5/Lightroom\ 5\ Catalog\ Previews.lrdata/*
-- /Users/Shared/Lightroom/Lightroom\ Catalog\ Previews.lrdata/*
-- /Users/bborbe/Library/Mobile\ Documents*
-- /Users/bborbe/Library/Caches/*
 - /Users/bborbe/Pictures/20*
-- /Users/bborbe/Pictures/Tethered/*
-- /Users/bborbe/Pictures/Lightroom/Lightroom\ Catalog\ Previews.lrdata
 - /Users/bborbe/Pictures/Aperture\ Library.aplibrary/Thumbnails/*
-- /Users/bborbe/Downloads/*
-- /Users/bborbe/.vagrant.d
-- /Users/bborbe/VirtualBox\ VMs
-- /opt/local/var/squid/cache/*
+- /Users/bborbe/Pictures/Lightroom/Lightroom\ Catalog\ Previews.lrdata/*
+- /Users/bborbe/Pictures/Tethered/*
+- /Users/bborbe/VirtualBox\ VMs/*
+- /Volumes/*
+- /automount
+- /cores
+- /dev/*
+- /lost+found
+- /net
 - /opt/local/var/macports/*
+- /opt/local/var/squid/cache/*
+- /private/tmp/*
+- /private/var/db/dyld/dyld_*
+- /private/var/folders/*
+- /private/var/tmp/*
+- /private/var/vm/*
+- /stuff/*
+- Saved\ Application\ State
