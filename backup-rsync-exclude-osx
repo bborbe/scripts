@@ -34,6 +34,8 @@
 - /.MobileBackups
 - /stuff/*
 - ._*
+- /Applications/Adobe/AdobePatchFiles/*
+- /Users/bborbe/.vagrant.d/cache
 - /Users/bborbe/Library/iTunes/iPad\ Software\ Updates/*
 - /Users/bborbe/Library/iTunes/iPhone\ Carrier\ Support/*
 - /Users/bborbe/Library/iTunes/iPhone\ Software\ Updates/*
