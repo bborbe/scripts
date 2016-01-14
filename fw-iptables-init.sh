@@ -95,8 +95,8 @@ $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dp
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.23 --dport 443 -j ACCEPT
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 80 -j ACCEPT
 # squid
-$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 3128 -j ACCEPT
-$IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 10.20.0.1 --dport 3128 -j ACCEPT
+$IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 3128 -j ACCEPT
+$IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp -d 10.20.0.1 --dport 3128 -j ACCEPT
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 144.76.187.199 --dport 3128 -j ACCEPT
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 144.76.187.200 --dport 3128 -j ACCEPT
 # openfire / xmpp
