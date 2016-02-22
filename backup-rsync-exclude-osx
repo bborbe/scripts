@@ -22,6 +22,21 @@
 - /Network
 - /System/Library/Caches/*
 - /TheVolumeSettingsFolder
+- /Volumes/*
+- /automount
+- /cores
+- /dev/*
+- /lost+found
+- /net
+- /opt/local/var/macports/*
+- /opt/local/var/squid/cache/*
+- /private/tmp/*
+- /private/var/db/dyld/dyld_*
+- /private/var/folders/*
+- /private/var/tmp/*
+- /private/var/vm/*
+- /stuff/*
+- Saved\ Application\ State
 - /Users/Shared/Lightroom/Lightroom\ Catalog\ Previews.lrdata/*
 - /Users/Shared/Lightroom\ 5/Lightroom\ 5\ Catalog\ Previews.lrdata/*
 - /Users/Shared/Lightroom\ CC/Lightroom\ CC\ Catalog\ Previews.lrdata/*
@@ -41,18 +56,15 @@
 - /Users/bborbe/Pictures/Lightroom/Lightroom\ Catalog\ Previews.lrdata/*
 - /Users/bborbe/Pictures/Tethered/*
 - /Users/bborbe/VirtualBox\ VMs/*
-- /Volumes/*
-- /automount
-- /cores
-- /dev/*
-- /lost+found
-- /net
-- /opt/local/var/macports/*
-- /opt/local/var/squid/cache/*
-- /private/tmp/*
-- /private/var/db/dyld/dyld_*
-- /private/var/folders/*
-- /private/var/tmp/*
-- /private/var/vm/*
-- /stuff/*
-- Saved\ Application\ State
+- /Users/jana/.vagrant.d/*
+- /Users/jana/.vagrant.d/cache/*
+- /Users/jana/Downloads/*
+- /Users/jana/Library/Application\ Support/MobileSync/Backup/*
+- /Users/jana/Library/Application\ Support/Steam/steamapps/common/*
+- /Users/jana/Library/Caches/*
+- /Users/jana/Library/Mobile\ Documents*
+- /Users/jana/Library/iTunes/iPad\ Software\ Updates/*
+- /Users/jana/Library/iTunes/iPhone\ Carrier\ Support/*
+- /Users/jana/Library/iTunes/iPhone\ Software\ Updates/*
+- /Users/jana/Library/iTunes/iPod\ Software\ Updates/*
+- /Users/jana/VirtualBox\ VMs/*
