@@ -110,6 +110,13 @@ $CONFIGS = [
     'client_dir'   => '/', 
     'exclude_from' => '/root/scripts/backup-rsync-exclude-osx',
   },  
+  {
+    'active'       => 'true',
+    'client_user'  => 'root',
+    'client_host'  => 'star.hm.benjamin-borbe.de',
+    'client_dir'   => '/', 
+    'exclude_from' => '/root/scripts/backup-rsync-exclude-osx',
+  },
 ]
 
 #
