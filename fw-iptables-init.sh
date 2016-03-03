@@ -159,6 +159,11 @@ $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.200 --dport 20002 -j
 # puppet
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 8140 -j DNAT --to-destination 10.4.0.24:8140
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.200 --dport 8140 -j DNAT --to-destination 10.4.0.24:8140
+# mumble
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 64738 -j DNAT --to-destination 10.4.0.23:64738
+$IPTABLES -t nat -A PREROUTING -i eth0 -p udp -d 144.76.187.199 --dport 64738 -j DNAT --to-destination 10.4.0.23:64738
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.200 --dport 64738 -j DNAT --to-destination 10.4.0.23:64738
+$IPTABLES -t nat -A PREROUTING -i eth0 -p udp -d 144.76.187.200 --dport 64738 -j DNAT --to-destination 10.4.0.23:64738
 
 #
 # Forward
