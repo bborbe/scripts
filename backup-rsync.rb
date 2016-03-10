@@ -41,6 +41,13 @@ $CONFIGS = [
     'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
   },
   {
+      'active' => 'true',
+      'client_user' => 'root',
+      'client_host' => 'ipfire.rn.benjamin-borbe.de',
+      'client_dir' => '/',
+      'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
+  },
+  {
     'active'       => 'true',
     'client_user'  => 'root',
     'client_host'  => 'minecraft.rn.benjamin-borbe.de',
