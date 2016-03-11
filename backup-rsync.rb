@@ -208,8 +208,7 @@ def backup_client (client_user, client_host, client_port = 22, client_dir, exclu
     puts 'mkdir target incomplete directory failed'
     return
   end
-
-  rsync_cmd = 'rsync -azP --delete --delete-excluded --port=' + client_port + ' --exclude-from=' + exclude_from + ' --link-dest=' + $RSYNC_LINK + ' ' + $RSYNC_FROM + ' ' + $RSYNC_TO
+  rsync_cmd = 'rsync -azP -e "ssh -p ' + client_port + '" --delete --delete-excluded --port=' + client_port + ' --exclude-from=' + exclude_from + ' --link-dest=' + $RSYNC_LINK + ' ' + $RSYNC_FROM + ' ' + $RSYNC_TO
   puts 'rsync: '+rsync_cmd
   system(rsync_cmd)
   # 0 Success
