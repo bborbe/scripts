@@ -178,7 +178,7 @@ def backup_client (client_user, client_host, client_port = 22, client_dir, exclu
     puts 'current link already exists'
   else
     puts 'current link exists not'
-    if system('mkdir -p ' + $BACKUP_DIR + '/' + client_host + '/empty')
+    if system('mkdir -p ' + $BACKUP_DIR + '/' + client_host + '/empty' + client_dir)
       puts 'mkdir empty directory'
     else
       puts 'mkdir empty directory failed'
