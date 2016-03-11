@@ -143,7 +143,7 @@ def backup_client (client_user, client_host, client_port = 22, client_dir, exclu
 
   $DATETIME = `date "+%Y-%m-%dT%H:%M:%S"`.chomp
   $DATE = `date "+%Y-%m-%d"`.chomp
-  $RSYNC_FROM = client_user + '@' + client_host + ':' + client_dir
+  $RSYNC_FROM = client_user + '@' + client_host + ':' + client_port + client_dir
   $RSYNC_TO = $BACKUP_DIR + '/' + client_host + '/incomplete' + client_dir
   $RSYNC_LINK = $BACKUP_DIR + '/' + client_host + '/current' + client_dir
 
