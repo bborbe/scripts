@@ -48,7 +48,7 @@ $CONFIGS = [
         'active' => 'true',
         'client_user' => 'root',
         'client_host' => 'kubernetes-backup.rn.benjamin-borbe.de',
-        'client_host' => '2222',
+        'client_port' => '2222',
         'client_dir' => '/data',
     },
     {
