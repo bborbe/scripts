@@ -138,8 +138,7 @@ $CONFIGS = [
 # Script
 #
 
-def backup_client (client_user, client_host, client_port = 22, client_dir,
-  § de_from)
+def backup_client (client_user, client_host, client_port = 22, client_dir, exclude_from)
   puts 'backup ' + client_host + ' started'
 
   $DATETIME = `date "+%Y-%m-%dT%H:%M:%S"`.chomp
