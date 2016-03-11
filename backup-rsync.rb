@@ -143,7 +143,7 @@ def backup_client (client_user, client_host, client_port = 22, client_dir, exclu
 
   $DATETIME = `date "+%Y-%m-%dT%H:%M:%S"`.chomp
   $DATE = `date "+%Y-%m-%d"`.chomp
-  $RSYNC_FROM = client_user + '@' + client_host + ':' + client_port + client_dir
+  $RSYNC_FROM = client_user + '@' + client_host + ':' + client_dir
   $RSYNC_TO = $BACKUP_DIR + '/' + client_host + '/incomplete' + client_dir
   $RSYNC_LINK = $BACKUP_DIR + '/' + client_host + '/current' + client_dir
 
@@ -209,7 +209,7 @@ def backup_client (client_user, client_host, client_port = 22, client_dir, exclu
     return
   end
 
-  rsync_cmd = 'rsync -azP --delete --delete-excluded --exclude-from=' + exclude_from + ' --link-dest=' + $RSYNC_LINK + ' ' + $RSYNC_FROM + ' ' + $RSYNC_TO
+  rsync_cmd = 'rsync -azP --delete --delete-excluded --port=' + client_port + ' --exclude-from=' + exclude_from + ' --link-dest=' + $RSYNC_LINK + ' ' + $RSYNC_FROM + ' ' + $RSYNC_TO
   puts 'rsync: '+rsync_cmd
   system(rsync_cmd)
   # 0 Success
