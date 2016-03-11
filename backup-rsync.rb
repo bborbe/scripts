@@ -57,21 +57,7 @@ $CONFIGS = [
   {
     'active'       => 'true',
     'client_user'  => 'root',
-    'client_host'  => 'cfm.rn.benjamin-borbe.de',
-    'client_dir'   => '/', 
-    'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
-  },
-  {
-    'active'       => 'true',
-    'client_user'  => 'root',
     'client_host'  => 'jenkins.rn.benjamin-borbe.de',
-    'client_dir'   => '/', 
-    'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
-  },
-  {
-    'active'       => 'true',
-    'client_user'  => 'root',
-    'client_host'  => 'aptly.rn.benjamin-borbe.de',
     'client_dir'   => '/', 
     'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
   },
