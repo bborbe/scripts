@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
- 
+
 require 'open3'
 
 #
@@ -12,111 +12,118 @@ $DEBUG = true
 
 # Slash at the end of client_dir is important!
 $CONFIGS = [
-  {
-    'active'       => 'true',
-    'client_user'  => 'root',
-    'client_host'  => 'sun.pn.benjamin-borbe.de',
-    'client_dir'   => '/', 
-    'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
-  },
-  {
-    'active'       => 'true',
-    'client_user'  => 'root',
-    'client_host'  => 'backup.pn.benjamin-borbe.de',
-    'client_dir'   => '/', 
-    'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
-  },
-  {
-    'active'       => 'true',
-    'client_user'  => 'root',
-    'client_host'  => 'freenas.pn.benjamin-borbe.de',
-    'client_dir'   => '/', 
-    'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
-  },
-  {
-    'active'       => 'true',
-    'client_user'  => 'root',
-    'client_host'  => 'fw.rn.benjamin-borbe.de',
-    'client_dir'   => '/', 
-    'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
-  },
-  {
-      'active' => 'true',
-      'client_user' => 'root',
-      'client_host' => 'ipfire.rn.benjamin-borbe.de',
-      'client_dir' => '/',
-      'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
-  },
-  {
-    'active'       => 'true',
-    'client_user'  => 'root',
-    'client_host'  => 'minecraft.rn.benjamin-borbe.de',
-    'client_dir'   => '/', 
-    'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
-  },
-  {
-    'active'       => 'true',
-    'client_user'  => 'root',
-    'client_host'  => 'jenkins.rn.benjamin-borbe.de',
-    'client_dir'   => '/', 
-    'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
-  },
-  {
-    'active'       => 'true',
-    'client_user'  => 'root',
-    'client_host'  => 'misc.rn.benjamin-borbe.de',
-    'client_dir'   => '/', 
-    'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
-  },
-  {
-    'active'       => 'true',
-    'client_user'  => 'root',
-    'client_host'  => 'confluence.rn.benjamin-borbe.de',
-    'client_dir'   => '/', 
-    'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
-  },
-  {
-    'active'       => 'true',
-    'client_user'  => 'root',
-    'client_host'  => 'rasp.hm.benjamin-borbe.de',
-    'client_dir'   => '/', 
-    'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
-  },
-  {
-    'active'       => 'true',
-    'client_user'  => 'root',
-    'client_host'  => 'fire.hm.benjamin-borbe.de',
-    'client_dir'   => '/', 
-    'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
-  },
-  {
-    'active'       => 'true',
-    'client_user'  => 'root',
-    'client_host'  => 'freenas.hm.benjamin-borbe.de',
-    'client_dir'   => '/', 
-    'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
-  },
-  {
-    'active'       => 'true',
-    'client_user'  => 'root',
-    'client_host'  => 'mobile-bb.hm.benjamin-borbe.de',
-    'client_dir'   => '/', 
-    'exclude_from' => '/root/scripts/backup-rsync-exclude-osx',
-  },  
-  {
-    'active'       => 'true',
-    'client_user'  => 'root',
-    'client_host'  => 'star.hm.benjamin-borbe.de',
-    'client_dir'   => '/', 
-    'exclude_from' => '/root/scripts/backup-rsync-exclude-osx',
-  },
+    {
+        'active' => 'true',
+        'client_user' => 'root',
+        'client_host' => 'sun.pn.benjamin-borbe.de',
+        'client_dir' => '/',
+        'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
+    },
+    {
+        'active' => 'true',
+        'client_user' => 'root',
+        'client_host' => 'backup.pn.benjamin-borbe.de',
+        'client_dir' => '/',
+        'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
+    },
+    {
+        'active' => 'true',
+        'client_user' => 'root',
+        'client_host' => 'freenas.pn.benjamin-borbe.de',
+        'client_dir' => '/',
+        'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
+    },
+    {
+        'active' => 'true',
+        'client_user' => 'root',
+        'client_host' => 'fw.rn.benjamin-borbe.de',
+        'client_dir' => '/',
+        'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
+    },
+    {
+        'active' => 'true',
+        'client_user' => 'root',
+        'client_host' => 'kubernetes-backup.rn.benjamin-borbe.de',
+        'client_host' => '2222',
+        'client_dir' => '/data',
+    },
+    {
+        'active' => 'true',
+        'client_user' => 'root',
+        'client_host' => 'ipfire.rn.benjamin-borbe.de',
+        'client_dir' => '/',
+        'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
+    },
+    {
+        'active' => 'true',
+        'client_user' => 'root',
+        'client_host' => 'minecraft.rn.benjamin-borbe.de',
+        'client_dir' => '/',
+        'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
+    },
+    {
+        'active' => 'true',
+        'client_user' => 'root',
+        'client_host' => 'jenkins.rn.benjamin-borbe.de',
+        'client_dir' => '/',
+        'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
+    },
+    {
+        'active' => 'true',
+        'client_user' => 'root',
+        'client_host' => 'misc.rn.benjamin-borbe.de',
+        'client_dir' => '/',
+        'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
+    },
+    {
+        'active' => 'true',
+        'client_user' => 'root',
+        'client_host' => 'confluence.rn.benjamin-borbe.de',
+        'client_dir' => '/',
+        'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
+    },
+    {
+        'active' => 'true',
+        'client_user' => 'root',
+        'client_host' => 'rasp.hm.benjamin-borbe.de',
+        'client_dir' => '/',
+        'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
+    },
+    {
+        'active' => 'true',
+        'client_user' => 'root',
+        'client_host' => 'fire.hm.benjamin-borbe.de',
+        'client_dir' => '/',
+        'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
+    },
+    {
+        'active' => 'true',
+        'client_user' => 'root',
+        'client_host' => 'freenas.hm.benjamin-borbe.de',
+        'client_dir' => '/',
+        'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
+    },
+    {
+        'active' => 'true',
+        'client_user' => 'root',
+        'client_host' => 'mobile-bb.hm.benjamin-borbe.de',
+        'client_dir' => '/',
+        'exclude_from' => '/root/scripts/backup-rsync-exclude-osx',
+    },
+    {
+        'active' => 'true',
+        'client_user' => 'root',
+        'client_host' => 'star.hm.benjamin-borbe.de',
+        'client_dir' => '/',
+        'exclude_from' => '/root/scripts/backup-rsync-exclude-osx',
+    },
 ]
 
 #
 # Script
 #
 
-def backup_client (client_user, client_host, client_dir, exclude_from)
+def backup_client (client_user, client_host, client_port = 22, client_dir, exclude_from)
   puts 'backup ' + client_host + ' started'
 
   $DATETIME = `date "+%Y-%m-%dT%H:%M:%S"`.chomp
@@ -130,6 +137,7 @@ def backup_client (client_user, client_host, client_dir, exclude_from)
     puts 'DATE         = "' + $DATE + '"'
     puts 'CLIENT_USER  = "' + client_user + '"'
     puts 'CLIENT_HOST  = "' + client_host + '"'
+    puts 'CLIENT_PORT  = "' + client_port + '"'
     puts 'CLIENT_DIR   = "' + client_dir + '"'
     puts 'BACKUP_DIR   = "' + $BACKUP_DIR + '"'
     puts 'EXCLUDE_FROM = "' + exclude_from + '"'
@@ -160,7 +168,7 @@ def backup_client (client_user, client_host, client_dir, exclude_from)
     else
       puts 'mkdir empty directory failed'
       return
-    end    
+    end
 
     if system('ln -s empty ' + $BACKUP_DIR + '/' + client_host + '/current')
       puts 'link empty to current'
@@ -173,7 +181,7 @@ def backup_client (client_user, client_host, client_dir, exclude_from)
   puts 'delete incomplete backups'
   if system('rm -rf ' + $BACKUP_DIR + '/' + client_host + '/incomplete-*')
     puts 'delete old incomplete backups'
-  else 
+  else
     puts 'delete old incomplete backups failed'
     return
   end
@@ -186,14 +194,15 @@ def backup_client (client_user, client_host, client_dir, exclude_from)
     return
   end
 
-  puts 'rsync'
-  system('rsync -azP --delete --delete-excluded --exclude-from=' + exclude_from + ' --link-dest=' + $RSYNC_LINK + ' ' + $RSYNC_FROM + ' ' + $RSYNC_TO)
+  rsync_cmd = 'rsync -azP --delete --delete-excluded --exclude-from=' + exclude_from + ' --link-dest=' + $RSYNC_LINK + ' ' + $RSYNC_FROM + ' ' + $RSYNC_TO
+  puts 'rsync: '+rsync_cmd
+  system(rsync_cmd)
   # 0 Success
   # 24 Partial transfer due to vanished source files
   status = $?.exitstatus
-  if status == 0 || status == 24 
+  if status == 0 || status == 24
     puts 'rsync success'
-  else 
+  else
     puts 'rsync failed'
     return
   end
@@ -205,18 +214,18 @@ def backup_client (client_user, client_host, client_dir, exclude_from)
     puts 'move incomplete from directory name failed'
     return
   end
- 
+
   puts 'update current link'
   if system('rm -f ' + $BACKUP_DIR + '/' + client_host + '/current')
     puts 'remove old current link success'
-  else 
+  else
     puts 'remove old current link failed'
     return
   end
 
   if system('ln -s ' + $DATETIME + ' ' + $BACKUP_DIR + '/' + client_host + '/current')
     puts 'create new current link success'
-  else 
+  else
     puts 'create new current link failed'
     return
   end
@@ -224,7 +233,7 @@ def backup_client (client_user, client_host, client_dir, exclude_from)
   puts 'delete empty'
   if system('rm -rf ' + $BACKUP_DIR + '/' + client_host + '/empty')
     puts 'delete empty directory success'
-  else 
+  else
     puts 'delete empty directory failed'
     return
   end
@@ -232,20 +241,20 @@ def backup_client (client_user, client_host, client_dir, exclude_from)
   puts 'backup ' + client_host + ' finished'
 end
 
-def backup (configs) 
+def backup (configs)
   puts 'backup-rsync started'
 
   # lock script
-  if File.file?( $LOCKFILE ) 
+  if File.file?($LOCKFILE)
     puts 'lock exists'
     file = File.open($LOCKFILE, "rb")
     contents = file.read
     if system('kill -0 '+contents)
       puts 'already runnung'
       exit
-    else 
+    else
       puts 'not running'
-    end 
+    end
   else
     puts 'lock exists not'
   end
@@ -264,7 +273,7 @@ def backup (configs)
     puts 'mount /rsync'
     if system('mount /rsync')
       puts 'mount /rsync completed'
-    else 
+    else
       puts 'mount /rsync failed'
       exit
     end
@@ -273,22 +282,23 @@ def backup (configs)
   end
 
   # iterate of all configs
-  configs.each { |config| 
-    if config['active'] == 'true' 
+  configs.each { |config|
+    if config['active'] == 'true'
       puts 'client_user:  ' + config['client_user']
       puts 'client_host:  ' + config['client_host']
+      puts 'client_port:  ' + config['client_port']
       puts 'client_dir:   ' + config['client_dir']
       puts 'exclude_from: ' + config['exclude_from']
       puts 'active:       ' + config['active']
-      backup_client(config['client_user'], config['client_host'], config['client_dir'], config['exclude_from'])
-    else 
+      backup_client(config['client_user'], config['client_host'], config['client_port'], config['client_dir'], config['exclude_from'])
+    else
       puts 'skip backup of ' + config['client_host']
     end
   }
 
   # remove lock
   puts 'remove lock'
-  File.delete($LOCKFILE) if File.file?( $LOCKFILE ) 
+  File.delete($LOCKFILE) if File.file?($LOCKFILE)
 
   puts 'backup-rsync finished'
 end
