@@ -50,6 +50,7 @@ $CONFIGS = [
         'client_host' => 'kubernetes-backup.rn.benjamin-borbe.de',
         'client_port' => '2222',
         'client_dir' => '/data',
+        'exclude_from' => '/root/scripts/backup-rsync-exclude-nop',
     },
     {
         'active' => 'true',
@@ -137,7 +138,8 @@ $CONFIGS = [
 # Script
 #
 
-def backup_client (client_user, client_host, client_port = 22, client_dir, exclude_from)
+def backup_client (client_user, client_host, client_port = 22, client_dir,
+  § de_from)
   puts 'backup ' + client_host + ' started'
 
   $DATETIME = `date "+%Y-%m-%dT%H:%M:%S"`.chomp
