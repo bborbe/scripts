@@ -80,6 +80,8 @@ $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol udp -d 10.4.0.20 --dp
 $IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 3128 -j ACCEPT
 $IPTABLES -A INPUT -i tap0 -m state --state NEW --protocol tcp -d 10.20.0.1 --dport 3128 -j ACCEPT
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp -d 144.76.187.199 --dport 3128 -j ACCEPT
+# apache
+$IPTABLES -A INPUT -i eth1 -m state --state NEW --protocol tcp -d 10.4.0.20 --dport 80 -j ACCEPT
 
 #
 # Portforwarding
@@ -100,9 +102,6 @@ $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 20002 -j
 # mumble
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 64738 -j DNAT --to-destination 10.4.0.23:64738
 $IPTABLES -t nat -A PREROUTING -i eth0 -p udp -d 144.76.187.199 --dport 64738 -j DNAT --to-destination 10.4.0.23:64738
-# apache
-$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 80 -j DNAT --to-destination 10.4.0.1:80
-$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 443 -j DNAT --to-destination 10.4.0.1:443
 
 #
 # Forward
