@@ -101,8 +101,8 @@ $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 20002 -j
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 64738 -j DNAT --to-destination 10.4.0.23:64738
 $IPTABLES -t nat -A PREROUTING -i eth0 -p udp -d 144.76.187.199 --dport 64738 -j DNAT --to-destination 10.4.0.23:64738
 # apache
-$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 80 -j DNAT --to-destination 144.76.187.200:80
-$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 443 -j DNAT --to-destination 144.76.187.200:443
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 80 -j DNAT --to-destination 10.4.0.1:80
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 144.76.187.199 --dport 443 -j DNAT --to-destination 10.4.0.1:443
 
 #
 # Forward
