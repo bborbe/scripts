@@ -39,14 +39,6 @@ $CONFIGS = [
     {
         'active' => 'true',
         'client_user' => 'root',
-        'client_host' => 'fw.rn.benjamin-borbe.de',
-        'client_port' => '22',
-        'client_dir' => '/',
-        'exclude_from' => '/root/scripts/backup-rsync-exclude-linux',
-    },
-    {
-        'active' => 'true',
-        'client_user' => 'root',
         'client_host' => 'kubernetes-backup.rn.benjamin-borbe.de',
         'client_port' => '2222',
         'client_dir' => '/data',
