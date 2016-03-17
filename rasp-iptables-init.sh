@@ -22,7 +22,7 @@ $IPTABLES -P OUTPUT DROP
 #
 # Natd
 #
-$IPTABLES -t nat -A POSTROUTING -o eth0 -s 10.0.0.0/8 -j MASQUERADE
+#$IPTABLES -t nat -A POSTROUTING -o eth0 -s 10.0.0.0/8 -j MASQUERADE
 
 #
 # Allow localhost
