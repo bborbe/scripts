@@ -58,6 +58,7 @@
 - /Users/bborbe/Pictures/Tethered/*
 - /Users/bborbe/VirtualBox\ VMs/*
 - /Users/bborbe/.docker/machine/machines/*
+- /Users/bborbe/.m2/repository/*
 - /Users/jana/.vagrant.d/*
 - /Users/jana/.vagrant.d/cache/*
 - /Users/jana/Downloads/*
