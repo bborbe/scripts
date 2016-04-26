@@ -52,12 +52,14 @@ $IPTABLES -A INPUT -m state --state NEW --protocol tcp --dport 22 -j ACCEPT
 #
 # Portforwarding
 #
-$IPTABLES -A FORWARD -i eth0 -o privatebr0 -j ACCEPT
-$IPTABLES -A FORWARD -i privatebr0 -o eth0 -j ACCEPT
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 138.201.37.217 --dport 222 -j DNAT --to-destination 172.16.10.2:222
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 138.201.37.217 --dport 444 -j DNAT --to-destination 172.16.10.2:444
 
 #
 # Forward
 #
+$IPTABLES -A FORWARD -i eth0 -o privatebr0 -j ACCEPT
+$IPTABLES -A FORWARD -i privatebr0 -o eth0 -j ACCEPT
 
 #
 # Ports explizit sperren
