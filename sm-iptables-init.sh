@@ -52,8 +52,8 @@ $IPTABLES -A INPUT -m state --state NEW --protocol tcp --dport 22 -j ACCEPT
 #
 # Portforwarding
 #
-$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 138.201.37.217 --dport 222 -j DNAT --to-destination 172.16.10.2:222
-$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 138.201.37.217 --dport 444 -j DNAT --to-destination 172.16.10.2:444
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 138.201.37.217 --dport 80 -j DNAT --to-destination 172.16.10.2:80
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 138.201.37.217 --dport 443 -j DNAT --to-destination 172.16.10.2:443
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 138.201.37.217 --dport 563 -j DNAT --to-destination 172.16.10.2:563
 
 #
