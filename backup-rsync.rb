@@ -49,7 +49,7 @@ $CONFIGS = [
 		'client_user' => 'root',
 		'client_host' => 'kubernetes-backup.sm.benjamin-borbe.de',
 		'client_port' => '2222',
-		'client_dir' => '/data',
+		'client_dir' => '/data/',
 		'exclude_from' => '/root/scripts/backup-rsync-exclude-nop',
 	},
 	{
