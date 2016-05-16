@@ -76,6 +76,7 @@ $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol udp --dport 138 -j DR
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol tcp --dport 139 -j DROP
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol udp --dport 6155 -j DROP
 $IPTABLES -A INPUT -i eth0 -m state --state NEW --protocol udp --dport 6780 -j DROP
+$IPTABLES -A INPUT -i privatebr0 -m state --state NEW --protocol tcp --dport 9100 -j DROP
 
 #
 # Rest loggen
