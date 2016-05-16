@@ -66,6 +66,7 @@ $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 138.201.37.217 --dport 64738 -j
 #
 $IPTABLES -A FORWARD -i eth0 -o privatebr0 -j ACCEPT
 $IPTABLES -A FORWARD -i privatebr0 -o eth0 -j ACCEPT
+$IPTABLES -A FORWARD -i privatebr0 -o privatebr0 -j ACCEPT
 
 #
 # Ports explizit sperren
