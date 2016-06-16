@@ -31,3 +31,7 @@
 - /data/confluence-data/webresource-temp
 - /data/confluence-data/temp
 - /data/confluence-data/analytics-logs
+- /data/jenkins-slave-java/.m2
+- /data/jenkins-slave-java/workspace
+- /data/jenkins-slave-docker/workspace
+- /data/jenkins-slave-golang/workspace
