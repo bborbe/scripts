@@ -20,11 +20,6 @@ $IPTABLES -P FORWARD ACCEPT
 $IPTABLES -P OUTPUT ACCEPT
 
 #
-# Natd
-#
-$IPTABLES -t nat -A POSTROUTING -o br0 -s 172.16.0.0/12 -j MASQUERADE
-
-#
 # Allow localhost
 #
 $IPTABLES -A INPUT -i lo -j ACCEPT
