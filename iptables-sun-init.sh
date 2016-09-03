@@ -1,4 +1,9 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
 IPTABLES=/sbin/iptables
 
 # IP-Forwarding im Kernel einschalten
@@ -13,11 +18,11 @@ $IPTABLES -X
 $IPTABLES -X -t nat
 
 #
-# Standardregel 
+# Standardregel ACCEPT
 #
-$IPTABLES -P INPUT DROP
-$IPTABLES -P FORWARD DROP
-$IPTABLES -P OUTPUT DROP
+$IPTABLES -P INPUT ACCEPT
+$IPTABLES -P FORWARD ACCEPT
+$IPTABLES -P OUTPUT ACCEPT
 
 #
 # Allow localhost
@@ -43,12 +48,19 @@ $IPTABLES -A INPUT -p icmp --icmp-type 8 -j ACCEPT
 $IPTABLES -A INPUT -p icmp --icmp-type 11 -j ACCEPT
 # SSH
 $IPTABLES -A INPUT -m state --state NEW --protocol tcp --dport 22 -j ACCEPT
-# Apache
-$IPTABLES -A INPUT -m state --state NEW --protocol tcp --dport 80 -j ACCEPT
 
 #
 # Forward
 #
+$IPTABLES -A FORWARD -o br0 -i br0 -j ACCEPT
+$IPTABLES -A FORWARD -i tap0 -o br0 -j ACCEPT
+$IPTABLES -A FORWARD -o tap0 -i br0 -j ACCEPT
+$IPTABLES -A FORWARD -i tap1 -o br0 -j ACCEPT
+$IPTABLES -A FORWARD -o tap1 -i br0 -j ACCEPT
+$IPTABLES -A FORWARD -i tun0 -o br0 -j ACCEPT
+$IPTABLES -A FORWARD -o tun0 -i br0 -j ACCEPT
+$IPTABLES -A FORWARD -i tun1 -o br0 -j ACCEPT
+$IPTABLES -A FORWARD -o tun1 -i br0 -j ACCEPT
 
 #
 # Ports explizit sperren

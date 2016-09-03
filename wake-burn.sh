@@ -1,4 +1,8 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
 
 # eth0
 etherwake 00:1f:d0:5c:2a:8d

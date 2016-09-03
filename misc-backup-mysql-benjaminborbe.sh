@@ -1,4 +1,8 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
 
 # add in /etc/crontab
 # 4 15 * * * root sh /root/scripts/misc-backup-mysql-benjaminborbe.sh >/dev/null 2>&1
