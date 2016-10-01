@@ -20,6 +20,7 @@
 - /mnt/storage/data/Series
 - /mnt/storage/data/Movie
 - /mnt/storage/data/.Trashes
+- /mnt/backup
 - /rsync
 - /var/lib/lightdm/.gvfs
 - */CaptureOne/Cache/*
