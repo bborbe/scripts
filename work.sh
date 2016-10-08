@@ -7,14 +7,14 @@ set -o pipefail
 case "$1" in
 	start)
 		echo "starting"
-		~/bin/app.sh start
+		app.sh start
 		open -a HipChat -g
 		open -a zoiper -g
 #		open -a Adium -g
 	;;
 	stop)
 		echo "stopping"
-		~/bin/app.sh stop
+		app.sh stop
 	;;
 	*)
 		echo "Usage: $0 {start|stop}" >&2

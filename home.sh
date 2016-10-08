@@ -7,12 +7,12 @@ set -o pipefail
 case "$1" in
 	start)
 		echo "starting"
-		~/bin/app.sh start
+		app.sh start
 		open -a Telephone -g
 	;;
 	stop)
 		echo "stopping"
-		~/bin/app.sh stop
+		app.sh stop
 	;;
 	restart)
 		$0 stop
