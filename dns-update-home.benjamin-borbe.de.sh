@@ -10,7 +10,7 @@ TTL='60'
 KEY='/root/keys/Kserver1-ddns-key.+157+36654'
 zone=benjamin-borbe.de 
 node=home
-data=`curl -s https://www.benjamin-borbe.de/ip`
+data=`curl -s https://ip.tools.seibert-media.net`
 class='A'
 tmpfile=$(mktemp)
 cat >$tmpfile <<END
