@@ -17,7 +17,8 @@ if [ ! -f "${filename}" ]; then
 fi
 
 echo "open ${filename}"
-open ${filename}
+# open ${filename}
+ec ${filename} &
 
 cd $AZ24_HOME/allsecur-application/
 git checkout -b feature/${ticket} && git push --set-upstream origin feature/${ticket} || true
