@@ -59,6 +59,12 @@ $IPTABLES -A INPUT -m state --state NEW --protocol tcp --dport 22 -j ACCEPT
 #
 $IPTABLES -A FORWARD -j ACCEPT
 
+
+#
+# Ports explizit sperren
+#
+$IPTABLES -A INPUT -j DROP -d 224.0.0.0/24
+
 #
 # Rest loggen
 #
