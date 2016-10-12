@@ -88,3 +88,6 @@ $IPTABLES -A INPUT -i privatebr0 -m state --state NEW --protocol tcp --dport 910
 $IPTABLES -A INPUT -j LOG --log-prefix="IPTABLES-INPUT: "
 $IPTABLES -A OUTPUT -j LOG --log-prefix="IPTABLES-OUTPUT: "
 $IPTABLES -A FORWARD -j LOG --log-prefix="IPTABLES-FORWARD: "
+
+# Save rules
+netfilter-persistent save

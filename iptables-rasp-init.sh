@@ -67,3 +67,6 @@ $IPTABLES -A FORWARD -j ACCEPT
 $IPTABLES -A INPUT -j LOG --log-prefix="IPTABLES-INPUT: "
 $IPTABLES -A OUTPUT -j LOG --log-prefix="IPTABLES-OUTPUT: "
 $IPTABLES -A FORWARD -j LOG --log-prefix="IPTABLES-FORWARD: "
+
+# Save rules
+netfilter-persistent save
