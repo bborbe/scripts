@@ -25,6 +25,11 @@ $IPTABLES -P FORWARD ACCEPT
 $IPTABLES -P OUTPUT ACCEPT
 
 #
+# Natd
+#
+$IPTABLES -t nat -A POSTROUTING -o br0 -s 172.16.0.0/12 -j MASQUERADE
+
+#
 # Allow localhost
 #
 $IPTABLES -A INPUT -i lo -j ACCEPT
@@ -52,6 +57,7 @@ $IPTABLES -A INPUT -m state --state NEW --protocol tcp --dport 22 -j ACCEPT
 #
 # Forward
 #
+$IPTABLES -A FORWARD -j ACCEPT
 $IPTABLES -A FORWARD -o br0 -i br0 -j ACCEPT
 $IPTABLES -A FORWARD -i tap0 -o br0 -j ACCEPT
 $IPTABLES -A FORWARD -o tap0 -i br0 -j ACCEPT
