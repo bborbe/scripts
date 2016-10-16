@@ -16,10 +16,9 @@ if [ ! -f "${filename}" ]; then
 	cat /Users/bborbe/Documents/Seibert-Media/Projects/Allianz/template.md | sed -e "s,TICKET,${ticket},g;" > ${filename}
 fi
 
-echo "open ${filename}"
-# open ${filename}
-ec ${filename} &
-
 cd $AZ24_HOME/allsecur-application/
 git checkout -b feature/${ticket} && git push --set-upstream origin feature/${ticket} || true
 git checkout feature/${ticket}
+
+echo "open ${filename}"
+ec ${filename} &

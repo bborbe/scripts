@@ -76,6 +76,7 @@ $IPTABLES -A INPUT -m state --state NEW --protocol udp --dport 68 -j DROP
 $IPTABLES -A INPUT -m state --state NEW --protocol udp --dport 137 -j DROP
 $IPTABLES -A INPUT -m state --state NEW --protocol udp --dport 138 -j DROP
 $IPTABLES -A INPUT -m state --state NEW --protocol tcp --dport 443 -j DROP
+$IPTABLES -A INPUT -m state --state NEW --protocol udp --dport 1947 -j DROP
 $IPTABLES -A INPUT -m state --state NEW --protocol udp --dport 8612 -j DROP
 $IPTABLES -A INPUT -m state --state NEW --protocol udp --dport 17500 -j DROP
 $IPTABLES -A INPUT -m state --state NEW --protocol tcp --dport 17500 -j DROP
@@ -87,3 +88,6 @@ $IPTABLES -A INPUT -j DROP -d 224.0.0.0/24
 $IPTABLES -A INPUT -j LOG --log-prefix="IPTABLES-INPUT: "
 $IPTABLES -A OUTPUT -j LOG --log-prefix="IPTABLES-OUTPUT: "
 $IPTABLES -A FORWARD -j LOG --log-prefix="IPTABLES-FORWARD: "
+
+# Save rules
+netfilter-persistent save

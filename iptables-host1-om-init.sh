@@ -27,7 +27,7 @@ $IPTABLES -P OUTPUT DROP
 #
 # Natd
 #
-$IPTABLES -t nat -A POSTROUTING -o eth0 -s 172.16.10.0/8 -j MASQUERADE
+$IPTABLES -t nat -A POSTROUTING -o eth0 -s 172.16.0.0/12 -j MASQUERADE
 
 #
 # Allow localhost
@@ -57,17 +57,16 @@ $IPTABLES -A INPUT -m state --state NEW --protocol tcp --dport 22 -j ACCEPT
 #
 # Portforwarding
 #
-$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 138.201.37.217 --dport 563 -j DNAT --to-destination 172.16.10.2:563
-$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 138.201.37.217 --dport 80 -j DNAT --to-destination 172.16.10.3:1080
-$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 138.201.37.217 --dport 443 -j DNAT --to-destination 172.16.10.3:1443
-$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 138.201.37.217 --dport 20001 -j DNAT --to-destination 172.16.10.3:20001
-$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 138.201.37.217 --dport 64738 -j DNAT --to-destination 172.16.10.3:64738
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 163.172.222.137 --dport 80 -j DNAT --to-destination 172.16.60.2:1080
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 163.172.222.137 --dport 443 -j DNAT --to-destination 172.16.60.2:1443
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 163.172.222.137 --dport 563 -j DNAT --to-destination 172.16.60.3:563
 
 #
 # Forward
 #
-$IPTABLES -A FORWARD -i eth0 -o privatebr0 -j ACCEPT
-$IPTABLES -A FORWARD -i privatebr0 -o eth0 -j ACCEPT
+$IPTABLES -A FORWARD -j ACCEPT
+$IPTABLES -A FORWARD -i eth0 -o pfsense-host -j ACCEPT
+$IPTABLES -A FORWARD -i pfsense-host -o eth0 -j ACCEPT
 
 #
 # Ports explizit sperren
