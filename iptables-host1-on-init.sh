@@ -59,14 +59,24 @@ $IPTABLES -A INPUT -m state --state NEW --protocol tcp --dport 22 -j ACCEPT
 #
 # Portforwarding
 #
+# Smtp + Imap
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 163.172.222.137 --dport 25 -j DNAT --to-destination 172.16.60.2:25
-$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 163.172.222.137 --dport 80 -j DNAT --to-destination 172.16.60.2:1080
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 163.172.222.137 --dport 143 -j DNAT --to-destination 172.16.60.2:143
+# Http + Https
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 163.172.222.137 --dport 80 -j DNAT --to-destination 172.16.60.2:1080
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 163.172.222.137 --dport 443 -j DNAT --to-destination 172.16.60.2:1443
+# OpenVpn
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 163.172.222.137 --dport 563 -j DNAT --to-destination 172.16.60.3:563
+# Puppet
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 163.172.222.137 --dport 8140 -j DNAT --to-destination 172.16.60.2:8140
+# Ts3
+$IPTABLES -t nat -A PREROUTING -i eth0 -p udp -d 163.172.222.137 --dport 9987 -j DNAT --to-destination 172.16.61.10:30087
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 163.172.222.137 --dport 10011 -j DNAT --to-destination 172.16.60.2:10011
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 163.172.222.137 --dport 30033 -j DNAT --to-destination 172.16.60.2:30033
+# Dns
+$IPTABLES -t nat -A PREROUTING -i eth0 -p udp -d 163.172.222.137 --dport 53 -j DNAT --to-destination 172.16.61.10:30053
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 163.172.222.137 --dport 53 -j DNAT --to-destination 172.16.61.10:30054
+
 
 #
 # Forward
