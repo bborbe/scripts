@@ -27,7 +27,9 @@ $IPTABLES -P OUTPUT DROP
 #
 # Natd
 #
-$IPTABLES -t nat -A POSTROUTING -o eth0 -s 172.16.10.0/8 -j MASQUERADE
+$IPTABLES -t nat -A POSTROUTING -o eth0 -s 10.0.0.0/8 -j MASQUERADE
+$IPTABLES -t nat -A POSTROUTING -o eth0 -s 172.16.0.0/12 -j MASQUERADE
+$IPTABLES -t nat -A POSTROUTING -o eth0 -s 192.168.0.0/16 -j MASQUERADE
 
 #
 # Allow localhost
@@ -64,6 +66,7 @@ $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 163.172.222.137 --dport 563 -j 
 #
 # Forward
 #
+$IPTABLES -A FORWARD -j ACCEPT
 $IPTABLES -A FORWARD -i eth0 -o pfsense-host -j ACCEPT
 $IPTABLES -A FORWARD -i pfsense-host -o eth0 -j ACCEPT
 

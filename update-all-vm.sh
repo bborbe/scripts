@@ -8,4 +8,5 @@ pssh -o /tmp/pssh.log -l bborbe -t 300 -p 100 \
 	-H iredmail.mailfolder.org \
 	-H host.rocketsource.de \
 	-H tools.seibert-media.net \
+	-H host1.on.benjamin-borbe.de \
 	"sudo dpkg --configure -a && sudo apt-get update && sudo apt-get -y upgrade && sudo apt-get -y dist-upgrade && sudo apt-get -y autoremove && sudo apt-get clean"
