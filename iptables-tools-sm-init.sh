@@ -68,9 +68,13 @@ $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 138.201.37.217 --dport 443 -j D
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 138.201.37.217 --dport 20001 -j DNAT --to-destination 172.16.11.15:30000
 # Mumble
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 138.201.37.217 --dport 64738 -j DNAT --to-destination 172.16.11.15:30019
-# Smtp + Imap
+# Smtp + Smtps
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 138.201.37.217 --dport 25 -j DNAT --to-destination 172.16.11.15:30025
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 138.201.37.217 --dport 465 -j DNAT --to-destination 172.16.11.15:30465
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 138.201.37.217 --dport 587 -j DNAT --to-destination 172.16.11.15:30587
+# Imap + Imaps
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 138.201.37.217 --dport 143 -j DNAT --to-destination 172.16.11.15:30143
+$IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 138.201.37.217 --dport 993 -j DNAT --to-destination 172.16.11.15:30993
 # Ts3
 $IPTABLES -t nat -A PREROUTING -i eth0 -p udp -d 138.201.37.217 --dport 9987 -j DNAT --to-destination 172.16.11.15:30087
 $IPTABLES -t nat -A PREROUTING -i eth0 -p tcp -d 138.201.37.217 --dport 10011 -j DNAT --to-destination 172.16.11.15:30111
