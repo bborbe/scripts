@@ -24,10 +24,10 @@ case "$1" in
 		open -a OmniFocus -g
 		open -a Telegram -g
 		open -a Twitter -g
-		open -a Mattermost -g
+#		open -a Mattermost -g
 		open -a Emacs -g
 		open -a Firefox -g
-		open -a Skype -g 
+#		open -a Skype -g 
 	;;
 	stop)
 		echo "stopping"
