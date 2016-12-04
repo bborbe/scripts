@@ -6,4 +6,5 @@ pssh -o /tmp/pssh.log -l bborbe -t 300 -p 100 \
 	-H fire.hm.benjamin-borbe.de \
 	-H sun.pn.benjamin-borbe.de \
 	-H tools.seibert-media.net \
+	-H v22016124049440903.goodsrv.de \
 	"sudo dpkg --configure -a && sudo apt-get update && sudo apt-get -y upgrade && sudo apt-get -y dist-upgrade && sudo apt-get -y autoremove && sudo apt-get clean"
