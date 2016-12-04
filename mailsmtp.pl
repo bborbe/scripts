@@ -5,10 +5,10 @@ use Getopt::Long;
 use Net::SMTP;
 
 # config start
-my $host = '127.0.0.1:1025';
-#my $host = 'www.benjamin-borbe.de:25';
-my $from = 'form';
-my $to = 'test';
+#my $host = '127.0.0.1:1025';
+my $host = 'mail.benjamin-borbe.de:25';
+my $from = 'from@exaple.com';
+my $to = 'test@example.com';
 my $subject = 'subject';
 
 my $smtp = Net::SMTP->new( $host );
