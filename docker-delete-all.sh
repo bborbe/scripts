@@ -4,5 +4,6 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-docker rm -v $(docker ps -a -q)
-docker rmi $(docker images -q)
+docker ps -a -q | xargs --no-run-if-empty docker rm -v
+docker images -q | xargs --no-run-if-empty docker rmi
+
