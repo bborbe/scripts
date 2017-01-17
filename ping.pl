@@ -11,10 +11,10 @@ print $dt->datetime.' '.name()."\n";
 
 sub name {
   my $content = get('https://ip.benjamin-borbe.de');
-	if ($content eq '217.19.181.138') {
-		return 'seibert-media';
-	} else {
-		return 'other';
-	}
+  if ($content eq '217.19.181.138') {
+    return 'seibert-media';
+  } else {
+    return 'other';
+  }
 }
 
