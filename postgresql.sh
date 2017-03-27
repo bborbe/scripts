@@ -3,11 +3,11 @@
 case "$1" in
        	start)
        		echo "starting"
-       		sudo launchctl load -w /opt/local/etc/LaunchDaemons/org.macports.postgresql96-server/org.macports.postgresql96-server.plist
+       		sudo launchctl load -w /opt/local/etc/LaunchDaemons/org.macports.postgresql94-server/org.macports.postgresql94-server.plist
        	;;
        	stop)
        		echo "stopping"
-       		sudo launchctl unload -w /opt/local/etc/LaunchDaemons/org.macports.postgresql96-server/org.macports.postgresql96-server.plist
+       		sudo launchctl unload -w /opt/local/etc/LaunchDaemons/org.macports.postgresql94-server/org.macports.postgresql94-server.plist
        	;;
        	restart)
        		$0 stop
