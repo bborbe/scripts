@@ -8,7 +8,7 @@ case "$1" in
 	start)
 		echo "starting"
 		open -a 1Password\ 6 -g
-		open -a Alfred -g
+		open -a Alfred\ 3 -g
 		open -a Caffeine -g
 		open -a Calendar -g
 		open -a Emacs -g
@@ -23,11 +23,12 @@ case "$1" in
 		open -a Salute -g
 		open -a Telegram -g
 		open -a Terminal -g
-		open -a TextEdit -g
-		open -a Thunderbird -g
+		#open -a TextEdit -g
+		#open -a Thunderbird -g
 		open -a Twitter -g
 		open -a Viscosity -g
 		open /Library/PreferencePanes/HyperDock.prefpane/Contents/Resources/HyperDock\ Helper.app -g		
+		open ~/Documents/notes.txt
 	;;
 	stop)
 		echo "stopping"
