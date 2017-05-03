@@ -4,6 +4,15 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+function help {
+	echo "Usage: $0 {start|stop}" >&2
+	exit 1
+}
+
+if [ $# -eq 0 ]; then
+	help
+fi
+
 case "$1" in
 	start)
 		echo "starting"
@@ -20,8 +29,7 @@ case "$1" in
 		$0 start
 	;;
 	*)
-		echo "Usage: $0 {start|stop|restart}" >&2
-		exit 1
+		help
 	;;
 esac
 

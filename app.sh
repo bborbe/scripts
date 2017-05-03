@@ -4,6 +4,15 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+function help {
+	echo "Usage: $0 {start|stop}" >&2
+	exit 1
+}
+
+if [ $# -eq 0 ]; then
+	help
+fi
+
 case "$1" in
 	start)
 		echo "starting"
@@ -11,7 +20,8 @@ case "$1" in
 		open -a Alfred\ 3 -g
 		open -a Caffeine -g
 		open -a Calendar -g
-		open -a Emacs -g
+		open -a Discord -g
+		#open -a Emacs -g
 		open -a FastScripts -g
 		#open -a Firefox -g
 		open -a Google\ Chrome -g
@@ -37,8 +47,7 @@ case "$1" in
 		kill -9 `ps -U bborbe | grep -v 'kill ' | grep -v 'home.sh' | awk '{ print $1 };'`
 	;;
 	*)
-		echo "Usage: $0 {start|stop}" >&2
-		exit 1
+		help
 	;;
 esac
 
