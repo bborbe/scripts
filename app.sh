@@ -20,7 +20,7 @@ case "$1" in
 		open -a Alfred\ 3 -g
 		open -a Caffeine -g
 		open -a Calendar -g
-		open -a Discord -g
+		#open -a Discord -g
 		#open -a Emacs -g
 		open -a FastScripts -g
 		#open -a Firefox -g
@@ -35,7 +35,7 @@ case "$1" in
 		open -a Terminal -g
 		#open -a TextEdit -g
 		#open -a Thunderbird -g
-		open -a Twitter -g
+		#open -a Twitter -g
 		open -a Viscosity -g
 		open /Library/PreferencePanes/HyperDock.prefpane/Contents/Resources/HyperDock\ Helper.app -g		
 		open ~/Documents/notes.txt
