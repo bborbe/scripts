@@ -32,6 +32,7 @@ case "$1" in
 		open -a OmniFocus -g
 		open -a Salute -g
 		open -a Telegram -g
+		#open -a Wire -g
 		open -a Terminal -g
 		#open -a TextEdit -g
 		#open -a Thunderbird -g
