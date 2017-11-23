@@ -1,6 +1,5 @@
 .idea
 *.iml
-/kubectl
 /glide
 /minikube
 /helm
