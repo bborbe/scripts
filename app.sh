@@ -16,12 +16,13 @@ fi
 case "$1" in
 	start)
 		echo "starting"
-		open -a 1Password\ 6 -g
+		#open -a 1Password\ 6 -g
 		open -a Alfred\ 3 -g
 		open -a Caffeine -g
 		open -a Calendar -g
 		#open -a Discord -g
 		#open -a Emacs -g
+		open -a Enpass -g
 		open -a FastScripts -g
 		#open -a Firefox -g
 		open -a Google\ Chrome -g
