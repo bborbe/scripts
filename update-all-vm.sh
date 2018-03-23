@@ -2,6 +2,8 @@
 
 # -P
 pssh -o /tmp/pssh.log -l bborbe -t 300 -p 100 \
+	-H co2hz.hm.benjamin-borbe.de \
+	-H co2wz.hm.benjamin-borbe.de \
 	-H rasp.hm.benjamin-borbe.de \
 	-H fire.hm.benjamin-borbe.de \
 	-H nuke.hm.benjamin-borbe.de \
