@@ -1,6 +1,7 @@
 #!/usr/bin/env perl
 
 use strict;
+use warnings;
 
 my $branch = `git rev-parse --abbrev-ref HEAD 2> /dev/null`;
 my $remote = `git remote get-url origin`;
