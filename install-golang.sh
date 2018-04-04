@@ -8,7 +8,9 @@ set -o errtrace
 GO_VERSION=${GO_VERSION:-"1.10.1"}
 GO_TARGET="/opt/go${GO_VERSION}"
 GO_ROOT="/opt/go"
+
 GO_ARCH=$(uname -s)
+# convert GO_ARCH to lowercase
 GO_ARCH=${GO_ARCH,,}
 echo "install Go ${GO_VERSION} ${GO_ARCH} to ${GO_TARGET}. please enter password for sudo."
 
