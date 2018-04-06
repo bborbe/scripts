@@ -30,7 +30,6 @@ sub check_dns {
     }
     push(@{$results->{$ip}},$dns_server);
   }
-  push(@{$results->{'127.0.0.1'}},'localhost');
   if (keys(%$results) > 1) {
     print STDERR "dns check failed! different results: \n";
     while (my ($ip, $servers) = each %$results) {
