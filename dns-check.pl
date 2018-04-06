@@ -28,11 +28,14 @@ sub check_dns {
       print STDERR "dns check failed! no ip found on dns server $dns_server.\n";
       exit(1);
     }
-    $results->{$ip}->{$dns_server} = 1;
+    push(@{$results->{$ip}},$dns_server);
   }
+  push(@{$results->{'127.0.0.1'}},'localhost');
   if (keys(%$results) > 1) {
-    my $ips = join(',', keys(%$results));
-    print STDERR "dns check failed! different results: $ips\n";
+    print STDERR "dns check failed! different results: \n";
+    while (my ($ip, $servers) = each %$results) {
+      print STDERR $ip .' = ' .join(',', @$servers)."\n";
+    }
     exit(1);
   }
   else {
