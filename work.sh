@@ -18,10 +18,8 @@ case "$1" in
 		echo "starting"
 		app.sh start
 		open -a HipChat -g
-#		open -a Chat -g
-#		open -a Mattermost -g
+		open -a Chat -g
 		open -a zoiper -g
-#		open -a Adium -g
 	;;
 	stop)
 		echo "stopping"
