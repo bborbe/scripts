@@ -1,9 +1,0 @@
-#!/usr/bin/env sh
-
-if [ -n "$1" ]
-then
-	open -a SourceTree "$1"
-else
-	open -a SourceTree "`pwd`"
-fi 
-
