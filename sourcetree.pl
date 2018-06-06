@@ -2,9 +2,9 @@
 
 use strict;
 use warnings;
+
 use Cwd;
 use File::Basename;
-
 
 my $path;
 if (@ARGV > 0) {
@@ -22,5 +22,5 @@ while ( ! -d $path.'/.git' ) {
     }
 }
 
-exec ("open -a SourceTree \"$path\"");
+exec ('open -a SourceTree "'.$path.'"');
 
