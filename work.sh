@@ -17,7 +17,6 @@ case "$1" in
 	start)
 		echo "starting"
 		app.sh start
-		open -a HipChat -g
 		open -a Chat -g
 		open -a zoiper -g
 	;;
