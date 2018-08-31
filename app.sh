@@ -29,7 +29,6 @@ case "$1" in
 		open -a OmniFocus -g
 		open -a Salute -g
 		open -a Telegram -g
-		open -a Terminal -g
 		open -a Viscosity -g
 		open /Library/PreferencePanes/HyperDock.prefpane/Contents/Resources/HyperDock\ Helper.app -g		
 		open ~/Documents/notes.txt
