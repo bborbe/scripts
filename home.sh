@@ -18,7 +18,6 @@ case "$1" in
 		echo "starting"
 		app.sh start
 		open -a Telephone -g
-		open -a Discord -g
 	;;
 	stop)
 		echo "stopping"
