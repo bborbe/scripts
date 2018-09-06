@@ -19,6 +19,7 @@ case "$1" in
 		app.sh start
 		open -a Chat -g
 		open -a zoiper -g
+		open -a Franz -g
 	;;
 	stop)
 		echo "stopping"
