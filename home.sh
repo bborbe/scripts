@@ -17,7 +17,6 @@ case "$1" in
 	start)
 		echo "starting"
 		app.sh start
-		open -a Telephone -g
 	;;
 	stop)
 		echo "stopping"
