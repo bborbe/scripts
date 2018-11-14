@@ -20,6 +20,7 @@ case "$1" in
 		open -a Chat -g
 		open -a zoiper -g
 		open -a Franz -g
+		open ~/Documents/work.txt
 	;;
 	stop)
 		echo "stopping"
