@@ -6,7 +6,7 @@ set -o pipefail
 
 export PATH=/opt/phantomjs/bin:$PATH
 
-/Users/bborbe/Documents/workspaces/go/bin/monitoring_cron \
+/Users/bborbe/Documents/workspaces/go/bin/monitoring-cron \
 -logtostderr \
 -v=2 \
 -concurrent 1 \
