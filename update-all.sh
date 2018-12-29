@@ -16,3 +16,4 @@ pssh -o /tmp/pssh.log -l bborbe -t 300 -p 100 \
 
 echo "run port selfupdate"
 sudo port selfupdate
+sudo port upgrade outdated
