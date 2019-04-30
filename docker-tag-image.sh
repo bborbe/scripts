@@ -9,4 +9,5 @@ SOURCE="$1"
 TARGET="$2"
 
 echo "tag ${SOURCE} with ${TARGET}"
+docker pull ${SOURCE}
 docker tag $(docker images ${SOURCE} -q) ${TARGET}
