@@ -21,3 +21,4 @@ sudo port selfupdate
 sudo port upgrade outdated
 sudo port uninstall `sudo port installed | grep -v ' (active)'`
 sudo port clean all
+pyenv update
