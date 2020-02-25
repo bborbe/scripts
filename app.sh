@@ -20,10 +20,9 @@ case "$1" in
 		open -a KeepingYouAwake -g
 		open -a Calendar -g
 		open -a Enpass -g
-		open -a FastScripts -g
 		open -a Google\ Chrome -g
 		open -a iTerm -g
-		open -a iTunes -g
+		open -a Music -g
 		open -a Mail -g
 		open -a NetNewsWire -g
 		open -a OmniFocus -g
