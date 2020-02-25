@@ -10,7 +10,7 @@ TARGET="$2"
 
 echo "clone ${SOURCE} to ${TARGET}"
 
-docker pull ${SOURCE} || true
+gcloud docker --server=eu.gcr.io -- pull ${SOURCE} || true
 sleep 2
 docker tag `docker images ${SOURCE} -q` ${TARGET}
 gcloud docker --server=eu.gcr.io -- push ${TARGET}
