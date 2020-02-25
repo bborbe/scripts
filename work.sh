@@ -18,7 +18,6 @@ case "$1" in
 		echo "starting"
 		app.sh start
 		open -a IntelliJ\ IDEA -g
-		open ~/Documents/work.txt
 	;;
 	stop)
 		echo "stopping"
