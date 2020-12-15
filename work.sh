@@ -18,6 +18,7 @@ case "$1" in
 		echo "starting"
 		app.sh start
 		open -a IntelliJ\ IDEA -g
+		open -a Discord -g
 	;;
 	stop)
 		echo "stopping"
