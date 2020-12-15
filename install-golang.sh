@@ -5,7 +5,7 @@ set -o nounset
 set -o pipefail
 set -o errtrace
 
-GO_VERSION=${GO_VERSION:-"1.11.2"}
+GO_VERSION=${GO_VERSION:-"1.15.6"}
 GO_TARGET="/opt/go${GO_VERSION}"
 GO_ROOT="/opt/go"
 
