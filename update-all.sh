@@ -8,7 +8,8 @@ set -o pipefail
 pssh -o /tmp/pssh.log -l bborbe -t 300 -p 100 \
 	-H co2hz.hm.benjamin-borbe.de \
 	-H co2wz.hm.benjamin-borbe.de \
-	-H rasp.hm.benjamin-borbe.de \
+	-H rasp3.hm.benjamin-borbe.de \
+	-H rasp4.hm.benjamin-borbe.de \
 	-H fire.hm.benjamin-borbe.de \
 	-H nuke.hm.benjamin-borbe.de \
 	-H sun.pn.benjamin-borbe.de \
