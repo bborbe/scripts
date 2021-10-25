@@ -29,7 +29,6 @@ case "$1" in
 		open -a Telegram -g
 		open -a Viscosity -g
 		open /Library/PreferencePanes/HyperDock.prefpane/Contents/Resources/HyperDock\ Helper.app -g		
-		open ~/Documents/notes.txt
 	;;
 	stop)
 		echo "stopping"
