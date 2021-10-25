@@ -20,6 +20,6 @@ pssh -o /tmp/pssh.log -l bborbe -t 300 -p 100 \
 echo "run port selfupdate"
 sudo port selfupdate
 sudo port upgrade outdated
-sudo port uninstall `sudo port installed | grep -v ' (active)'`
+sudo port installed | grep -v ' (active)'|grep -v 'The following ports are currently installed:' | xargs --no-run-if-empty sudo port uninstall 
 sudo port clean all
 pyenv update
