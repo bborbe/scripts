@@ -29,6 +29,7 @@ case "$1" in
 		open -a Telegram -g
 		open -a Viscosity -g
 		open /Library/PreferencePanes/HyperDock.prefpane/Contents/Resources/HyperDock\ Helper.app -g		
+		VBoxManage startvm Docker --type headless
 	;;
 	stop)
 		echo "stopping"
