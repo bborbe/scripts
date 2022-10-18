@@ -19,6 +19,7 @@ case "$1" in
 		app.sh start
 		open -a IntelliJ\ IDEA -g
 		open -a Discord -g
+		open -a Hyper -g 
 	;;
 	stop)
 		echo "stopping"
