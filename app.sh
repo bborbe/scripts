@@ -16,7 +16,7 @@ fi
 case "$1" in
 	start)
 		echo "starting"
-		open -a Alfred\ 4 -g
+		open -a Alfred\ 5 -g
 		open -a KeepingYouAwake -g
 		open -a Calendar -g
 		open -a Enpass -g
