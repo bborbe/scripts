@@ -20,6 +20,7 @@ case "$1" in
 		open -a IntelliJ\ IDEA -g
 		open -a Discord -g
 		open -a Hyper -g 
+		open -a Google\ Chat -g
 	;;
 	stop)
 		echo "stopping"
