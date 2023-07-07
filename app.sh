@@ -29,7 +29,8 @@ case "$1" in
 		open -a Telegram -g
 		open -a Viscosity -g
 		open /Library/PreferencePanes/HyperDock.prefpane/Contents/Resources/HyperDock\ Helper.app -g		
-        colima start \
+		colima start \
+			--profile x86_64 \
 			--arch x86_64 \
 			--cpu 12 \
 			--memory 16 \
@@ -41,6 +42,18 @@ case "$1" in
 			--ssh-agent \
 			--vm-type vz \
 			--vz-rosetta
+		colima start \
+			--profile aarch64 \
+			--arch aarch64 \
+			--cpu 12 \
+			--memory 16 \
+			--disk 60 \
+			--dns 1.1.1.1 \
+			--dns 1.0.0.1 \
+			--runtime docker \
+			--mount-type virtiofs \
+			--ssh-agent \
+			--vm-type vz
 	;;
 	stop)
 		echo "stopping"
