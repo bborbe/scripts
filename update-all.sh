@@ -12,8 +12,10 @@ set -o pipefail
 	-H rasp4.hm.benjamin-borbe.de \
 	-H fire.hm.benjamin-borbe.de \
 	-H hell.hm.benjamin-borbe.de \
-	-H sun.pn.benjamin-borbe.de \
 	-H hetzner-1.benjamin-borbe.de \
+	-H fire-k3s-dev.hm.benjamin-borbe.de \
+	-H fire-k3s-master.hm.benjamin-borbe.de \
+	-H fire-k3s-prod.hm.benjamin-borbe.de \
 	"sudo dpkg --configure -a && sudo apt-get update && sudo apt-get -y upgrade && sudo apt-get -y dist-upgrade && sudo apt-get -y autoremove && sudo apt-get clean"
 
 echo "run port selfupdate"
