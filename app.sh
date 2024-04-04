@@ -22,6 +22,8 @@ case "$1" in
 		open -a Enpass -g
 		open -a Google\ Chrome -g
 		open -a iTerm -g
+		open -a Tabby -g
+		open -a Hyper -g
 		open -a Music -g
 		open -a Mail -g
 		open -a NetNewsWire -g
