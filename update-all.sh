@@ -11,6 +11,7 @@ set -o pipefail
 	-H rasp3.hm.benjamin-borbe.de \
 	-H rasp4.hm.benjamin-borbe.de \
 	-H fire.hm.benjamin-borbe.de \
+	-H nuke.hm.benjamin-borbe.de \
 	-H hell.hm.benjamin-borbe.de \
 	-H hetzner-1.benjamin-borbe.de \
 	-H fire-k3s-dev.hm.benjamin-borbe.de \
