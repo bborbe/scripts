@@ -10,7 +10,11 @@ GO_TARGET="/opt/go${GO_VERSION}"
 GO_ROOT="/opt/go"
 
 GO_ARCH=$(uname -s)
-GO_MACHINE=$(uname -m)
+if [ "$(uname -m)" = "x86_64" ]; then
+	GO_MACHINE=amd64
+else
+	GO_MACHINE=$(uname -m)
+fi
 # convert GO_ARCH to lowercase
 GO_ARCH=${GO_ARCH,,}
 echo "install Go ${GO_VERSION} ${GO_ARCH} ${GO_MACHINE} to ${GO_TARGET}. please enter password for sudo."
