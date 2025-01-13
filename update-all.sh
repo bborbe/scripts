@@ -11,6 +11,7 @@ set -o pipefail
 	-H fire-k3s-dev-capitalcom.hm.benjamin-borbe.de \
 	-H fire-k3s-dev-mt5.hm.benjamin-borbe.de \
 	-H fire-k3s-dev.hm.benjamin-borbe.de \
+	-H fire-k3s-longhorn.hm.benjamin-borbe.de \
 	-H fire-k3s-master.hm.benjamin-borbe.de \
 	-H fire-k3s-prod-capitalcom.hm.benjamin-borbe.de \
 	-H fire-k3s-prod-mt5.hm.benjamin-borbe.de \
