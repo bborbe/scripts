@@ -5,8 +5,8 @@ set -o nounset
 set -o pipefail
 
 server="ns.rocketsource.de"
-key="/Users/bborbe/.dns/home.benjamin-borbe.de"
-zone="fire.hm.benjamin-borbe.de."
+key="$HOME/.dns/home.benjamin-borbe.de"
+zone="nuke.hm.benjamin-borbe.de."
 node="_acme-challenge"
 ttl='60'
 class='TXT'
@@ -17,8 +17,7 @@ tmpfile=$(mktemp)
 cat >$tmpfile <<END
 server $server
 update delete ${node}.${zone} $ttl $class
-update add ${node}.${zone} $ttl $class Pbsxwj87v3RlXReHlT6Lk3htsauACtcsyC8IKud9gcU
-update add ${node}.${zone} $ttl $class tMRRU1SLO1sBerRLNfpgma-UjCuLVk0PAk4DONGMvkw
+update add ${node}.${zone} $ttl $class w9H7iRXieF-_TXf0a5wFLkX61uSkU2SrRz1cX5Bvw6E
 send
 END
 nsupdate -k ${key} -v $tmpfile
