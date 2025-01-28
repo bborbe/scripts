@@ -5,7 +5,7 @@ set -o nounset
 set -o pipefail
 
 # -P
-/opt/local/bin/pssh -o /tmp/pssh-k3s.log -l bborbe -t 300 -p 100 \
+parallel-ssh -o /tmp/pssh-k3s.log -l bborbe -t 300 -p 100 \
 	-H nuke-k3s-agent-0.hm.benjamin-borbe.de \
 	-H nuke-k3s-agent-1.hm.benjamin-borbe.de \
 	-H nuke-k3s-agent-2.hm.benjamin-borbe.de \
