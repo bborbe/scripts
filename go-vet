@@ -1,3 +1,0 @@
-#!/bin/bash
-
-go list ./... | grep -v vendor | xargs --no-run-if-empty go vet -atomic -bool -copylocks -nilfunc -printf -shadow -rangeloops -unreachable -unsafeptr -unusedresult
