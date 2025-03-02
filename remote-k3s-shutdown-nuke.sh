@@ -4,8 +4,13 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+CMD=pssh
+if which parallel-ssh &> /dev/null; then
+    CMD=parallel-ssh
+fi
+
 # -P
-parallel-ssh -o /tmp/pssh-k3s.log -l bborbe -t 300 -p 100 \
+$CMD -o /tmp/pssh-k3s.log -l bborbe -t 300 -p 100 \
   -H nuke-k3s-agent-0.hm.benjamin-borbe.de \
   -H nuke-k3s-agent-1.hm.benjamin-borbe.de \
   -H nuke-k3s-dev-capitalcom.hm.benjamin-borbe.de \

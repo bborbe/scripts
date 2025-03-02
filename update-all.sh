@@ -4,8 +4,13 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+CMD=pssh
+if which parallel-ssh &> /dev/null; then
+    CMD=parallel-ssh
+fi
+
 # -P
-parallel-ssh -o /tmp/pssh.log -l bborbe -t 300 -p 100 \
+$CMD -o /tmp/pssh.log -l bborbe -t 300 -p 100 \
 	-H co2hz.hm.benjamin-borbe.de \
 	-H co2wz.hm.benjamin-borbe.de \
 	-H fire.hm.benjamin-borbe.de \
