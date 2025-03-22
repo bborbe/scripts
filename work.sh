@@ -19,7 +19,6 @@ case "$1" in
 		app.sh start
 		open -a IntelliJ\ IDEA -g
 		open -a Discord -g
-		open -a Hyper -g 
 		open -a Google\ Chat -g
 	;;
 	stop)
