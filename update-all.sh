@@ -16,8 +16,6 @@ $CMD -o /tmp/pssh.log -l bborbe -t 300 -p 100 \
   -H fire.hm.benjamin-borbe.de \
   -H hell.hm.benjamin-borbe.de \
   -H hetzner-1.benjamin-borbe.de \
-  -H nuke.hm.benjamin-borbe.de \
-  -H rasp3.hm.benjamin-borbe.de \
   -H nuke-k3s-agent-0.hm.benjamin-borbe.de \
   -H nuke-k3s-agent-1.hm.benjamin-borbe.de \
   -H nuke-k3s-dev-0.hm.benjamin-borbe.de \
@@ -30,6 +28,9 @@ $CMD -o /tmp/pssh.log -l bborbe -t 300 -p 100 \
   -H nuke-k3s-master-1.hm.benjamin-borbe.de \
   -H nuke-k3s-master-2.hm.benjamin-borbe.de \
   -H nuke-k3s-prod-0.hm.benjamin-borbe.de \
+  -H nuke.hm.benjamin-borbe.de \
+  -H rasp3.hm.benjamin-borbe.de \
+  -H sun.hm.benjamin-borbe.de \
   "sudo dpkg --configure -a && sudo apt-get update && sudo apt-get -y upgrade && sudo apt-get -y dist-upgrade && sudo apt-get -y autoremove && sudo apt-get clean"
 
 echo "run port selfupdate"
