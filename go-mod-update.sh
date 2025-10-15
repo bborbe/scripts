@@ -4,17 +4,17 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-# old version
-# go get -u $(go list -mod=mod -f '{{if not (or .Main .Indirect)}}{{.Path}}{{end}}' -m all)
-
 while true
 do
     notupdated=true;
-    for i in $(go list -mod=mod -m -u all | grep ']$'| awk '{print $1}'); do
-        go get -u ${i};
-        notupdated=false;
+    for i in $(go list -mod=mod -m -u -f '{{if not (or .Main .Indirect)}}{{.Path}}{{end}}' all | grep -v '^$'); do
+        if go list -mod=mod -m -u "$i" | grep -q '\['; then
+            echo "go get ${i}@latest";
+            go get "${i}@latest";
+            notupdated=false;
+        fi
     done
-    if [ $notupdated ]; then
+    if [ $notupdated = true ]; then
         echo "update completed";
         break;
     fi
