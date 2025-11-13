@@ -11,9 +11,9 @@ while(<FH>){
 }
 close(FH);
 
-$content =~ s/require\s+[^\(].*$//;
+$content =~ s/require\s+[^\(].*$//mg;
 $content =~ s/require\s+\(.*?\)//sg;
-$content =~ s/\n+/\n/g;
+$content =~ s/\n\n+/\n\n/g;
 
 open(FH, '>', $filename) or die $!;
 print FH $content;
