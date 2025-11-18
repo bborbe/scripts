@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+#
+# k8s-delete-not-running-common.sh - Common logic for deleting non-running pods
+#
+# This library script provides shared functionality for deleting Kubernetes pods
+# that are not in Running state across different cluster contexts. It follows the
+# DRY principle by centralizing logic used by multiple context-specific wrapper scripts.
+#
+# Used by:
+#   - k8s-delete-not-running (default kubectl context)
+#   - k8s-delete-not-running-{dev,staging,prod,quant,hell} (context-specific)
+#   - k8s-delete-not-running-force* (force deletion variants)
+#
+# Usage: k8s-delete-not-running-common.sh <kubectl-command> [--force]
+# Example: k8s-delete-not-running-common.sh kubectldev
+# Example: k8s-delete-not-running-common.sh kubectldev --force
+
+set -o errexit
+set -o nounset
+set -o pipefail
+set -o errtrace
+
+if [ $# -lt 1 ]; then
+  echo "Usage: $0 <kubectl-command> [--force]"
+  exit 1
+fi
+
+KUBECTL_CMD="$1"
+FORCE_FLAGS=()
+
+if [ $# -gt 1 ] && [ "$2" = "--force" ]; then
+  FORCE_FLAGS=(--grace-period=0 --force)
+fi
+
+for ns in $("$KUBECTL_CMD" get pods --all-namespaces | grep -v NAME | grep -v "Running" | awk '{print $1}' | sort | uniq); do
+  echo "delete pods in namespace $ns";
+  "$KUBECTL_CMD" -n "$ns" get pods | grep -v NAME | grep -v "Running" | awk '{print $1}' | xargs --no-run-if-empty "$KUBECTL_CMD" -n "$ns" delete pod "${FORCE_FLAGS[@]+"${FORCE_FLAGS[@]}"}";
+done
