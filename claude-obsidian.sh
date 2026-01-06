@@ -6,13 +6,8 @@
 export DISABLE_AUTOUPDATER=1
 export SHELL=/bin/bash
 
-cd ~/Documents/workspaces/trading
-
 npx @anthropic-ai/claude-code@2.0.65 \
   --model sonnet \
-  --mcp-config ~/Documents/workspaces/trading/.mcp.json \
-  --strict-mcp-config \
-  --add-dir ~/Documents/Obsidian/Octopus \
-  --add-dir ~/Documents/Obsidian/Personal \
+  --add-dir ~/Documents/Obsidian \
   --add-dir ~/.claude/prompts \
   "$@"
