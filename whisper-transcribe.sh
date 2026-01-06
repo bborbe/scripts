@@ -16,7 +16,6 @@ fi
 BASENAME="${INPUT%.*}"
 TMP_WAV="$(mktemp /tmp/whisper_audio_XXXX.wav)"
 
-# Ensure cleanup on exit
 trap 'rm -f "$TMP_WAV" "${TMP_WAV}.srt" "${TMP_WAV}.txt"' EXIT
 
 echo "→ Extracting audio..."
@@ -35,4 +34,3 @@ mv "${TMP_WAV}.srt" "${BASENAME}.srt"
 mv "${TMP_WAV}.txt" "${BASENAME}.txt"
 
 echo "✓ Done"
-
