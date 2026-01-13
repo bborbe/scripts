@@ -9,9 +9,9 @@ export SHELL=/bin/bash
 cd ~/Documents/Obsidian/Seibert
 
 MCP_REMOTE_CONFIG_DIR=".mcp-seibert" \
-npx @anthropic-ai/claude-code@2.0.65 \
+npx @anthropic-ai/claude-code@latest \
   --model sonnet \
-  --mcp-config ~/Documents/Obsidian/Seibert/.claude/mcp-ben.json \
+  --mcp-config ~/Documents/Obsidian/Seibert/.claude/mcp-seibert.json \
   --strict-mcp-config \
   --add-dir ~/Documents/workspaces/sm-octopus \
   --add-dir ~/Documents/workspaces/sm-isac \

@@ -8,7 +8,7 @@ export SHELL=/bin/bash
 
 cd ~/Documents/workspaces/trading
 
-npx @anthropic-ai/claude-code@2.0.65 \
+npx @anthropic-ai/claude-code@latest \
   --model sonnet \
   --mcp-config ~/Documents/workspaces/trading/.mcp.json \
   --strict-mcp-config \

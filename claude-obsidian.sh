@@ -6,7 +6,7 @@
 export DISABLE_AUTOUPDATER=1
 export SHELL=/bin/bash
 
-npx @anthropic-ai/claude-code@2.0.65 \
+npx @anthropic-ai/claude-code@latest \
   --model sonnet \
   --add-dir ~/Documents/Obsidian \
   --add-dir ~/.claude/prompts \
