@@ -12,8 +12,7 @@ npx @anthropic-ai/claude-code@latest \
   --model sonnet \
   --mcp-config ~/Documents/workspaces/trading/.mcp.json \
   --strict-mcp-config \
-  --add-dir ~/Documents/Obsidian/Octopus \
-  --add-dir ~/Documents/Obsidian/Personal \
+  --add-dir ~/Documents/Obsidian \
   --add-dir ~/Documents/workspaces \
   --add-dir ~/.claude/prompts \
   "$@"
