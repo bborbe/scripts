@@ -8,11 +8,13 @@ export SHELL=/bin/bash
 
 cd ~/Documents/workspaces/trading
 
+MCP_REMOTE_CONFIG_DIR="~/.mcp-personal" \
 npx @anthropic-ai/claude-code@latest \
   --model sonnet \
-  --mcp-config ~/Documents/workspaces/trading/.mcp.json \
+  --mcp-config ~/.claude/mcp-personal.json \
   --strict-mcp-config \
   --add-dir ~/Documents/Obsidian \
   --add-dir ~/Documents/workspaces \
   --add-dir ~/.claude/prompts \
   "$@"
+

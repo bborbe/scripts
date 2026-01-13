@@ -1,6 +1,6 @@
 #!/bin/bash
-# Launch Claude Code with personal configuration
-# - MCP: sm-octopus, atlassian-personal, gemini, youtube-vision
+# Launch Claude Code with seibert configuration
+# - MCP: atlassian-seibert, gemini
 # - Access: sm-octopus workspace
 
 export DISABLE_AUTOUPDATER=1
@@ -8,9 +8,10 @@ export SHELL=/bin/bash
 
 cd ~/Documents/workspaces/sm-octopus
 
+MCP_REMOTE_CONFIG_DIR="~/.mcp-seibert" \
 npx @anthropic-ai/claude-code@latest \
   --model sonnet \
-  --mcp-config ~/Documents/workspaces/sm-octopus/.mcp.json \
+  --mcp-config ~/.claude/mcp-seibert.json \
   --strict-mcp-config \
   --add-dir ~/Documents/Obsidian \
   --add-dir ~/Documents/workspaces \

@@ -6,10 +6,10 @@
 export DISABLE_AUTOUPDATER=1
 export SHELL=/bin/bash
 
-MCP_REMOTE_CONFIG_DIR=".mcp-personal" \
+MCP_REMOTE_CONFIG_DIR="~/.mcp-personal" \
 npx @anthropic-ai/claude-code@latest \
   --model sonnet \
-  --mcp-config ~/Documents/Obsidian/Personal/.claude/mcp-personal.json \
+  --mcp-config ~/.claude/mcp-personal.json \
   --strict-mcp-config \
   --add-dir ~/Documents/Obsidian \
   --add-dir ~/Documents/workspaces \

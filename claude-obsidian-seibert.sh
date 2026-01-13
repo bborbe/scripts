@@ -8,10 +8,10 @@ export SHELL=/bin/bash
 
 cd ~/Documents/Obsidian/Seibert
 
-MCP_REMOTE_CONFIG_DIR=".mcp-seibert" \
+MCP_REMOTE_CONFIG_DIR="~/.mcp-seibert" \
 npx @anthropic-ai/claude-code@latest \
   --model sonnet \
-  --mcp-config ~/Documents/Obsidian/Seibert/.claude/mcp-seibert.json \
+  --mcp-config ~/.claude/mcp-seibert.json \
   --strict-mcp-config \
   --add-dir ~/Documents/Obsidian \
   --add-dir ~/Documents/workspaces \
