@@ -14,5 +14,6 @@ npx @anthropic-ai/claude-code@latest \
   --strict-mcp-config \
   --add-dir ~/Documents/Obsidian/Octopus \
   --add-dir ~/Documents/Obsidian/Personal \
+  --add-dir ~/Documents/workspaces \
   --add-dir ~/.claude/prompts \
   "$@"

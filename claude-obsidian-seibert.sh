@@ -13,9 +13,8 @@ npx @anthropic-ai/claude-code@latest \
   --model sonnet \
   --mcp-config ~/Documents/Obsidian/Seibert/.claude/mcp-seibert.json \
   --strict-mcp-config \
-  --add-dir ~/Documents/workspaces/sm-octopus \
-  --add-dir ~/Documents/workspaces/sm-isac \
-  --add-dir ~/Documents/workspaces/sm-standup \
-  --add-dir ~/Documents/workspaces/sm-sentinel \
+  --add-dir ~/Documents/Obsidian/Octopus \
+  --add-dir ~/Documents/Obsidian/Personal \
+  --add-dir ~/Documents/workspaces \
   --add-dir ~/.claude/prompts \
   "$@"
