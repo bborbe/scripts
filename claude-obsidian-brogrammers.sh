@@ -6,7 +6,7 @@
 export DISABLE_AUTOUPDATER=1
 export SHELL=/bin/bash
 
-cd ~/Documents/Obsidian/Seibert
+cd ~/Documents/Obsidian/Brogrammers
 
 MCP_REMOTE_CONFIG_DIR="~/.mcp-seibert" \
 npx @anthropic-ai/claude-code@latest \
