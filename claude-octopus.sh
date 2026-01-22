@@ -9,7 +9,7 @@ export SHELL=/bin/bash
 cd ~/Documents/workspaces/sm-octopus
 
 MCP_REMOTE_CONFIG_DIR="~/.mcp-seibert" \
-npx @anthropic-ai/claude-code@latest \
+claude \
   --model sonnet \
   --mcp-config ~/.claude/mcp-seibert.json \
   --strict-mcp-config \

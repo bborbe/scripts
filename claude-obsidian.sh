@@ -7,7 +7,7 @@ export DISABLE_AUTOUPDATER=1
 export SHELL=/bin/bash
 
 MCP_REMOTE_CONFIG_DIR="~/.mcp-personal" \
-npx @anthropic-ai/claude-code@latest \
+claude \
   --model sonnet \
   --mcp-config ~/.claude/mcp-personal.json \
   --strict-mcp-config \
