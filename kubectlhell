@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-command /opt/google-cloud-sdk/bin/kubectl --context hell "$@"
+KUBECONFIG="${HOME}/.kube/hell" /opt/google-cloud-sdk/bin/kubectl "$@"

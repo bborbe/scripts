@@ -1,2 +1,3 @@
+
 #!/usr/bin/env bash
-command /opt/google-cloud-sdk/bin/kubectl --context gke_gce-smedia-k8s_europe-west3-c_dev "$@"
+KUBECONFIG="${HOME}/.kube/octopus-dev" /opt/google-cloud-sdk/bin/kubectl "$@"
