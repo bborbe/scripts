@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-KUBECONFIG="${HOME}/.kube/octopus-staging" /opt/google-cloud-sdk/bin/kubectl --context gke_gce-smedia-k8s_europe-west3-c_staging "$@"
+KUBECONFIG="${HOME}/.kube/octopus-staging" kubectl --context gke_gce-smedia-k8s_europe-west3-c_staging "$@"

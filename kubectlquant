@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-KUBECONFIG="${HOME}/.kube/quant" /opt/google-cloud-sdk/bin/kubectl --context quant "$@"
+KUBECONFIG="${HOME}/.kube/quant" kubectl --context quant "$@"
