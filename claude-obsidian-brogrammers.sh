@@ -1,10 +1,10 @@
-#!/bin/bash
-# Launch Claude Code with seibert configuration
-# - MCP: atlassian-seibert, gemini
-# - Access: sm-octopus workspace
+#!/usr/bin/env bash
+# Launch Claude Code with personal configuration
+# - MCP: trading, atlassian-personal, gemini, youtube-vision
+# - Access: trading workspace
 
 export DISABLE_AUTOUPDATER=1
-export SHELL=/bin/bash
+# export SHELL=$(which bash)
 
 cd ~/Documents/Obsidian/Brogrammers
 
