@@ -11,7 +11,7 @@ cd ~/Documents/Obsidian/Personal
 MCP_REMOTE_CONFIG_DIR="~/.mcp-personal" \
 claude \
 --model sonnet \
---mcp-config ~/.claude/mcp-personal.json \
+  --mcp-config ~/.claude/mcp-obsidian-personal.json \
 --strict-mcp-config \
 --add-dir ~/Documents/Obsidian \
 --add-dir ~/Documents/workspaces \
