@@ -16,6 +16,8 @@ $CMD -o /tmp/pssh.log -l bborbe -t 300 -p 100 \
   -H fire.hm.benjamin-borbe.de \
   -H hell.hm.benjamin-borbe.de \
   -H hetzner-1.benjamin-borbe.de \
+  -H hetzner-2.benjamin-borbe.de \
+  -H nuke-boss.hm.benjamin-borbe.de \
   -H nuke-k3s-agent-0.hm.benjamin-borbe.de \
   -H nuke-k3s-agent-1.hm.benjamin-borbe.de \
   -H nuke-k3s-dev-0.hm.benjamin-borbe.de \
