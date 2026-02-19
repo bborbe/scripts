@@ -37,6 +37,7 @@ $CMD -o /tmp/pssh.log -l bborbe -t 300 -p 100 \
   "sudo dpkg --configure -a && sudo apt-get update && sudo apt-get -y upgrade && sudo apt-get -y dist-upgrade && sudo apt-get -y autoremove && sudo apt-get clean"
 
 echo "run port selfupdate"
+sudo gcloud components update
 sudo port selfupdate
 sudo port upgrade outdated
 sudo port installed | grep -v ' (active)'|grep -v 'The following ports are currently installed:' | xargs --no-run-if-empty sudo port uninstall 
