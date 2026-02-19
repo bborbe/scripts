@@ -8,7 +8,7 @@ export DISABLE_AUTOUPDATER=1
 
 MCP_REMOTE_CONFIG_DIR="~/.mcp-seibert" \
 claude \
-  --model sonnet \
+  --model claude-sonnet-4-6 \
   --mcp-config ~/.claude/mcp-seibert.json \
   --strict-mcp-config \
   --add-dir ~/Documents/Obsidian \
