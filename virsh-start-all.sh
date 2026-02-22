@@ -5,6 +5,6 @@ set -o nounset
 set -o pipefail
 set -o errtrace
 
-for vm in $(virsh list --all --name); do
+for vm in $(virsh list --state-shutoff --name); do
   virsh start "$vm"
 done
