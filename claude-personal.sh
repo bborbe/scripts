@@ -9,7 +9,7 @@ export DISABLE_AUTOUPDATER=1
 
 MCP_REMOTE_CONFIG_DIR="~/.mcp-personal" \
 claude \
-  --model claude-sonnet-4-6 \
+  --model claude-opus-4-6 \
   --mcp-config ~/.claude/mcp-personal.json \
   --strict-mcp-config \
   --add-dir ~/Documents/Obsidian \
