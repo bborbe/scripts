@@ -15,5 +15,6 @@ claude \
   --add-dir ~/Documents/Obsidian \
   --add-dir ~/Documents/workspaces \
   --add-dir ~/.claude/prompts \
+  --add-dir /tmp \
   "$@"
 
