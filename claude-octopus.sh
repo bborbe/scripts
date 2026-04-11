@@ -10,11 +10,11 @@ cd ~/Documents/workspaces/sm-octopus
 
 MCP_REMOTE_CONFIG_DIR="~/.mcp-seibert" \
 claude \
-  --model claude-opus-4-6 \
-  --mcp-config ~/.claude/mcp-seibert.json \
-  --strict-mcp-config \
-  --add-dir ~/Documents/Obsidian \
-  --add-dir ~/Documents/workspaces \
-  --add-dir ~/.claude/prompts \
-  --add-dir /tmp \
-  "$@"
+--model claude-opus-4-6 \
+--mcp-config ~/.claude/mcp-seibert.json \
+--strict-mcp-config \
+--add-dir ~/Documents/Obsidian \
+--add-dir ~/Documents/workspaces \
+--add-dir ~/.claude/prompts \
+--add-dir /tmp \
+"$@"

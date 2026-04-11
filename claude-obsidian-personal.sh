@@ -11,11 +11,10 @@ cd ~/Documents/Obsidian/Personal
 MCP_REMOTE_CONFIG_DIR="~/.mcp-personal" \
 claude \
 --model claude-opus-4-6 \
-  --mcp-config ~/.claude/mcp-obsidian-personal.json \
+--mcp-config ~/.claude/mcp-obsidian-personal.json \
 --strict-mcp-config \
 --add-dir ~/Documents/Obsidian \
 --add-dir ~/Documents/workspaces \
 --add-dir ~/.claude/prompts \
 --add-dir /tmp \
 "$@"
-
