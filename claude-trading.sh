@@ -10,7 +10,8 @@ cd ~/Documents/workspaces/trading
 
 MCP_REMOTE_CONFIG_DIR="~/.mcp-personal" \
 claude \
---model claude-opus-4-6 \
+--model claude-opus-4-7 \
+--effort high \
 --mcp-config ~/.claude/mcp-personal.json \
 --strict-mcp-config \
 --add-dir ~/Documents/Obsidian \

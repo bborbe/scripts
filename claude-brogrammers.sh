@@ -8,7 +8,8 @@ export DISABLE_AUTOUPDATER=1
 
 MCP_REMOTE_CONFIG_DIR="~/.mcp-seibert" \
 claude \
---model claude-opus-4-6 \
+--model claude-opus-4-7 \
+--effort high \
 --mcp-config ~/.claude/mcp-seibert.json \
 --strict-mcp-config \
 --add-dir ~/Documents/Obsidian \
