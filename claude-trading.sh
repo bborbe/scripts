@@ -4,6 +4,7 @@
 # - Access: trading workspace
 
 export DISABLE_AUTOUPDATER=1
+export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 # export SHELL=$(which bash)
 
 cd ~/Documents/workspaces/trading
