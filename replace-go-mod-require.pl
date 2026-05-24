@@ -2,7 +2,7 @@
 
 use strict;
 
-my $filename = 'go.mod';
+my $filename = $ARGV[0] // 'go.mod';
 
 open(FH, '<', $filename) or die $!;
 my $content = '';
