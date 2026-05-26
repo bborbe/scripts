@@ -3,6 +3,7 @@
 # - MCP: trading, atlassian-personal, gemini, youtube-vision
 # - Access: trading workspace
 
+ulimit -n 8000
 export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 # export SHELL=$(which bash)
