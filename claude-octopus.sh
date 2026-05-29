@@ -12,7 +12,7 @@ cd ~/Documents/workspaces/sm-octopus
 
 MCP_REMOTE_CONFIG_DIR="~/.mcp-seibert" \
 claude \
---model claude-opus-4-7 \
+--model claude-opus-4-8 \
 --effort high \
 --mcp-config ~/.claude/mcp-seibert.json \
 --strict-mcp-config \

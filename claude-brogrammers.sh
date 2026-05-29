@@ -10,7 +10,7 @@ export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 
 MCP_REMOTE_CONFIG_DIR="~/.mcp-seibert" \
 claude \
---model claude-opus-4-7 \
+--model claude-opus-4-8 \
 --effort high \
 --mcp-config ~/.claude/mcp-seibert.json \
 --strict-mcp-config \
