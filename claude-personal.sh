@@ -11,7 +11,7 @@ export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 
 MCP_REMOTE_CONFIG_DIR="~/.mcp-personal" \
 claude \
---model claude-opus-4-8 \
+--model claude-opus-4-7 \
 --effort high \
 --mcp-config ~/.claude/mcp-personal.json \
 --strict-mcp-config \
