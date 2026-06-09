@@ -2,14 +2,16 @@
 set -euo pipefail
 
 ulimit -n 8000
+
 export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-personal"
+export ANTHROPIC_MODEL="claude-opus-4-7"
 
-cd ~/Documents/Obsidian/Personal
+cd ~/Documents/Obsidian/Personal || exit 1
 
 claude \
---model claude-opus-4-7 \
+--model "${ANTHROPIC_MODEL}" \
 --effort high \
 --mcp-config ~/.claude/mcp-obsidian-personal.json \
 --strict-mcp-config \
