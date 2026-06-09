@@ -8,5 +8,5 @@ BRAVE_SEARCH_API_KEY="$(teamvault-password --teamvault-config ~/.teamvault.json 
 MINIMAX_API_KEY="$(teamvault-password --teamvault-config ~/.teamvault.json --teamvault-key MOPmQL)" \
 pi \
 --provider minimax \
---model MiniMax-M2.7-highspeed \
+--model MiniMax-M3-highspeed \
 "$@"
