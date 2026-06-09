@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 ulimit -n 8000
+
 export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 export CLAUDE_CODE_ATTRIBUTION_HEADER="0"
-export MCP_REMOTE_CONFIG_DIR="~/.mcp-personal"
+export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-personal"
 
 cd ~/Documents/Obsidian/Personal || exit 1
 

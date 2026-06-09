@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 ulimit -n 8000
 export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
-export MCP_REMOTE_CONFIG_DIR="~/.mcp-seibert"
+export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-seibert"
 
 cd ~/Documents/Obsidian/Brogrammers
 
