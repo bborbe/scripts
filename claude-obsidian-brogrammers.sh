@@ -1,16 +1,12 @@
 #!/usr/bin/env bash
-# Launch Claude Code with personal configuration
-# - MCP: trading, atlassian-personal, gemini, youtube-vision
-# - Access: trading workspace
 
 ulimit -n 8000
 export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
-# export SHELL=$(which bash)
+export MCP_REMOTE_CONFIG_DIR="~/.mcp-seibert"
 
 cd ~/Documents/Obsidian/Brogrammers
 
-MCP_REMOTE_CONFIG_DIR="~/.mcp-seibert" \
 claude \
 --model claude-opus-4-7 \
 --effort high \
