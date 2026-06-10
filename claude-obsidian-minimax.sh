@@ -9,6 +9,9 @@ export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-personal"
 export ANTHROPIC_BASE_URL="https://api.minimax.io/anthropic"
 export ANTHROPIC_AUTH_TOKEN="$(teamvault-password --teamvault-config ~/.teamvault.json --teamvault-key MOPmQL)"
 export ANTHROPIC_MODEL="MiniMax-M3-highspeed"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="${ANTHROPIC_MODEL}"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="${ANTHROPIC_MODEL}"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="${ANTHROPIC_MODEL}"
 
 cd ~/Documents/Obsidian/Personal || exit 1
 
