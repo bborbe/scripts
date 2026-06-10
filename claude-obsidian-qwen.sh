@@ -19,6 +19,7 @@ cd ~/Documents/Obsidian/Personal || exit 1
 claude \
 --model "${ANTHROPIC_MODEL}" \
 --effort high \
+--permission-mode acceptEdits \
 --mcp-config ~/.claude/mcp-obsidian-personal.json \
 --strict-mcp-config \
 --add-dir ~/Documents/Obsidian \
