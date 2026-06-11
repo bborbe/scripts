@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
+# Launch Claude (MiniMax backend) in the Personal Obsidian vault.
+#
+# Override paths via env (set in ~/.zshrc / direnv per machine):
+#   OBSIDIAN_PERSONAL  — Personal vault (default: $HOME/Documents/Obsidian/Personal)
+#   OBSIDIAN_ROOT      — Obsidian parent for --add-dir
+#   WORKSPACES_ROOT    — Code workspaces parent for --add-dir
+
 set -euo pipefail
 
 ulimit -n 8000
@@ -13,7 +20,11 @@ export ANTHROPIC_DEFAULT_OPUS_MODEL="${ANTHROPIC_MODEL}"
 export ANTHROPIC_DEFAULT_SONNET_MODEL="${ANTHROPIC_MODEL}"
 export ANTHROPIC_DEFAULT_HAIKU_MODEL="${ANTHROPIC_MODEL}"
 
-cd ~/Documents/Obsidian/Personal || exit 1
+OBSIDIAN_PERSONAL="${OBSIDIAN_PERSONAL:-$HOME/Documents/Obsidian/Personal}"
+OBSIDIAN_ROOT="${OBSIDIAN_ROOT:-$HOME/Documents/Obsidian}"
+WORKSPACES_ROOT="${WORKSPACES_ROOT:-$HOME/Documents/workspaces}"
+
+cd "$OBSIDIAN_PERSONAL" || exit 1
 
 claude \
 --model "${ANTHROPIC_MODEL}" \
@@ -21,8 +32,8 @@ claude \
 --permission-mode acceptEdits \
 --mcp-config ~/.claude/mcp-obsidian-personal.json \
 --strict-mcp-config \
---add-dir ~/Documents/Obsidian \
---add-dir ~/Documents/workspaces \
+--add-dir "$OBSIDIAN_ROOT" \
+--add-dir "$WORKSPACES_ROOT" \
 --add-dir ~/.claude/prompts \
 --add-dir /tmp \
 "$@"
