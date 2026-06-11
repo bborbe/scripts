@@ -13,6 +13,7 @@ cd ~/Documents/Obsidian/Brogrammers || exit 1
 claude \
 --model "${ANTHROPIC_MODEL}" \
 --effort high \
+--permission-mode auto \
 --mcp-config ~/.claude/mcp-seibert.json \
 --strict-mcp-config \
 --add-dir ~/Documents/Obsidian \
