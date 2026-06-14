@@ -25,7 +25,7 @@ claude \
 --model "${ANTHROPIC_MODEL}" \
 --effort high \
 --permission-mode auto \
---mcp-config ~/.claude/mcp-seibert.json \
+--mcp-config ~/.claude/mcp-obsidian-brogrammers.json \
 --strict-mcp-config \
 --add-dir "$OBSIDIAN_ROOT" \
 --add-dir "$WORKSPACES_ROOT" \
