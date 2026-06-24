@@ -41,7 +41,7 @@ check_repo() {
 export -f check_repo
 export BASE
 
-find "$BASE" -maxdepth 3 -name ".git" -type d -prune \
+find "$BASE" -maxdepth 3 -name ".git" \( -type d -o -type f \) -prune \
     ! -path "*/vendor/*" ! -path "*/node_modules/*" \
   | sed 's|/.git$||' \
   | xargs -P "$JOBS" -I{} bash -c 'check_repo "$@"' _ {} \
