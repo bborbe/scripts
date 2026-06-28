@@ -9,7 +9,6 @@ if which parallel-ssh &> /dev/null; then
   CMD=parallel-ssh
 fi
 
-#  -H nuke-workspace.hm.benjamin-borbe.de \
 #  -H nuke-boss.hm.benjamin-borbe.de \
 
 # -P
@@ -32,6 +31,7 @@ $CMD -o /tmp/pssh.log -l bborbe -t 300 -p 100 \
   -H nuke-k3s-master-1.hm.benjamin-borbe.de \
   -H nuke-k3s-master-2.hm.benjamin-borbe.de \
   -H nuke-k3s-prod-0.hm.benjamin-borbe.de \
+  -H nuke-workspace.hm.benjamin-borbe.de \
   -H nuke.hm.benjamin-borbe.de \
   -H rasp3.hm.benjamin-borbe.de \
   -H sun.hm.benjamin-borbe.de \

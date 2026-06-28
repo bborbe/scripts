@@ -5,7 +5,7 @@ set -o nounset
 set -o pipefail
 set -o errtrace
 
-EXCLUDE=(nuke-workspace nuke-boss)
+EXCLUDE=(nuke-boss)
 
 for vm in $(virsh list --state-shutoff --name); do
   skip=0
