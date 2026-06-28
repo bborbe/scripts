@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+KUBECONFIG="${HOME}/.kube/gke-seibert-k8s-small-prod" kubectl --context gke_gke-seibert-k8s-small_europe-west3-a_prod "$@"
