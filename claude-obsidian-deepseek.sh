@@ -20,7 +20,9 @@ export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-personal"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
-export ANTHROPIC_MODEL="deepseek-v4-flash[1m]"
+#export ANTHROPIC_MODEL="deepseek-v4-pro-fast[1m]" # Non-Think
+#export ANTHROPIC_MODEL="deepseek-v4-pro[1m]" # Think Normal
+export ANTHROPIC_MODEL="deepseek-v4-pro-max[1m]" # Think Max
 # Pin subagent tiers (opus/sonnet/haiku) to the same backend so the
 # whole session stays on DeepSeek even when Claude Code dispatches a
 # subagent by tier name. Otherwise `haiku` would route to
