@@ -20,8 +20,7 @@ export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-seibert"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
-# export ANTHROPIC_MODEL="claude-opus-4-8"
-export ANTHROPIC_MODEL="claude-sonnet-5[1m]"
+export ANTHROPIC_MODEL="claude-opus-4-8"
 export CLAUDE_CODE_EFFORT_LEVEL="medium" #  low, medium, high, xhigh, max
 
 OBSIDIAN_BROGRAMMERS="${OBSIDIAN_BROGRAMMERS:-$HOME/Documents/Obsidian/Brogrammers}"
