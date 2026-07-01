@@ -30,6 +30,7 @@ export ANTHROPIC_MODEL="qwen3.6:35b-a3b-coding-nvfp4"
 export ANTHROPIC_DEFAULT_OPUS_MODEL="${ANTHROPIC_MODEL}"
 export ANTHROPIC_DEFAULT_SONNET_MODEL="${ANTHROPIC_MODEL}"
 export ANTHROPIC_DEFAULT_HAIKU_MODEL="${ANTHROPIC_MODEL}"
+export CLAUDE_CODE_EFFORT_LEVEL="medium" #  low, medium, high, xhigh, max
 
 OBSIDIAN_PERSONAL="${OBSIDIAN_PERSONAL:-$HOME/Documents/Obsidian/Personal}"
 OBSIDIAN_ROOT="${OBSIDIAN_ROOT:-$HOME/Documents/Obsidian}"
@@ -39,7 +40,7 @@ cd "$OBSIDIAN_PERSONAL" || exit 1
 
 claude \
 --model "${ANTHROPIC_MODEL}" \
---effort high \
+--effort "${CLAUDE_CODE_EFFORT_LEVEL}" \
 --permission-mode acceptEdits \
 --mcp-config ~/.claude/mcp-obsidian-personal.json \
 --strict-mcp-config \

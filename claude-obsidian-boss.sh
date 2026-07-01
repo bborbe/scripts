@@ -19,7 +19,8 @@ export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-personal"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
-export ANTHROPIC_MODEL="claude-opus-4-7"
+export ANTHROPIC_MODEL="claude-opus-4-8"
+export CLAUDE_CODE_EFFORT_LEVEL="medium" #  low, medium, high, xhigh, max
 
 OBSIDIAN_BOSS="${OBSIDIAN_BOSS:-$HOME/Documents/Obsidian/Boss}"
 OBSIDIAN_ROOT="${OBSIDIAN_ROOT:-$HOME/Documents/Obsidian}"
@@ -29,7 +30,7 @@ cd "$OBSIDIAN_BOSS" || exit 1
 
 claude \
 --model "${ANTHROPIC_MODEL}" \
---effort high \
+--effort "${CLAUDE_CODE_EFFORT_LEVEL}" \
 --permission-mode auto \
 --mcp-config ~/.claude/mcp-obsidian-boss.json \
 --strict-mcp-config \

@@ -27,6 +27,7 @@ export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
 export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5.2[1m]"
 export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-5.2[1m]"
 export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-5.2-fast[1m]"
+export CLAUDE_CODE_EFFORT_LEVEL="medium" #  low, medium, high, xhigh, max
 
 OBSIDIAN_PERSONAL="${OBSIDIAN_PERSONAL:-$HOME/Documents/Obsidian/Personal}"
 OBSIDIAN_ROOT="${OBSIDIAN_ROOT:-$HOME/Documents/Obsidian}"
@@ -36,7 +37,7 @@ cd "$OBSIDIAN_PERSONAL" || exit 1
 
 claude \
 --model "${ANTHROPIC_DEFAULT_OPUS_MODEL}" \
---effort high \
+--effort "${CLAUDE_CODE_EFFORT_LEVEL}" \
 --permission-mode acceptEdits \
 --mcp-config ~/.claude/mcp-obsidian-personal.json \
 --strict-mcp-config \
