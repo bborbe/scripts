@@ -20,14 +20,13 @@ export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-personal"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
-export ANTHROPIC_MODEL="MiniMax-M3-highspeed"
 # Pin subagent tiers (opus/sonnet/haiku) to the same backend so the
 # whole session stays on MiniMax even when Claude Code dispatches a
 # subagent by tier name. Otherwise `haiku` would route to
 # anthropic-subscription via the router's "haiku" → claude-* mapping.
-export ANTHROPIC_DEFAULT_OPUS_MODEL="${ANTHROPIC_MODEL}"
-export ANTHROPIC_DEFAULT_SONNET_MODEL="${ANTHROPIC_MODEL}"
-export ANTHROPIC_DEFAULT_HAIKU_MODEL="${ANTHROPIC_MODEL}"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="MiniMax-M3-highspeed"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="MiniMax-M2.7-highspeed"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="MiniMax-M2.7-highspeed"
 
 OBSIDIAN_PERSONAL="${OBSIDIAN_PERSONAL:-$HOME/Documents/Obsidian/Personal}"
 OBSIDIAN_ROOT="${OBSIDIAN_ROOT:-$HOME/Documents/Obsidian}"
@@ -36,7 +35,7 @@ WORKSPACES_ROOT="${WORKSPACES_ROOT:-$HOME/Documents/workspaces}"
 cd "$OBSIDIAN_PERSONAL" || exit 1
 
 claude \
---model "${ANTHROPIC_MODEL}" \
+--model "${ANTHROPIC_DEFAULT_OPUS_MODEL}" \
 --effort high \
 --permission-mode acceptEdits \
 --mcp-config ~/.claude/mcp-obsidian-personal.json \
