@@ -20,10 +20,6 @@ export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-personal"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
-# Pin subagent tiers (opus/sonnet/haiku) to the same backend so the
-# whole session stays on MiniMax even when Claude Code dispatches a
-# subagent by tier name. Otherwise `haiku` would route to
-# anthropic-subscription via the router's "haiku" → claude-* mapping.
 export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5.2[1m]"
 export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-5.2[1m]"
 export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-5.2-fast[1m]"

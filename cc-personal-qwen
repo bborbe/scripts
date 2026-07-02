@@ -23,10 +23,6 @@ export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-personal"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
 export ANTHROPIC_MODEL="qwen3.6:35b-a3b-coding-nvfp4"
 #export ANTHROPIC_MODEL="qwen3.6:35b-a3b-mxfp8"
-# Pin subagent tiers (opus/sonnet/haiku) to the same backend so the
-# whole session stays on Qwen even when Claude Code dispatches a
-# subagent by tier name. Otherwise `haiku` would route to
-# anthropic-subscription via the router's "haiku" → claude-* mapping.
 export ANTHROPIC_DEFAULT_OPUS_MODEL="${ANTHROPIC_MODEL}"
 export ANTHROPIC_DEFAULT_SONNET_MODEL="${ANTHROPIC_MODEL}"
 export ANTHROPIC_DEFAULT_HAIKU_MODEL="${ANTHROPIC_MODEL}"
@@ -40,7 +36,7 @@ WORKSPACES_ROOT="${WORKSPACES_ROOT:-$HOME/Documents/workspaces}"
 cd "$OBSIDIAN_PERSONAL" || exit 1
 
 claude \
---model "${ANTHROPIC_MODEL}" \
+--model "${ANTHROPIC_DEFAULT_OPUS_MODEL}" \
 --effort "${EFFORT_LEVEL}" \
 --permission-mode "${PERMISSION_MODE}" \
 --mcp-config ~/.claude/mcp-obsidian-personal.json \
