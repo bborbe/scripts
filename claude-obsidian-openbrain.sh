@@ -21,7 +21,7 @@ export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-openbrain"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
 export ANTHROPIC_MODEL="claude-opus-4-8"
-export CLAUDE_CODE_EFFORT_LEVEL="medium" #  low, medium, high, xhigh, max
+export EFFORT_LEVEL="medium" #  low, medium, high, xhigh, max
 
 OBSIDIAN_OPENBRAIN="${OBSIDIAN_OPENBRAIN:-$HOME/Documents/Obsidian/OpenBrain}"
 OBSIDIAN_ROOT="${OBSIDIAN_ROOT:-$HOME/Documents/Obsidian}"
@@ -31,7 +31,7 @@ cd "$OBSIDIAN_OPENBRAIN" || exit 1
 
 claude \
 --model "${ANTHROPIC_MODEL}" \
---effort "${CLAUDE_CODE_EFFORT_LEVEL}" \
+--effort "${EFFORT_LEVEL}" \
 --permission-mode auto \
 --mcp-config ~/.claude/mcp-obsidian-openbrain.json \
 --strict-mcp-config \
