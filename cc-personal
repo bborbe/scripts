@@ -19,7 +19,13 @@ export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-personal"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
-export ANTHROPIC_MODEL="claude-opus-4-8"
+# [1m] suffix = Claude Code's per-model 1M opt-in (it sends the context-1m beta
+# header + base model id). Needed because the custom router base URL suppresses
+# native-1M auto-detection, so CC otherwise falls back to a 200k window — which
+# mis-scales the context meter AND triggers auto-compact ~5x too early.
+# Per-model (unlike a global CLAUDE_CODE_MAX_CONTEXT_TOKENS), so it's safe
+# alongside the non-Opus launchers (deepseek/minimax/qwen/glm).
+export ANTHROPIC_MODEL="claude-opus-4-8[1m]"
 export EFFORT_LEVEL="medium" # low, medium, high, xhigh, max
 export PERMISSION_MODE="auto" # acceptEdits, auto
 
