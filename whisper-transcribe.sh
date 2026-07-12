@@ -22,8 +22,8 @@ echo "→ Extracting audio..."
 ffmpeg -v error -y -i "$INPUT" -ar 16000 -ac 1 "$TMP_WAV"
 
 echo "→ Transcribing with Whisper... (this can take a while)"
-whisper \
-  -m /opt/local/share/whisper/ggml/ggml-medium.bin \
+whisper-cli \
+  -m "$HOME/.local/share/whisper/ggml-medium.bin" \
   --output-srt \
   --output-txt \
   "$TMP_WAV" \
