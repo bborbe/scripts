@@ -10,6 +10,9 @@ if which parallel-ssh &> /dev/null; then
 fi
 
 #  -H nuke-boss.hm.benjamin-borbe.de \
+#  -H nuke-k3s-longhorn-0.hm.benjamin-borbe.de \
+#  -H nuke-k3s-longhorn-1.hm.benjamin-borbe.de \
+#  -H nuke-workspace.hm.benjamin-borbe.de \
 
 # -P
 $CMD -o /tmp/pssh.log -l bborbe -t 300 -p 100 \
@@ -22,16 +25,15 @@ $CMD -o /tmp/pssh.log -l bborbe -t 300 -p 100 \
   -H nuke-k3s-agent-0.hm.benjamin-borbe.de \
   -H nuke-k3s-agent-1.hm.benjamin-borbe.de \
   -H nuke-k3s-dev-0.hm.benjamin-borbe.de \
+  -H nuke-k3s-dev.hm.benjamin-borbe.de \
   -H nuke-k3s-kafka-0.hm.benjamin-borbe.de \
   -H nuke-k3s-kafka-1.hm.benjamin-borbe.de \
   -H nuke-k3s-kafka-2.hm.benjamin-borbe.de \
-  -H nuke-k3s-longhorn-0.hm.benjamin-borbe.de \
-  -H nuke-k3s-longhorn-1.hm.benjamin-borbe.de \
   -H nuke-k3s-master-0.hm.benjamin-borbe.de \
   -H nuke-k3s-master-1.hm.benjamin-borbe.de \
   -H nuke-k3s-master-2.hm.benjamin-borbe.de \
   -H nuke-k3s-prod-0.hm.benjamin-borbe.de \
-  -H nuke-workspace.hm.benjamin-borbe.de \
+  -H nuke-k3s-prod.hm.benjamin-borbe.de \
   -H nuke.hm.benjamin-borbe.de \
   -H rasp3.hm.benjamin-borbe.de \
   -H sun.hm.benjamin-borbe.de \
