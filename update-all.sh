@@ -23,7 +23,6 @@ $CMD -o /tmp/pssh.log -l bborbe -t 300 -p 100 \
   -H hetzner-1.benjamin-borbe.de \
   -H hetzner-2.benjamin-borbe.de \
   -H nuke-k3s-agent-0.hm.benjamin-borbe.de \
-  -H nuke-k3s-agent-1.hm.benjamin-borbe.de \
   -H nuke-k3s-dev-0.hm.benjamin-borbe.de \
   -H nuke-k3s-dev.hm.benjamin-borbe.de \
   -H nuke-k3s-kafka-0.hm.benjamin-borbe.de \
