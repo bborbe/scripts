@@ -24,7 +24,8 @@ $CMD -o /tmp/pssh.log -l bborbe -t 300 -p 100 \
   -H hetzner-2.benjamin-borbe.de \
   -H nuke-k3s-agent-0.hm.benjamin-borbe.de \
   -H nuke-k3s-dev-0.hm.benjamin-borbe.de \
-  -H nuke-k3s-dev.hm.benjamin-borbe.de \
+  -H nuke-k3s-dev-master-0.hm.benjamin-borbe.de \
+  -H nuke-k3s-dev-worker-0.hm.benjamin-borbe.de \
   -H nuke-k3s-kafka-0.hm.benjamin-borbe.de \
   -H nuke-k3s-kafka-1.hm.benjamin-borbe.de \
   -H nuke-k3s-kafka-2.hm.benjamin-borbe.de \
@@ -32,7 +33,8 @@ $CMD -o /tmp/pssh.log -l bborbe -t 300 -p 100 \
   -H nuke-k3s-master-1.hm.benjamin-borbe.de \
   -H nuke-k3s-master-2.hm.benjamin-borbe.de \
   -H nuke-k3s-prod-0.hm.benjamin-borbe.de \
-  -H nuke-k3s-prod.hm.benjamin-borbe.de \
+  -H nuke-k3s-prod-master-0.hm.benjamin-borbe.de \
+  -H nuke-k3s-prod-worker-0.hm.benjamin-borbe.de \
   -H nuke.hm.benjamin-borbe.de \
   -H rasp3.hm.benjamin-borbe.de \
   -H sun.hm.benjamin-borbe.de \
