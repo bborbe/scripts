@@ -10,8 +10,6 @@ if which parallel-ssh &> /dev/null; then
 fi
 
 #  -H nuke-boss.hm.benjamin-borbe.de \
-#  -H nuke-k3s-longhorn-0.hm.benjamin-borbe.de \
-#  -H nuke-k3s-longhorn-1.hm.benjamin-borbe.de \
 #  -H nuke-workspace.hm.benjamin-borbe.de \
 
 # -P
