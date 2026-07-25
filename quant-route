@@ -1,0 +1,127 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+# quant-route — location-aware routing to the home subnets over the Hetzner VPN.
+#
+# The Viscosity "Hetzner" VPN stays up 24/7. When the laptop is on VLAN 20
+# (192.168.20.x) the home subnets are reachable directly and fast, so no VPN
+# routes are wanted. Everywhere else (WLAN repeater 192.168.177.x, mobile,
+# remote) the home subnets sit behind OPNsense and must be routed through its
+# VPN IP 172.16.90.10.
+#
+# This script adds or removes those routes based on where the laptop is.
+#
+# Usage: quant-route {up|down|auto|status}
+#   up     force-add the VPN routes (use when remote)
+#   down   remove the VPN routes (use when back on VLAN 20)
+#   auto   decide from current location (for LaunchDaemon / cron)
+#   status show current location + route state (read-only, no sudo)
+#
+# See runbook: [[Network - Access Home from WLAN or Remote]]
+
+GW="172.16.90.10"        # OPNsense VPN IP — gateway into the home subnets
+HOME_VLAN="192.168.20"   # laptop's direct VLAN; no VPN route needed here
+
+# Run route mutations directly when already root (LaunchDaemon), else via sudo.
+SUDO="sudo"
+if [ "$(id -u)" = "0" ]; then
+	SUDO=""
+fi
+
+# Home subnets behind OPNsense that need the VPN when off VLAN 20:
+SUBNETS=(
+	"192.168.178.0/24"   # quant / nuke / k3s
+	"192.168.177.0/24"   # OPNsense WAN / IoT — CO2 controllers (co2hz, co2wz)
+	"192.168.50.0/24"    # rasp (sensors) — rasp3
+	"192.168.10.0/24"    # fire (fileserver)
+	"192.168.30.0/24"    # sun (windows)
+	"192.168.40.0/24"    # hell (backup / k3s worker)
+)
+
+# Representative host per active subnet, for the status reachability check:
+CHECK_HOSTS=(
+	"192.168.178.38"   # nuke k3s master (quant)
+	"192.168.177.6"    # co2hz
+	"192.168.50.2"     # rasp3
+)
+
+current_ips() {
+	ifconfig 2>/dev/null | awk '/inet /{print $2}' | grep -v '^127\.' || true
+}
+
+on_home_vlan() {
+	current_ips | grep -q "^${HOME_VLAN}\."
+}
+
+# Is the laptop currently ON the given subnet (so it's directly reachable)?
+on_subnet() {
+	local pfx
+	pfx="$(echo "$1" | cut -d. -f1-3)"
+	current_ips | grep -q "^${pfx}\."
+}
+
+routes_up() {
+	if ! ping -c1 -t2 "$GW" >/dev/null 2>&1; then
+		echo "VPN gateway $GW unreachable — is Viscosity 'Hetzner' connected?" >&2
+		exit 1
+	fi
+	for s in "${SUBNETS[@]}"; do
+		if on_subnet "$s"; then
+			echo "skip $s (on it directly)"
+			continue
+		fi
+		${SUDO} route -n delete "$s" >/dev/null 2>&1 || true
+		if ${SUDO} route -n add "$s" "$GW" >/dev/null 2>&1; then
+			echo "add  $s -> $GW"
+		fi
+	done
+}
+
+routes_down() {
+	for s in "${SUBNETS[@]}"; do
+		if ${SUDO} route -n delete "$s" >/dev/null 2>&1; then
+			echo "del  $s"
+		fi
+	done
+}
+
+status() {
+	echo "ips:      $(current_ips | tr '\n' ' ')"
+	if on_home_vlan; then
+		echo "location: HOME (VLAN 20) — direct path, VPN routes NOT wanted"
+	else
+		echo "location: OFF-VLAN — VPN routes needed"
+	fi
+	if ping -c1 -t2 "$GW" >/dev/null 2>&1; then
+		echo "vpn gw:   $GW up"
+	else
+		echo "vpn gw:   $GW DOWN (Viscosity 'Hetzner' not connected?)"
+	fi
+	echo "routes:"
+	for h in "${CHECK_HOSTS[@]}"; do
+		local via reach
+		via="$(route -n get "$h" 2>/dev/null | awk '/gateway/{print $2}')"
+		reach="$(ping -c1 -t2 "$h" >/dev/null 2>&1 && echo ok || echo unreachable)"
+		printf "  %-15s via %-15s %s\n" "$h" "${via:-none}" "$reach"
+	done
+}
+
+case "${1:-}" in
+	up) routes_up ;;
+	down) routes_down ;;
+	auto)
+		if on_home_vlan; then
+			routes_down
+		else
+			routes_up
+		fi
+		;;
+	status) status ;;
+	*)
+		echo "Usage: $0 {up|down|auto|status}" >&2
+		exit 1
+		;;
+esac

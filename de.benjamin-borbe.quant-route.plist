@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  quant-route LaunchDaemon — keeps home-subnet routing correct as the laptop
+  moves between VLAN 20 (direct) and off-VLAN (VPN). Runs `quant-route auto`
+  as root at load, on every network change, and every 3 min as a fallback.
+
+  The script MUST live outside ~/Documents (TCC blocks root daemons from
+  Documents/Desktop/Downloads → exit 126 "Operation not permitted"). Deploy a
+  copy to /usr/local/bin and re-copy it whenever the repo source changes.
+
+  Install:
+    sudo cp ~/Documents/workspaces/scripts/quant-route /usr/local/bin/quant-route
+    sudo chmod +x /usr/local/bin/quant-route
+    sudo cp ~/Documents/workspaces/scripts/de.benjamin-borbe.quant-route.plist /Library/LaunchDaemons/
+    sudo chown root:wheel /Library/LaunchDaemons/de.benjamin-borbe.quant-route.plist
+    sudo launchctl load -w /Library/LaunchDaemons/de.benjamin-borbe.quant-route.plist
+  Uninstall:
+    sudo launchctl unload -w /Library/LaunchDaemons/de.benjamin-borbe.quant-route.plist
+    sudo rm /Library/LaunchDaemons/de.benjamin-borbe.quant-route.plist
+-->
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>de.benjamin-borbe.quant-route</string>
+
+	<key>ProgramArguments</key>
+	<array>
+		<string>/usr/local/bin/quant-route</string>
+		<string>auto</string>
+	</array>
+
+	<key>RunAtLoad</key>
+	<true/>
+
+	<key>WatchPaths</key>
+	<array>
+		<string>/etc/resolv.conf</string>
+		<string>/var/run/resolv.conf</string>
+		<string>/Library/Preferences/SystemConfiguration</string>
+	</array>
+
+	<key>StartInterval</key>
+	<integer>180</integer>
+
+	<key>StandardOutPath</key>
+	<string>/tmp/quant-route.log</string>
+	<key>StandardErrorPath</key>
+	<string>/tmp/quant-route.log</string>
+</dict>
+</plist>
