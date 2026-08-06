@@ -26,7 +26,7 @@ export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
 # Per-model (unlike a global CLAUDE_CODE_MAX_CONTEXT_TOKENS), so it's safe
 # alongside the non-Opus launchers (deepseek/minimax/qwen/glm).
 export ANTHROPIC_MODEL="claude-opus-5[1m]"
-export EFFORT_LEVEL="medium" # low, medium, high, xhigh, max
+export EFFORT_LEVEL="medium" # low, medium, high, xhigh
 export PERMISSION_MODE="auto" # acceptEdits, auto
 
 OBSIDIAN_PERSONAL="${OBSIDIAN_PERSONAL:-$HOME/Documents/Obsidian/Personal}"

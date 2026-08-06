@@ -3,7 +3,7 @@
 # claude-code-router on 127.0.0.1:8788, with Qwen 3.6 35B (via local
 # Ollama) as the default model. The router forwards `qwen*` requests
 # to localhost:11434 with the literal token "ollama" swapped in at the
-# router (see ~/.claude-code-router/config.yaml); switch mid-session
+# router (see ~/.config/claude-code-router/config.yaml); switch mid-session
 # with `/model <name>`. See github.com/bborbe/claude-code-router.
 #
 # Override paths via env (set in ~/.zshrc / direnv per machine):
@@ -26,7 +26,7 @@ export ANTHROPIC_MODEL="qwen3.6:35b-a3b-coding-nvfp4"
 export ANTHROPIC_DEFAULT_OPUS_MODEL="${ANTHROPIC_MODEL}"
 export ANTHROPIC_DEFAULT_SONNET_MODEL="${ANTHROPIC_MODEL}"
 export ANTHROPIC_DEFAULT_HAIKU_MODEL="${ANTHROPIC_MODEL}"
-export EFFORT_LEVEL="high" # low, medium, high, xhigh, max
+export EFFORT_LEVEL="high" # low, medium, high, xhigh
 export PERMISSION_MODE="auto" # acceptEdits, auto
 
 OBSIDIAN_PERSONAL="${OBSIDIAN_PERSONAL:-$HOME/Documents/Obsidian/Personal}"

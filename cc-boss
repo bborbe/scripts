@@ -20,7 +20,7 @@ export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-personal"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
 export ANTHROPIC_MODEL="claude-opus-5[1m]"
-export EFFORT_LEVEL="high" # low, medium, high, xhigh, max
+export EFFORT_LEVEL="high" # low, medium, high, xhigh
 export PERMISSION_MODE="auto" # acceptEdits, auto
 
 OBSIDIAN_BOSS="${OBSIDIAN_BOSS:-$HOME/Documents/Obsidian/Boss}"

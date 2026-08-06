@@ -3,7 +3,7 @@
 # claude-code-router on 127.0.0.1:8788, with deepseek-v4-flash[1m] as
 # the default model. The router forwards `deepseek-*` requests to
 # vllm.seibert.tools with the provider token swapped in at the router
-# (see ~/.claude-code-router/config.yaml); switch mid-session with
+# (see ~/.config/claude-code-router/config.yaml); switch mid-session with
 # `/model <name>`. See github.com/bborbe/claude-code-router.
 #
 # Override paths via env (set in ~/.zshrc / direnv per machine):
@@ -23,7 +23,7 @@ export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
 export ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-v4-pro-max[1m]"
 export ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-v4-pro[1m]"
 export ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-pro-fast[1m]"
-export EFFORT_LEVEL="high" # low, medium, high, xhigh, max
+export EFFORT_LEVEL="high" # low, medium, high, xhigh
 export PERMISSION_MODE="auto" # acceptEdits, auto
 
 OBSIDIAN_PERSONAL="${OBSIDIAN_PERSONAL:-$HOME/Documents/Obsidian/Personal}"

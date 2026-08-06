@@ -3,7 +3,7 @@
 # claude-code-router on 127.0.0.1:8788, with MiniMax-M3-highspeed as
 # the default model. The router forwards `MiniMax-*` requests to
 # api.minimax.io/anthropic with the provider token swapped in at the
-# router (see ~/.claude-code-router/config.yaml); switch mid-session
+# router (see ~/.config/claude-code-router/config.yaml); switch mid-session
 # with `/model <name>`. See github.com/bborbe/claude-code-router.
 #
 # Override paths via env (set in ~/.zshrc / direnv per machine):
@@ -27,7 +27,7 @@ export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
 export ANTHROPIC_DEFAULT_OPUS_MODEL="MiniMax-M3-highspeed"
 export ANTHROPIC_DEFAULT_SONNET_MODEL="MiniMax-M2.7-highspeed"
 export ANTHROPIC_DEFAULT_HAIKU_MODEL="MiniMax-M2.7-highspeed"
-export EFFORT_LEVEL="high" # low, medium, high, xhigh, max
+export EFFORT_LEVEL="high" # low, medium, high, xhigh
 export PERMISSION_MODE="auto" # acceptEdits, auto
 
 OBSIDIAN_PERSONAL="${OBSIDIAN_PERSONAL:-$HOME/Documents/Obsidian/Personal}"
