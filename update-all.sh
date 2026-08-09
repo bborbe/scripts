@@ -38,7 +38,11 @@ $CMD -o /tmp/pssh.log -l bborbe -t 300 -p 100 \
   -H sun.hm.benjamin-borbe.de \
   "sudo dpkg --configure -a && sudo apt-get update && sudo apt-get -y upgrade && sudo apt-get -y dist-upgrade && sudo apt-get -y autoremove && sudo apt-get clean"
 
+echo "run gcloud update"
+# No sudo: SDK lives in $HOME (user-owned). Running this under sudo writes
+# root-owned files into ~/.config/gcloud and breaks later user-level runs.
+gcloud components update --quiet
+
 echo "run brew update"
-sudo gcloud components update
 brew update && brew upgrade && brew cleanup
 pyenv update
