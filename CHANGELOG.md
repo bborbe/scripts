@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## v0.2.1
 
+### Added
+- `wezterm-claude-snapshot` — capture every running Claude Code session with its WezTerm window/tab before a reboot, and generate `~/.claude/wezterm-restore.sh` to re-open the tabs and `--resume` each session by UUID afterwards. Joins `wezterm cli list`, `ps`, and `~/.claude/sessions/<pid>.json`.
+
 ### Changed
 - `update-all.sh` — drop `sudo` from `gcloud components update`. The SDK moved to a user-owned install in `$HOME`; running it under `sudo` wrote root-owned files into `~/.config/gcloud` and broke later user-level runs. Also moved the call above its own `echo` (it was printing "run brew update").
 
