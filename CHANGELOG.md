@@ -5,10 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Changed
+- `wezterm-claude-snapshot` — refuse to overwrite a snapshot holding more sessions than the current run sees (archive it, exit 2, leave the restore script intact). Re-running post-reboot out of habit otherwise replaces the restore script with a one-session no-op and loses the UUIDs. `--force` overrides.
+
 ## v0.3.0
 
 ### Added
-- `wezterm-claude-snapshot` — capture every running Claude Code session with its WezTerm window/tab before a reboot, and generate `~/.claude/wezterm-restore.sh` to re-open the tabs and `--resume` each session by UUID afterwards. Joins `wezterm cli list`, `ps`, and `~/.claude/sessions/<pid>.json`. Refuses to overwrite a snapshot holding more sessions than the current run sees (archives it, exits 2, leaves the restore script intact) — re-running post-reboot out of habit would otherwise replace the restore script with a one-session no-op; `--force` overrides.
+- `wezterm-claude-snapshot` — capture every running Claude Code session with its WezTerm window/tab before a reboot, and generate `~/.claude/wezterm-restore.sh` to re-open the tabs and `--resume` each session by UUID afterwards. Joins `wezterm cli list`, `ps`, and `~/.claude/sessions/<pid>.json`.
 
 ## v0.2.1
 
