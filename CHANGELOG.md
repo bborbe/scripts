@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Changed
+- `pi.sh` — migrate to the teamvault-cli v5 invocation (`teamvault-cli password <key>`). The old `teamvault-password` binary was consolidated into the single cobra command in v5.0.0 and renamed to `teamvault-cli` in v5.2.x, and the hardcoded `--teamvault-config ~/.teamvault.json` pointed at a file that no longer exists since the config moved to XDG `~/.config/teamvault-cli/config.json`.
+
 ## v0.3.1
 
 ### Changed
