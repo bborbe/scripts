@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## v0.3.1
 
 ### Changed
 - `wezterm-claude-snapshot` — refuse to overwrite a snapshot holding more sessions than the current run sees (archive it, exit 2, leave the restore script intact). Re-running post-reboot out of habit otherwise replaces the restore script with a one-session no-op and loses the UUIDs. `--force` overrides.
