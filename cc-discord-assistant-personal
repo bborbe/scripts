@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# Launcher for the PERSONAL identity of discord-assistant.
+#
+# Deliberately NOT cc-personal: same vault, much smaller MCP set.
+#
+# WHY A LAUNCHER AND NOT `identities: personal: mcp_config:` — the shim only
+# passes --mcp-config when NO claude_script is set:
+#
+#     if not claude_script:
+#         cmd += ["--mcp-config", mcp_config, "--strict-mcp-config"]
+#
+# so an mcp_config sitting next to a claude_script is silently ignored. That is
+# exactly how sc ended up running all 16 servers while its config implied
+# otherwise. The launcher owns the MCP set, model, effort and --add-dir list.
+#
+# WHY THE SET IS SMALL — a Discord turn is answered through the voice channel or
+# the chat bridge. Anything needing a screen, a browser or the laptop's own
+# speakers is useless at best and wrong at worst: the `tts` server speaks out of
+# the LAPTOP rather than into the call. Tools it cannot use still cost context
+# and get volunteered at the user, which is how this surfaced — the assistant
+# offered `/tts-mcp:voice-selfcheck` mid-conversation.
+
+set -euo pipefail
+
+ulimit -n 8000
+
+export DISABLE_AUTOUPDATER=1
+export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
+export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-personal"
+export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
+export ANTHROPIC_MODEL="claude-opus-5[1m]"
+export EFFORT_LEVEL="medium"
+export PERMISSION_MODE="auto"
+
+VAULT="${OBSIDIAN_PERSONAL:-$HOME/Documents/Obsidian/Personal}"
+
+cd "$VAULT" || exit 1
+
+claude \
+--model "${ANTHROPIC_MODEL}" \
+--effort "${EFFORT_LEVEL}" \
+--permission-mode "${PERMISSION_MODE}" \
+--mcp-config "$HOME/.claude/mcp-discord-assistant-personal.json" \
+--strict-mcp-config \
+--add-dir "$VAULT" \
+--add-dir /tmp \
+"$@"

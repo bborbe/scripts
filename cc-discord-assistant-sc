@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Launcher for the STAR CITIZEN identity of discord-assistant.
+#
+# See cc-discord-assistant-personal for why this is a launcher rather than an
+# `mcp_config:` entry, and why the MCP set is deliberately small.
+#
+# Until 2026-08-16 sc had no claude_script of its own, so it inherited
+# cc-personal — the Personal vault AND all 16 servers — while its config said
+# only that its cwd was the Gaming vault. This script is what makes the sc
+# identity actually distinct.
+
+set -euo pipefail
+
+ulimit -n 8000
+
+export DISABLE_AUTOUPDATER=1
+export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
+export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-personal"
+export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
+export ANTHROPIC_MODEL="claude-opus-5[1m]"
+export EFFORT_LEVEL="medium"
+export PERMISSION_MODE="auto"
+
+VAULT="${OBSIDIAN_GAMING:-$HOME/Documents/Obsidian/Gaming}"
+
+cd "$VAULT" || exit 1
+
+claude \
+--model "${ANTHROPIC_MODEL}" \
+--effort "${EFFORT_LEVEL}" \
+--permission-mode "${PERMISSION_MODE}" \
+--mcp-config "$HOME/.claude/mcp-discord-assistant-sc.json" \
+--strict-mcp-config \
+--add-dir "$VAULT" \
+--add-dir /tmp \
+"$@"
