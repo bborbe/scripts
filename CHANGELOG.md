@@ -5,13 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Changed
+- `virsh-start-all` — exclude `nuke-k3s-prod-0`; the VM was drained and shut down 2026-08-21 to reclaim ~32 GiB, but stays defined because its disk holds 391 retained local-path PVs.
+
 ## v0.6.0
 
 ### Added
 - `deepseek-harness` — launch the DeepSeek Harness browser UI (`npx @deepseek-ai/dsh web`) in the foreground; configurable host/port/browser-open plus a single-instance guard.
-
-### Changed
-- `virsh-start-all` — exclude `nuke-k3s-prod-0`; the VM was drained and shut down 2026-08-21 to reclaim ~32 GiB, but stays defined because its disk holds 391 retained local-path PVs.
 
 ## v0.5.0
 
