@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Added
+- `k8s-delete-{error,not-running}[-force]-nuke-{dev,prod}` — delete scripts for the nuke K3s clusters.
+- `k8s-delete-{error,not-running}[-force]-smallprod` — delete scripts for the GKE small-prod cluster.
+
+### Changed
+- `k8s-delete-{error,not-running}[-force]-{dev,staging,prod}` — rename to `octopus-{dev,staging,prod}` so the GKE cluster family is explicit in the name.
+- `kubectlnukedev`/`kubectlnukeprod` — fix kubeconfig paths (nukedev pointed at `nuke-prod`, nukeprod at `octopus-prod`).
+
 ## v0.4.0
 
 ### Changed

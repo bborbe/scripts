@@ -8,7 +8,7 @@
 #
 # Used by:
 #   - k8s-delete-error (default kubectl context)
-#   - k8s-delete-error-{dev,staging,prod,quant,hell} (context-specific)
+#   - k8s-delete-error-{octopus-dev,octopus-staging,octopus-prod,quant,hell,nuke-dev,nuke-prod,smallprod} (context-specific)
 #   - k8s-delete-error-force* (force deletion variants)
 #
 # Usage: k8s-delete-error-common.sh <kubectl-command> [--force]

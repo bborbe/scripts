@@ -8,7 +8,7 @@
 #
 # Used by:
 #   - k8s-delete-not-running (default kubectl context)
-#   - k8s-delete-not-running-{dev,staging,prod,quant,hell} (context-specific)
+#   - k8s-delete-not-running-{octopus-dev,octopus-staging,octopus-prod,quant,hell,nuke-dev,nuke-prod,smallprod} (context-specific)
 #   - k8s-delete-not-running-force* (force deletion variants)
 #
 # Usage: k8s-delete-not-running-common.sh <kubectl-command> [--force]
