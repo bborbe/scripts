@@ -30,7 +30,24 @@ set -o errtrace
 #                                      agent-sentry-issue-analyzer). Nothing mounts them
 #                                      -- nuke-prod has its own copies -- but keep the LV
 #                                      until the migration is signed off.
-EXCLUDE=(nuke-boss nuke-workspace nuke-k3s-prod nuke-k3s-dev nuke-k3s-dev-0 nuke-k3s-agent-0)
+#   nuke-k3s-prod-0                 -- DRAINED AND SHUT DOWN 2026-08-21, freeing ~32 GiB
+#                                      back to the host. quant's last large node. Its 17
+#                                      running pods relocated cleanly: 12 carried
+#                                      node_type In [prod, kafka] and moved to the kafka
+#                                      nodes, 2 were DaemonSets, and the 2 unconstrained
+#                                      strimzi-topic-controllers landed on master-1
+#                                      (untainted) -- those two still have NO node
+#                                      affinity and should be pinned to node_type=kafka.
+#                                      Prerequisites merged the same day: quant#183
+#                                      (sentry-proxy -> [prod, kafka]) and trading#241
+#                                      (strimzi entity operator -> [kafka]).
+#                                      Still DEFINED on purpose, same reasoning as dev-0
+#                                      and agent-0: its disk holds 391 local-path PVs
+#                                      (~432 GiB, all Bound) of retained prod trading
+#                                      data -- candle handlers, signal finders, mt5-vnc,
+#                                      agent-task-controller. Do not undefine or remove
+#                                      the LV until the PVC migration is signed off.
+EXCLUDE=(nuke-boss nuke-workspace nuke-k3s-prod nuke-k3s-dev nuke-k3s-dev-0 nuke-k3s-agent-0 nuke-k3s-prod-0)
 
 for vm in $(virsh list --state-shutoff --name); do
   skip=0
