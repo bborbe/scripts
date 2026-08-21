@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## v0.6.1
 
 ### Changed
 - `virsh-start-all` — exclude `nuke-k3s-prod-0`; the VM was drained and shut down 2026-08-21 to reclaim ~32 GiB, but stays defined because its disk holds 391 retained local-path PVs.
