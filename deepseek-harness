@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+#
+# deepseek-harness — launch the DeepSeek Harness browser UI (foreground).
+#
+#   Starts `npx @deepseek-ai/dsh web` in the foreground, waits until the
+#   server is listening, prints the URL and opens the default browser.
+#   Press Ctrl+C to stop it cleanly.
+#
+# Configuration (environment variables, all optional):
+#   DSH_HOST   bind host              (default: 127.0.0.1)
+#   DSH_PORT   listen port            (default: 3080; use 0 for OS-assigned)
+#   DSH_OPEN   open the browser when ready  (default: 1; set 0 to disable)
+#
+# Any extra arguments are forwarded to the web app, e.g.:
+#   ./deepseek-harness --trusted-host myhost:8080
+
+set -euo pipefail
+
+HOST="${DSH_HOST:-127.0.0.1}"
+PORT="${DSH_PORT:-3080}"
+OPEN_BROWSER="${DSH_OPEN:-1}"
+URL="http://${HOST}:${PORT}"
+
+say() { printf '%s\n' "$*"; }
+die() { say "error: $*" >&2; exit 1; }
+
+# Is something already accepting connections on the port?
+is_listening() {
+  if command -v lsof >/dev/null 2>&1; then
+    lsof -nP -iTCP:"$PORT" -sTCP:LISTEN >/dev/null 2>&1
+  elif command -v nc >/dev/null 2>&1; then
+    nc -z 127.0.0.1 "$PORT" >/dev/null 2>&1
+  else
+    curl -s -o /dev/null --max-time 2 "http://127.0.0.1:${PORT}" >/dev/null 2>&1
+  fi
+}
+
+open_browser() {
+  [ "$OPEN_BROWSER" = "1" ] || return 0
+  if command -v open >/dev/null 2>&1; then        # macOS
+    ( sleep 1; open "$URL" >/dev/null 2>&1 ) || true
+  elif command -v xdg-open >/dev/null 2>&1; then  # Linux
+    ( sleep 1; xdg-open "$URL" >/dev/null 2>&1 ) || true
+  fi
+}
+
+# Don't start a second instance if one is already serving.
+if is_listening; then
+  say "DeepSeek Harness is already running at ${URL}"
+  open_browser
+  exit 0
+fi
+
+say "Starting DeepSeek Harness at ${URL} ..."
+
+# Port 0 = "let the OS pick". The server prints the real URL itself, so just
+# stream its output in the foreground.
+if [ "$PORT" = "0" ]; then
+  exec npx --yes @deepseek-ai/dsh web --host "$HOST" --port 0 "$@"
+fi
+
+npx --yes @deepseek-ai/dsh web --host "$HOST" --port "$PORT" "$@" &
+SERVER_PID=$!
+trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT INT TERM
+
+# Wait for the server to accept connections. The timeout is generous because
+# npx may need to download the package on first run.
+for _ in $(seq 1 120); do
+  if curl -s -o /dev/null --max-time 2 "http://127.0.0.1:${PORT}" >/dev/null 2>&1; then
+    break
+  fi
+  if ! kill -0 "$SERVER_PID" 2>/dev/null; then
+    wait "$SERVER_PID" 2>/dev/null || true
+    die "server exited early (see output above)"
+  fi
+  sleep 1
+done
+
+if curl -s -o /dev/null --max-time 2 "http://127.0.0.1:${PORT}" >/dev/null 2>&1; then
+  say "DeepSeek Harness is running at ${URL}  (press Ctrl+C to stop)"
+  open_browser
+else
+  die "timed out waiting for ${URL} (see output above)"
+fi
+
+wait "$SERVER_PID"
