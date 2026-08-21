@@ -16,7 +16,21 @@ set -o errtrace
 #                                      fallback for every migration batch. Do not
 #                                      undefine or remove the LV until prod has migrated
 #                                      too and the fallback is genuinely not needed.
-EXCLUDE=(nuke-boss nuke-workspace nuke-k3s-prod nuke-k3s-dev nuke-k3s-dev-0)
+#   nuke-k3s-agent-0                -- DRAINED AND SHUT DOWN 2026-08-21, freeing 32 GiB
+#                                      back to the host. It held quant cluster infra
+#                                      (k8s-pod-status across 8 namespaces,
+#                                      k8s-secret-syncer, keel-prod, alert-controller,
+#                                      karma), all of which was re-pinned from
+#                                      node_type=agent to node_type In [prod, kafka] so
+#                                      it also survives the coming prod-0 shutdown.
+#                                      Still DEFINED on purpose, same reasoning as
+#                                      dev-0: its disk holds 8 local-path PVs of agent
+#                                      workspace data (agent-claude, agent-pi,
+#                                      agent-hypothesis, agent-trade-analysis,
+#                                      agent-sentry-issue-analyzer). Nothing mounts them
+#                                      -- nuke-prod has its own copies -- but keep the LV
+#                                      until the migration is signed off.
+EXCLUDE=(nuke-boss nuke-workspace nuke-k3s-prod nuke-k3s-dev nuke-k3s-dev-0 nuke-k3s-agent-0)
 
 for vm in $(virsh list --state-shutoff --name); do
   skip=0
