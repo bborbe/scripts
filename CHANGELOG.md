@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Changed
+- `update-all.sh` — drop the decommissioned `nuke-k3s-agent-0`, `nuke-k3s-dev-0` and `nuke-k3s-prod-0` from the pssh host list (22 → 19 hosts). All three are cordoned (`NotReady,SchedulingDisabled`) and powered off; their workloads moved to the nuke-dev / nuke-prod clusters. Commented out rather than deleted, matching the existing `nuke-boss` / `nuke-workspace` convention.
+
 ## v0.6.1
 
 ### Changed
