@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Changed
+- `remote-k3s-shutdown-nuke.sh` — drop the decommissioned `nuke-k3s-agent-0`, `nuke-k3s-dev-0` and `nuke-k3s-prod-0` from the first pssh block (13 → 10 hosts), completing the sweep started in v0.6.2 for `update-all.sh`. All three are powered off; with `set -o errexit` their pssh failure aborted the script after the workers were stopped but **before** the kafka and master blocks — leaving Kafka and etcd live and mid-write during the Sunday backup window, the exact torn state the script exists to prevent. Commented out rather than deleted, matching the `nuke-boss` / `nuke-workspace` convention.
+
 ## v0.6.2
 
 ### Changed
