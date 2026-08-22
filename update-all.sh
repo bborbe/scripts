@@ -11,6 +11,11 @@ fi
 
 #  -H nuke-boss.hm.benjamin-borbe.de \
 #  -H nuke-workspace.hm.benjamin-borbe.de \
+# Decommissioned 2026-08-22 — cordoned (SchedulingDisabled) + powered off, VMs to be
+# deleted. Workloads migrated to the nuke-dev / nuke-prod clusters.
+#  -H nuke-k3s-agent-0.hm.benjamin-borbe.de \
+#  -H nuke-k3s-dev-0.hm.benjamin-borbe.de \
+#  -H nuke-k3s-prod-0.hm.benjamin-borbe.de \
 
 # -P
 $CMD -o /tmp/pssh.log -l bborbe -t 300 -p 100 \
@@ -20,8 +25,6 @@ $CMD -o /tmp/pssh.log -l bborbe -t 300 -p 100 \
   -H hell.hm.benjamin-borbe.de \
   -H hetzner-1.benjamin-borbe.de \
   -H hetzner-2.benjamin-borbe.de \
-  -H nuke-k3s-agent-0.hm.benjamin-borbe.de \
-  -H nuke-k3s-dev-0.hm.benjamin-borbe.de \
   -H nuke-k3s-dev-master-0.hm.benjamin-borbe.de \
   -H nuke-k3s-dev-worker-0.hm.benjamin-borbe.de \
   -H nuke-k3s-kafka-0.hm.benjamin-borbe.de \
@@ -30,7 +33,6 @@ $CMD -o /tmp/pssh.log -l bborbe -t 300 -p 100 \
   -H nuke-k3s-master-0.hm.benjamin-borbe.de \
   -H nuke-k3s-master-1.hm.benjamin-borbe.de \
   -H nuke-k3s-master-2.hm.benjamin-borbe.de \
-  -H nuke-k3s-prod-0.hm.benjamin-borbe.de \
   -H nuke-k3s-prod-master-0.hm.benjamin-borbe.de \
   -H nuke-k3s-prod-worker-0.hm.benjamin-borbe.de \
   -H nuke.hm.benjamin-borbe.de \
