@@ -31,6 +31,7 @@ WORKSPACES_ROOT="${WORKSPACES_ROOT:-$HOME/Documents/workspaces}"
 cd "$OBSIDIAN_BROGRAMMERS" || exit 1
 
 claude \
+--settings '{"theme":"custom:work-green"}' \
 --model "${ANTHROPIC_MODEL}" \
 --effort "${EFFORT_LEVEL}" \
 --permission-mode "${PERMISSION_MODE}" \

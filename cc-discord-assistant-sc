@@ -26,6 +26,7 @@ VAULT="${OBSIDIAN_GAMING:-$HOME/Documents/Obsidian/Gaming}"
 cd "$VAULT" || exit 1
 
 claude \
+--settings '{"theme":"custom:private-blue"}' \
 --model "${ANTHROPIC_MODEL}" \
 --effort "${EFFORT_LEVEL}" \
 --permission-mode "${PERMISSION_MODE}" \
