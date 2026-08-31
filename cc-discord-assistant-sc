@@ -21,7 +21,7 @@ export ANTHROPIC_MODEL="claude-opus-5[1m]"
 export EFFORT_LEVEL="medium"
 export PERMISSION_MODE="auto"
 
-VAULT="${OBSIDIAN_GAMING:-$HOME/Documents/Obsidian/Gaming}"
+VAULT="${OBSIDIAN_STARCITIZEN:-$HOME/Documents/Obsidian/StarCitizen}"
 
 cd "$VAULT" || exit 1
 
