@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## v0.6.4
 
 ### Changed
 - `git-status.sh` — fix false `DIRTY` reports: the stat-cache check `git diff-index --quiet HEAD` flagged mtime-only changes (content unchanged) as dirty, e.g. after a checkout or `go mod tidy` sweep; switched to `git diff --quiet HEAD`, which re-verifies file content.
