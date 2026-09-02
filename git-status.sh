@@ -26,7 +26,7 @@ check_repo() {
   local branch dirty behind
   branch=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD)
   git fetch -p --quiet 2>/dev/null
-  if git diff-index --quiet HEAD -- 2>/dev/null; then
+  if git diff --quiet HEAD -- 2>/dev/null; then
     dirty="clean"
   else
     dirty="DIRTY"
