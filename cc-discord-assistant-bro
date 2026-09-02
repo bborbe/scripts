@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# Launcher for the BROGRAMMERS identity of discord-assistant.
+#
+# See cc-discord-assistant-personal for why this is a launcher rather than an
+# `mcp_config:` entry, and why the MCP set is deliberately small.
+#
+# This instance is team-facing (all Brogrammers on the allowlist once the k8s
+# deploy is green), so the --add-dir set is scoped to the team's THREE vaults
+# and nothing else — no ~/Documents/workspaces, no Personal vault. The k8s pod
+# mounts the same three vaults under /vault; this launcher is the laptop
+# equivalent.
+
+set -euo pipefail
+
+ulimit -n 8000
+
+export DISABLE_AUTOUPDATER=1
+export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
+export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-brogrammers"
+export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
+export ANTHROPIC_MODEL="claude-opus-5[1m]"
+export EFFORT_LEVEL="medium"
+export PERMISSION_MODE="auto"
+
+VAULT="${OBSIDIAN_BROGRAMMERS:-$HOME/Documents/Obsidian/Brogrammers}"
+VAULT_AGENT="${OBSIDIAN_AGENT:-$HOME/Documents/Obsidian/OctopusAgent}"
+VAULT_OPENBRAIN="${OBSIDIAN_OPENBRAIN:-$HOME/Documents/Obsidian/OpenBrain}"
+
+cd "$VAULT" || exit 1
+
+claude \
+--settings '{"theme":"custom:private-blue"}' \
+--model "${ANTHROPIC_MODEL}" \
+--effort "${EFFORT_LEVEL}" \
+--permission-mode "${PERMISSION_MODE}" \
+--mcp-config "$HOME/.claude/mcp-discord-assistant-bro.json" \
+--strict-mcp-config \
+--add-dir "$VAULT" \
+--add-dir "$VAULT_AGENT" \
+--add-dir "$VAULT_OPENBRAIN" \
+--add-dir /tmp \
+"$@"
