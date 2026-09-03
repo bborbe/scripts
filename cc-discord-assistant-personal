@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Launcher for the PERSONAL identity of discord-assistant.
 #
-# Deliberately NOT cc-personal: same vault, much smaller MCP set.
+# Deliberately NOT cc-personal: dedicated vault, much smaller MCP set.
 #
 # WHY A LAUNCHER AND NOT `identities: personal: mcp_config:` — the shim only
 # passes --mcp-config when NO claude_script is set:
@@ -19,6 +19,14 @@
 # the LAPTOP rather than into the call. Tools it cannot use still cost context
 # and get volunteered at the user, which is how this surfaced — the assistant
 # offered `/tts-mcp:voice-selfcheck` mid-conversation.
+#
+# WHY A DEDICATED VAULT (2026-09-03) — the assistant used to run with the user's
+# Personal vault as its working directory, which coupled its rules (narration,
+# MCP set) to terminal sessions and produced double-speaking in voice calls.
+# The working directory is now its own runtime vault (PersonalAssistant), and
+# --add-dir reaches the user's real vaults (OBSIDIAN_ROOT) + workspaces for
+# content access. Its own CLAUDE.md carries no narration rule and its MCP set
+# excludes tts, so the double voice is impossible by construction.
 
 set -euo pipefail
 
@@ -32,7 +40,9 @@ export ANTHROPIC_MODEL="claude-opus-5[1m]"
 export EFFORT_LEVEL="medium"
 export PERMISSION_MODE="auto"
 
-VAULT="${OBSIDIAN_PERSONAL:-$HOME/Documents/Obsidian/Personal}"
+VAULT="${OBSIDIAN_PERSONAL_ASSISTANT:-$HOME/Documents/Obsidian/PersonalAssistant}"
+OBSIDIAN_ROOT="${OBSIDIAN_ROOT:-$HOME/Documents/Obsidian}"
+WORKSPACES_ROOT="${WORKSPACES_ROOT:-$HOME/Documents/workspaces}"
 
 cd "$VAULT" || exit 1
 
@@ -44,5 +54,8 @@ claude \
 --mcp-config "$HOME/.claude/mcp-discord-assistant-personal.json" \
 --strict-mcp-config \
 --add-dir "$VAULT" \
+--add-dir "$OBSIDIAN_ROOT" \
+--add-dir "$WORKSPACES_ROOT" \
+--add-dir ~/.claude/prompts \
 --add-dir /tmp \
 "$@"
