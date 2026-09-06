@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## v0.6.5
 
 - fix: pin `TEAMVAULT_CONFIG` to the personal instance in `cc-personal`. The launcher inherited whatever
   the calling shell exported, so a terminal left pointing at `seibert.json` (work) made every personal /
