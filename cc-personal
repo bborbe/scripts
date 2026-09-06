@@ -18,6 +18,15 @@ ulimit -n 8000
 export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-personal"
+# Pin TeamVault to the PERSONAL instance. Without this the launcher inherits
+# whatever $TEAMVAULT_CONFIG the calling shell had — and a shell left pointing at
+# seibert.json (work) makes every personal/nuke/quant secret lookup 404, so
+# `teamvault-cli config parse` renders an EMPTY manifest and `kubectl apply`
+# reports "no objects passed to apply" while the Makefile still exits 0.
+# Images push, nothing deploys, the run looks clean. Hit 2026-09-06 during the
+# weekly nuke rebuild: 8 quant components silently failed to apply on dev AND
+# prod. Same class as the ~296 silent apply failures of 2026-08-23 (W34).
+export TEAMVAULT_CONFIG="${TEAMVAULT_CONFIG_PERSONAL:-$HOME/.config/teamvault-cli/config.json}"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
 # [1m] suffix = Claude Code's per-model 1M opt-in (it sends the context-1m beta
 # header + base model id). Needed because the custom router base URL suppresses
