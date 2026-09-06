@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+- fix: pin `TEAMVAULT_CONFIG` to the personal instance in `cc-personal`. The launcher inherited whatever
+  the calling shell exported, so a terminal left pointing at `seibert.json` (work) made every personal /
+  nuke / quant secret lookup 404. `teamvault-cli config parse` then renders an EMPTY manifest and
+  `kubectl apply` reports "no objects passed to apply" while the Makefile still exits 0 — images push,
+  nothing deploys, the run looks clean. Hit 2026-09-06 during the weekly nuke rebuild: 8 quant components
+  silently failed to apply on dev AND prod. Same class as the ~296 silent apply failures of 2026-08-23.
+
 ## v0.6.4
 
 ### Changed
