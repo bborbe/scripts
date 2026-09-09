@@ -9,6 +9,12 @@
 # and nothing else — no ~/Documents/workspaces, no Personal vault. The k8s pod
 # mounts the same three vaults under /vault; this launcher is the laptop
 # equivalent.
+#
+# Runtime home is the dedicated BrogrammersAssistant vault (since 2026-09-09,
+# mirroring the personal assistant's move off the user vault): its own
+# CLAUDE.md carries no narration rule and its MCP set excludes tts, so a
+# Discord-answered session can never double-speak on the laptop. The three
+# team vaults below are knowledge reached via --add-dir, never the cwd.
 
 set -euo pipefail
 
@@ -22,7 +28,8 @@ export ANTHROPIC_MODEL="claude-opus-5[1m]"
 export EFFORT_LEVEL="medium"
 export PERMISSION_MODE="auto"
 
-VAULT="${OBSIDIAN_BROGRAMMERS:-$HOME/Documents/Obsidian/Brogrammers}"
+VAULT="${OBSIDIAN_BROGRAMMERS_ASSISTANT:-$HOME/Documents/Obsidian/BrogrammersAssistant}"
+VAULT_BROGRAMMERS="${OBSIDIAN_BROGRAMMERS:-$HOME/Documents/Obsidian/Brogrammers}"
 VAULT_AGENT="${OBSIDIAN_AGENT:-$HOME/Documents/Obsidian/OctopusAgent}"
 VAULT_OPENBRAIN="${OBSIDIAN_OPENBRAIN:-$HOME/Documents/Obsidian/OpenBrain}"
 
@@ -36,6 +43,7 @@ claude \
 --mcp-config "$HOME/.claude/mcp-discord-assistant-bro.json" \
 --strict-mcp-config \
 --add-dir "$VAULT" \
+--add-dir "$VAULT_BROGRAMMERS" \
 --add-dir "$VAULT_AGENT" \
 --add-dir "$VAULT_OPENBRAIN" \
 --add-dir /tmp \
