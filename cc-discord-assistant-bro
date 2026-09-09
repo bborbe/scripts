@@ -24,8 +24,15 @@ export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-brogrammers"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
-export ANTHROPIC_MODEL="claude-opus-5[1m]"
-export EFFORT_LEVEL="medium"
+# Routed through claude-code-router on 127.0.0.1:8788; deepseek-* requests
+# forward to vllm.seibert.tools with the provider token swapped at the router
+# (see ~/.config/claude-code-router/config.yaml). Switch mid-session with
+# `/model <name>`.
+export ANTHROPIC_DEFAULT_FABLE_MODEL="deepseek-v4-flash-max[1m]"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-v4-flash-max[1m]"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-v4-flash[1m]"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash[1m]"
+export EFFORT_LEVEL="high" # low, medium, high, xhigh
 export PERMISSION_MODE="auto"
 
 VAULT="${OBSIDIAN_BROGRAMMERS_ASSISTANT:-$HOME/Documents/Obsidian/BrogrammersAssistant}"
@@ -37,7 +44,7 @@ cd "$VAULT" || exit 1
 
 claude \
 --settings '{"theme":"custom:private-blue"}' \
---model "${ANTHROPIC_MODEL}" \
+--model "${ANTHROPIC_DEFAULT_OPUS_MODEL}" \
 --effort "${EFFORT_LEVEL}" \
 --permission-mode "${PERMISSION_MODE}" \
 --mcp-config "$HOME/.claude/mcp-discord-assistant-bro.json" \
