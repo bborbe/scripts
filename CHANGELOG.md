@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## v0.7.0
 
 - feat: point `cc-discord-assistant-bro` at a dedicated `BrogrammersAssistant` runtime vault (cwd) instead of the `Brogrammers` knowledge vault; the three team vaults (Brogrammers, OctopusAgent, OpenBrain) are now reached via `--add-dir`. Mirrors the personal assistant's move off the user vault — no narration rule, no tts MCP server — so a Discord-answered session cannot double-speak on the laptop.
 
