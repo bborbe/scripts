@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # Launch Claude in the Personal Obsidian vault, routed through
-# claude-code-router on 127.0.0.1:8788, with glm-5.3[1m] as the
-# default model. The router forwards `glm-*` requests to the `zai`
-# provider (api.z.ai/api/anthropic) with the provider token swapped in
-# at the router (see ~/.config/claude-code-router/config.yaml); switch
-# mid-session with `/model <name>`. See github.com/bborbe/claude-code-router.
+# claude-code-router on 127.0.0.1:8788, with deepseek-v4-flash[1m] as
+# the default model. The router forwards `deepseek-*` requests to
+# vllm.seibert.tools with the provider token swapped in at the router
+# (see ~/.config/claude-code-router/config.yaml); switch mid-session with
+# `/model <name>`. See github.com/bborbe/claude-code-router.
 #
 # Override paths via env (set in ~/.zshrc / direnv per machine):
 #   OBSIDIAN_PERSONAL  — Personal vault (default: $HOME/Documents/Obsidian/Personal)
@@ -20,10 +20,10 @@ export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-personal"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
-export ANTHROPIC_DEFAULT_FABLE_MODEL="glm-5.3[1m]"
-export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5.3-flash[1m]"
-export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-5.3-flash[1m]"
-export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-5.3-flash[1m]" # NOT glm-5.3-fast — Z.ai 400s: unknown model
+export ANTHROPIC_DEFAULT_FABLE_MODEL="Qwen3.8-Next-Flash[1m]"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="Qwen3.8-Next-Flash[1m]"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="Qwen3.8-Next-Flash[1m]"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="Qwen3.8-Next-Flash[1m]"
 export EFFORT_LEVEL="high" # low, medium, high, xhigh
 export PERMISSION_MODE="auto" # acceptEdits, auto
 

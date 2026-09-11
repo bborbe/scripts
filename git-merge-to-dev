@@ -5,7 +5,18 @@ set -o nounset
 set -o pipefail
 
 currentbranch=$(git branch | grep \* | cut -d ' ' -f2)
-git checkout dev
+if ! git checkout dev 2>/dev/null; then
+  # dev already checked out in another worktree (e.g. sm-octopus-dev) — merge there instead
+  devwt=$(git worktree list --porcelain | awk '/^worktree /{wt=$2} /^branch refs\/heads\/dev$/{print wt; exit}')
+  if [ -z "${devwt}" ]; then
+    echo "git-merge-to-dev: dev is checked out in a worktree I cannot locate" >&2
+    exit 1
+  fi
+  cd "${devwt}" || exit 1
+  git pull
+  git merge "$currentbranch"
+  exit 0
+fi
 git pull
 git merge $currentbranch
 git checkout $currentbranch
