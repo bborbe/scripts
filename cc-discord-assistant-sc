@@ -25,6 +25,10 @@ VAULT="${OBSIDIAN_STARCITIZEN:-$HOME/Documents/Obsidian/StarCitizen}"
 
 cd "$VAULT" || exit 1
 
+
+# Persist transcripts even when spawned from a child/branched session
+unset CLAUDE_CODE_CHILD_SESSION
+export CLAUDE_CODE_FORCE_SESSION_PERSISTENCE=1
 claude \
 --settings '{"theme":"custom:private-blue"}' \
 --model "${ANTHROPIC_MODEL}" \
