@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+- fix: unset the inherited `CLAUDE_CODE_SESSION_ID` in all 16 `cc-*` launchers. A pane spawned from a session inherited the CALLING session's `CLAUDE_CODE_SESSION_ID`, so the child resolved its own identity from the PARENT and wrote the parent's name as its trailing `agent-name` — it held its own name for the whole run, then ended it under the spawning session's name, while its own uuid stayed correct. Measured 3x on 2026-09-14 (`ae186815`, `f4c8fd2d`, `a4de4005`) and reproducible on demand via `/open` → `vault-cli task work-on --mode headless` → `wezterm cli spawn`. The launchers already defended against the sibling variable `CLAUDE_CODE_CHILD_SESSION`; this closes the same gap for the identity variable. No-op on a plain launch, where the variable is unset anyway.
+
 ## v0.8.0
 
 - feat: `cc-discord-assistant-bro` now runs on deepseek (deepseek-v4-flash-max[1m] opus/fable tier, deepseek-v4-flash[1m] sonnet/haiku) via claude-code-router, effort high — matching `cc-personal-deepseek`.

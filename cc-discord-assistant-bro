@@ -45,6 +45,10 @@ cd "$VAULT" || exit 1
 
 # Persist transcripts even when spawned from a child/branched session
 unset CLAUDE_CODE_CHILD_SESSION
+# A spawned pane inherits the CALLING session's CLAUDE_CODE_SESSION_ID, so it
+# resolves its own name from the PARENT and ends its run carrying the parent's
+# name (measured 3x 2026-09-14: ae186815, f4c8fd2d, a4de4005). No-op on a plain launch.
+unset CLAUDE_CODE_SESSION_ID
 export CLAUDE_CODE_FORCE_SESSION_PERSISTENCE=1
 claude \
 --settings '{"theme":"custom:private-blue"}' \
