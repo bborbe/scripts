@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+- fix: cap the deepseek compaction output at 64000 in `cc-brogrammers-deepseek`, aligning it with `cc-personal-deepseek`. Claude Code gives unrecognised model ids (all `deepseek-*`) a 32000 fallback output cap, so the compaction summary came back truncated (`stop_reason: max_tokens`); after 3 consecutive failures the auto-compact circuit breaker tripped and the session grew to 100% context until it was stuck on "Prompt is too long". 64000 is accepted unclamped (the unknown-model upper limit is 128000) and leaves ~113k of the 1M window for the summary at the 900000-token auto-compact window's 887k trigger.
+
 ## v0.8.1
 
 - fix: unset the inherited `CLAUDE_CODE_SESSION_ID` in all 16 `cc-*` launchers. A pane spawned from a session inherited the CALLING session's `CLAUDE_CODE_SESSION_ID`, so the child resolved its own identity from the PARENT and wrote the parent's name as its trailing `agent-name` — it held its own name for the whole run, then ended it under the spawning session's name, while its own uuid stayed correct. Measured 3x on 2026-09-14 (`ae186815`, `f4c8fd2d`, `a4de4005`) and reproducible on demand via `/open` → `vault-cli task work-on --mode headless` → `wezterm cli spawn`. The launchers already defended against the sibling variable `CLAUDE_CODE_CHILD_SESSION`; this closes the same gap for the identity variable. No-op on a plain launch, where the variable is unset anyway.
