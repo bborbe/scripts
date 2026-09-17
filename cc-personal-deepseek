@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Launch Claude in the Personal Obsidian vault, routed through
-# claude-code-router on 127.0.0.1:8788, with deepseek-v41-flash[1m] as
+# claude-code-router on 127.0.0.1:8788, with deepseek-v4-flash[1m] as
 # the default model. The router forwards `deepseek-*` requests to
 # vllm.seibert.tools with the provider token swapped in at the router
 # (see ~/.config/claude-code-router/config.yaml); switch mid-session with
@@ -20,10 +20,17 @@ export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-personal"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
-export ANTHROPIC_DEFAULT_FABLE_MODEL="deepseek-v41-flash-max[1m]"
-export ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-v41-flash-max[1m]"
-export ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-v41-flash[1m]"
-export ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v41-flash[1m]"
+export ANTHROPIC_DEFAULT_FABLE_MODEL="deepseek-v4-flash-ultra[1m]"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-v4-flash-max[1m]"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-v4-flash[1m]"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash[1m]"
+# deepseek-* IDs are unknown to Claude Code, so its fallback output cap is 32000
+# — too small for a 1M-context compaction summary (stop_reason: max_tokens, then
+# the auto-compact circuit breaker trips after 3 failures). 64000 is accepted
+# (unknown-model upper limit is 128000); 900000 moves the compaction trigger to
+# 887k so a 64k summary still fits inside the 1M window.
+export CLAUDE_CODE_MAX_OUTPUT_TOKENS=64000
+export CLAUDE_CODE_AUTO_COMPACT_WINDOW=900000
 export EFFORT_LEVEL="high" # low, medium, high, xhigh
 export PERMISSION_MODE="auto" # acceptEdits, auto
 
