@@ -38,7 +38,7 @@ LAUNCHERS = {
     "personal": "cc-personal",
     "brogrammers": "cc-brogrammers",
     "boss": "cc-boss",
-    "openbrain": "cc-openbrain",
+    "data": "cc-data",
 }
 
 
