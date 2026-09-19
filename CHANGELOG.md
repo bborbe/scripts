@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+- fix: correct the deepseek launchers' compaction-trigger comment from 887k to 867k in `cc-personal-deepseek` and `cc-brogrammers-deepseek`. The trigger is `window - min(maxOutputTokens, 20000) - 13000`, so the 900000 window fires at 867k, not 887k. Threshold compaction was verified to apply to unrecognised `deepseek-*` models on 2026-09-20 (a controlled run fired `trigger: auto` at `preTokens` 99669 on a 1M-window session), so the `cc-brogrammers-deepseek` comment's "unverified as of 2026-09-17" caveat is dropped and its summary headroom corrected from ~113k to ~133k.
+
 ## v0.8.2
 
 - fix: cap the deepseek compaction output at 64000 in `cc-brogrammers-deepseek`, aligning it with `cc-personal-deepseek`. Claude Code gives unrecognised model ids (all `deepseek-*`) a 32000 fallback output cap, so the compaction summary came back truncated (`stop_reason: max_tokens`); after 3 consecutive failures the auto-compact circuit breaker tripped and the session grew to 100% context until it was stuck on "Prompt is too long". 64000 is accepted unclamped (the unknown-model upper limit is 128000) and leaves ~113k of the 1M window for the summary at the 900000-token auto-compact window's 887k trigger.

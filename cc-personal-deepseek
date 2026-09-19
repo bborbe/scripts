@@ -28,7 +28,9 @@ export ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash[1m]"
 # — too small for a 1M-context compaction summary (stop_reason: max_tokens, then
 # the auto-compact circuit breaker trips after 3 failures). 64000 is accepted
 # (unknown-model upper limit is 128000); 900000 moves the compaction trigger to
-# 887k so a 64k summary still fits inside the 1M window.
+# 867k (window - min(maxOutputTokens, 20000) - 13000) so a 64k summary still
+# fits inside the 1M window. Threshold compaction is honoured for deepseek:
+# verified 2026-09-20, trigger: auto fired at preTokens 99669 — not inert.
 export CLAUDE_CODE_MAX_OUTPUT_TOKENS=64000
 export CLAUDE_CODE_AUTO_COMPACT_WINDOW=900000
 export EFFORT_LEVEL="high" # low, medium, high, xhigh
