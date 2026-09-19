@@ -27,9 +27,10 @@ export ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash[1m]"
 # deepseek-* IDs are unknown to Claude Code, so its fallback output cap is 32000
 # — too small for a 1M-context compaction summary (stop_reason: max_tokens, then
 # the auto-compact circuit breaker trips after 3 failures). 64000 is accepted
-# (unknown-model upper limit is 128000) and, at the 900000 window's 887k trigger,
-# leaves ~113k of the 1M window for the summary. The window below assumes
-# threshold compaction fires for unknown models — unverified as of 2026-09-17.
+# (unknown-model upper limit is 128000) and, at the 900000 window's 867k trigger
+# (window - min(maxOutputTokens, 20000) - 13000), leaves ~133k of the 1M window
+# for the summary. Threshold compaction is honoured for unknown models:
+# verified 2026-09-20, trigger: auto fired at preTokens 99669 — not inert.
 export CLAUDE_CODE_MAX_OUTPUT_TOKENS=64000
 export CLAUDE_CODE_AUTO_COMPACT_WINDOW=900000
 export EFFORT_LEVEL="high" # low, medium, high, xhigh
