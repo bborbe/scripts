@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## v0.8.3
 
 - fix: correct the deepseek launchers' compaction-trigger comment from 887k to 867k in `cc-personal-deepseek` and `cc-brogrammers-deepseek`. The trigger is `window - min(maxOutputTokens, 20000) - 13000`, so the 900000 window fires at 867k, not 887k. Threshold compaction was verified to apply to unrecognised `deepseek-*` models on 2026-09-20 (a controlled run fired `trigger: auto` at `preTokens` 99669 on a 1M-window session), so the `cc-brogrammers-deepseek` comment's "unverified as of 2026-09-17" caveat is dropped and its summary headroom corrected from ~113k to ~133k.
 
