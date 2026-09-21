@@ -40,7 +40,7 @@ export ANTHROPIC_MODEL="claude-opus-5[1m]"
 export EFFORT_LEVEL="medium"
 export PERMISSION_MODE="auto"
 
-VAULT="${OBSIDIAN_PERSONAL_ASSISTANT:-$HOME/Documents/Obsidian/PersonalAssistant}"
+VAULT="${OBSIDIAN_PERSONAL_ASSISTANT:-$HOME/Documents/Assistant/Personal}"
 OBSIDIAN_ROOT="${OBSIDIAN_ROOT:-$HOME/Documents/Obsidian}"
 WORKSPACES_ROOT="${WORKSPACES_ROOT:-$HOME/Documents/workspaces}"
 

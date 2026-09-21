@@ -35,10 +35,10 @@ export ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash[1m]"
 export EFFORT_LEVEL="high" # low, medium, high, xhigh
 export PERMISSION_MODE="auto"
 
-VAULT="${OBSIDIAN_BROGRAMMERS_ASSISTANT:-$HOME/Documents/Obsidian/BrogrammersAssistant}"
+VAULT="${OBSIDIAN_BROGRAMMERS_ASSISTANT:-$HOME/Documents/Assistant/Brogrammers}"
 VAULT_BROGRAMMERS="${OBSIDIAN_BROGRAMMERS:-$HOME/Documents/Obsidian/Brogrammers}"
 VAULT_AGENT="${OBSIDIAN_AGENT:-$HOME/Documents/Obsidian/OctopusAgent}"
-VAULT_OPENBRAIN="${OBSIDIAN_OPENBRAIN:-$HOME/Documents/Obsidian/OpenBrain}"
+VAULT_OPENBRAIN="${OBSIDIAN_OPENBRAIN:-$HOME/Documents/Obsidian/Data}"
 
 cd "$VAULT" || exit 1
 
