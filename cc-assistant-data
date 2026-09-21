@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
-# Launcher for the BOSS identity of discord-assistant.
+# Launcher for the DATA ASSISTANT identity — Google Chat + Discord surfaces.
 #
-# See cc-discord-assistant-personal for why this is a launcher rather than an
-# `mcp_config:` entry, and why the MCP set is deliberately small.
-#
-# Deliberately NOT cc-boss: same vault and same effort level, but a smaller MCP
-# set. Boss keeps the trading servers because its job is oversight over trading
-# state; it does not get browser, vision, or the tts server.
+# One assistant, two surfaces. The working vault is its OWN runtime vault
+# (obsidian-data-assistant); the Brogrammers vault is mounted READ-ONLY
+# knowledge — write capability is removed by the shim's allowed_tools (no
+# Edit/Write), so nothing under Brogrammers can ever be mutated.
 
 set -euo pipefail
 
@@ -14,13 +12,14 @@ ulimit -n 8000
 
 export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
-export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-personal"
+export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-data-assistant"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
 export ANTHROPIC_MODEL="claude-opus-5[1m]"
-export EFFORT_LEVEL="high"
+export EFFORT_LEVEL="medium"
 export PERMISSION_MODE="auto"
 
-VAULT="${OBSIDIAN_BOSS:-$HOME/Documents/Obsidian/Boss}"
+VAULT="${OBSIDIAN_DATA_ASSISTANT:-$HOME/Documents/Assistant/Data}"
+VAULT_BROGRAMMERS="${OBSIDIAN_BROGRAMMERS:-$HOME/Documents/Obsidian/Brogrammers}"
 
 cd "$VAULT" || exit 1
 
@@ -37,8 +36,9 @@ claude \
 --model "${ANTHROPIC_MODEL}" \
 --effort "${EFFORT_LEVEL}" \
 --permission-mode "${PERMISSION_MODE}" \
---mcp-config "$HOME/.claude/mcp-discord-assistant-boss.json" \
+--mcp-config "$HOME/.claude/mcp-data-assistant.json" \
 --strict-mcp-config \
 --add-dir "$VAULT" \
+--add-dir "$VAULT_BROGRAMMERS" \
 --add-dir /tmp \
 "$@"

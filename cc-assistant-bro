@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Launcher for the BROGRAMMERS identity of discord-assistant.
 #
-# See cc-discord-assistant-personal for why this is a launcher rather than an
+# See cc-assistant-personal for why this is a launcher rather than an
 # `mcp_config:` entry, and why the MCP set is deliberately small.
 #
 # This instance is team-facing (all Brogrammers on the allowlist once the k8s
