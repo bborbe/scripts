@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # Launch Claude in the Personal Obsidian vault, routed through
-# claude-code-router on 127.0.0.1:8788, with Qwen 3.6 35B (via local
-# Ollama) as the default model. The router forwards `qwen*` requests
-# to localhost:11434 with the literal token "ollama" swapped in at the
-# router (see ~/.config/claude-code-router/config.yaml); switch mid-session
-# with `/model <name>`. See github.com/bborbe/claude-code-router.
+# claude-code-router on 127.0.0.1:8788, with deepseek-v4-flash[1m] as
+# the default model. The router forwards `deepseek-*` requests to
+# vllm.seibert.tools with the provider token swapped in at the router
+# (see ~/.config/claude-code-router/config.yaml); switch mid-session with
+# `/model <name>`. See github.com/bborbe/claude-code-router.
 #
 # Override paths via env (set in ~/.zshrc / direnv per machine):
-#   OBSIDIAN_PERSONAL  — Personal vault (default: $HOME/Documents/Obsidian/Personal)
+#   OBSIDIAN_PERSONAL  — Personal vault (default: $HOME/Documents/Obsidian/private-personal)
 #   OBSIDIAN_ROOT      — Obsidian parent for --add-dir
 #   WORKSPACES_ROOT    — Code workspaces parent for --add-dir
 #   CLAUDE_CODE_ROUTER_URL — router URL (default: http://127.0.0.1:8788)
@@ -18,22 +18,25 @@ ulimit -n 8000
 
 export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
-export CLAUDE_CODE_ATTRIBUTION_HEADER="0"
 export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-personal"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
-#export ANTHROPIC_MODEL="qwen3.6:35b-a3b-coding-nvfp4"
-#export ANTHROPIC_MODEL="qwen3.6:35b-a3b-mxfp8"
-export ANTHROPIC_MODEL="qwen3.8:27b-mlx"
-# Model's real window (ollama show: context length 262144); silences the
-# unknown-model 200k assumption in Claude Code.
-export CLAUDE_CODE_MAX_CONTEXT_TOKENS=262144
-export ANTHROPIC_DEFAULT_OPUS_MODEL="${ANTHROPIC_MODEL}"
-export ANTHROPIC_DEFAULT_SONNET_MODEL="${ANTHROPIC_MODEL}"
-export ANTHROPIC_DEFAULT_HAIKU_MODEL="${ANTHROPIC_MODEL}"
+export ANTHROPIC_DEFAULT_FABLE_MODEL="deepseek-v4-flash-ultra[1m]"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-v4-flash-max[1m]"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-v4-flash[1m]"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash[1m]"
+# deepseek-* IDs are unknown to Claude Code, so its fallback output cap is 32000
+# — too small for a 1M-context compaction summary (stop_reason: max_tokens, then
+# the auto-compact circuit breaker trips after 3 failures). 64000 is accepted
+# (unknown-model upper limit is 128000); 900000 moves the compaction trigger to
+# 867k (window - min(maxOutputTokens, 20000) - 13000) so a 64k summary still
+# fits inside the 1M window. Threshold compaction is honoured for deepseek:
+# verified 2026-09-20, trigger: auto fired at preTokens 99669 — not inert.
+export CLAUDE_CODE_MAX_OUTPUT_TOKENS=64000
+export CLAUDE_CODE_AUTO_COMPACT_WINDOW=900000
 export EFFORT_LEVEL="high" # low, medium, high, xhigh
 export PERMISSION_MODE="auto" # acceptEdits, auto
 
-OBSIDIAN_PERSONAL="${OBSIDIAN_PERSONAL:-$HOME/Documents/Obsidian/Personal}"
+OBSIDIAN_PERSONAL="${OBSIDIAN_PERSONAL:-$HOME/Documents/Obsidian/private-personal}"
 OBSIDIAN_ROOT="${OBSIDIAN_ROOT:-$HOME/Documents/Obsidian}"
 WORKSPACES_ROOT="${WORKSPACES_ROOT:-$HOME/Documents/workspaces}"
 

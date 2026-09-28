@@ -36,9 +36,9 @@ export EFFORT_LEVEL="high" # low, medium, high, xhigh
 export PERMISSION_MODE="auto"
 
 VAULT="${OBSIDIAN_BROGRAMMERS_ASSISTANT:-$HOME/Documents/Assistant/Brogrammers}"
-VAULT_BROGRAMMERS="${OBSIDIAN_BROGRAMMERS:-$HOME/Documents/Obsidian/Brogrammers}"
-VAULT_AGENT="${OBSIDIAN_AGENT:-$HOME/Documents/Obsidian/OctopusAgent}"
-VAULT_OPENBRAIN="${OBSIDIAN_OPENBRAIN:-$HOME/Documents/Obsidian/Data}"
+VAULT_BROGRAMMERS="${OBSIDIAN_BROGRAMMERS:-$HOME/Documents/Obsidian/seibert-brogrammers}"
+VAULT_AGENT="${OBSIDIAN_AGENT:-$HOME/Documents/Obsidian/seibert-agent}"
+VAULT_OPENBRAIN="${OBSIDIAN_OPENBRAIN:-$HOME/Documents/Obsidian/seibert-data}"
 
 cd "$VAULT" || exit 1
 

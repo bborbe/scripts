@@ -19,7 +19,7 @@ export EFFORT_LEVEL="medium"
 export PERMISSION_MODE="auto"
 
 VAULT="${OBSIDIAN_DATA_ASSISTANT:-$HOME/Documents/Assistant/Data}"
-VAULT_BROGRAMMERS="${OBSIDIAN_BROGRAMMERS:-$HOME/Documents/Obsidian/Brogrammers}"
+VAULT_BROGRAMMERS="${OBSIDIAN_BROGRAMMERS:-$HOME/Documents/Obsidian/seibert-brogrammers}"
 
 cd "$VAULT" || exit 1
 

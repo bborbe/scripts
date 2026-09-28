@@ -30,14 +30,14 @@ SNAPSHOT = os.path.expanduser("~/.claude/wezterm-session-snapshot.json")
 RESTORE = os.path.expanduser("~/.claude/wezterm-restore.sh")
 
 # Absolute, because `wezterm cli spawn` inherits the GUI process env, whose PATH
-# may not contain this repo — a bare `cc-personal` would fail to spawn.
+# may not contain this repo — a bare `cc-private` would fail to spawn.
 SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # mcp-obsidian-<vault>.json on the claude command line -> launcher in this repo
 LAUNCHERS = {
-    "personal": "cc-personal",
-    "brogrammers": "cc-brogrammers",
-    "boss": "cc-boss",
+    "personal": "cc-private",
+    "brogrammers": "cc-seibert",
+    "boss": "cc-private-boss",
     "data": "cc-data",
 }
 

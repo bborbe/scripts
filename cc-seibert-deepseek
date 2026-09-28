@@ -7,7 +7,7 @@
 # github.com/bborbe/claude-code-router for config + provider list.
 #
 # Override paths via env (set in ~/.zshrc / direnv per machine):
-#   OBSIDIAN_BROGRAMMERS — Brogrammers vault (default: $HOME/Documents/Obsidian/Brogrammers)
+#   OBSIDIAN_BROGRAMMERS — Brogrammers vault (default: $HOME/Documents/Obsidian/seibert-brogrammers)
 #   OBSIDIAN_ROOT        — Obsidian parent for --add-dir
 #   WORKSPACES_ROOT      — Code workspaces parent for --add-dir
 #   CLAUDE_CODE_ROUTER_URL — router URL (default: http://127.0.0.1:8788)
@@ -20,11 +20,23 @@ export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-seibert"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
-export ANTHROPIC_MODEL="claude-opus-5-5[1m]"
-export EFFORT_LEVEL="medium" # low, medium, high, xhigh
+export ANTHROPIC_DEFAULT_FABLE_MODEL="deepseek-v4-flash-ultra[1m]"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-v4-flash-max[1m]"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-v4-flash[1m]"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash[1m]"
+# deepseek-* IDs are unknown to Claude Code, so its fallback output cap is 32000
+# — too small for a 1M-context compaction summary (stop_reason: max_tokens, then
+# the auto-compact circuit breaker trips after 3 failures). 64000 is accepted
+# (unknown-model upper limit is 128000) and, at the 900000 window's 867k trigger
+# (window - min(maxOutputTokens, 20000) - 13000), leaves ~133k of the 1M window
+# for the summary. Threshold compaction is honoured for unknown models:
+# verified 2026-09-20, trigger: auto fired at preTokens 99669 — not inert.
+export CLAUDE_CODE_MAX_OUTPUT_TOKENS=64000
+export CLAUDE_CODE_AUTO_COMPACT_WINDOW=900000
+export EFFORT_LEVEL="high" # low, medium, high, xhigh
 export PERMISSION_MODE="auto" # acceptEdits, auto
 
-OBSIDIAN_BROGRAMMERS="${OBSIDIAN_BROGRAMMERS:-$HOME/Documents/Obsidian/Brogrammers}"
+OBSIDIAN_BROGRAMMERS="${OBSIDIAN_BROGRAMMERS:-$HOME/Documents/Obsidian/seibert-brogrammers}"
 OBSIDIAN_ROOT="${OBSIDIAN_ROOT:-$HOME/Documents/Obsidian}"
 WORKSPACES_ROOT="${WORKSPACES_ROOT:-$HOME/Documents/workspaces}"
 
@@ -40,7 +52,7 @@ unset CLAUDE_CODE_SESSION_ID
 export CLAUDE_CODE_FORCE_SESSION_PERSISTENCE=1
 claude \
 --settings '{"theme":"custom:work-green"}' \
---model "${ANTHROPIC_MODEL}" \
+--model "${ANTHROPIC_DEFAULT_OPUS_MODEL}" \
 --effort "${EFFORT_LEVEL}" \
 --permission-mode "${PERMISSION_MODE}" \
 --mcp-config ~/.claude/mcp-obsidian-brogrammers.json \
