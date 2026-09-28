@@ -6,7 +6,7 @@
 # See github.com/bborbe/claude-code-router for config + provider list.
 #
 # Override paths via env (set in ~/.zshrc per machine):
-#   OBSIDIAN_BOSS      — Boss vault (default: $HOME/Documents/Obsidian/Boss)
+#   OBSIDIAN_BOSS      — Boss vault (default: $HOME/Documents/Obsidian/private-boss)
 #   OBSIDIAN_ROOT      — Obsidian parent dir for --add-dir (default: $HOME/Documents/Obsidian)
 #   WORKSPACES_ROOT    — Code workspaces parent for --add-dir (default: $HOME/Documents/workspaces)
 #   CLAUDE_CODE_ROUTER_URL — router URL (default: http://127.0.0.1:8788)
@@ -23,7 +23,7 @@ export ANTHROPIC_MODEL="claude-opus-5-5[1m]"
 export EFFORT_LEVEL="high" # low, medium, high, xhigh
 export PERMISSION_MODE="auto" # acceptEdits, auto
 
-OBSIDIAN_BOSS="${OBSIDIAN_BOSS:-$HOME/Documents/Obsidian/Boss}"
+OBSIDIAN_BOSS="${OBSIDIAN_BOSS:-$HOME/Documents/Obsidian/private-boss}"
 OBSIDIAN_ROOT="${OBSIDIAN_ROOT:-$HOME/Documents/Obsidian}"
 WORKSPACES_ROOT="${WORKSPACES_ROOT:-$HOME/Documents/workspaces}"
 
