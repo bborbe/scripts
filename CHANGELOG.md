@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- fix: point the launchers' `--mcp-config` at the renamed MCP config files in `~/.claude` (`mcp-obsidian-*` → `mcp-private-*` / `mcp-seibert-*`, `mcp-discord-assistant-*` / `mcp-data-assistant` → `mcp-assistant-*`) — a missing config file aborted every session start.
 - feat: rename the 11 vault launchers to the access-group prefix scheme — `cc-personal*` → `cc-private*`, `cc-boss` → `cc-private-boss`, `cc-brogrammers*` → `cc-seibert*` — so a launcher's name says which audience's vaults it reaches. The five `cc-assistant-*` launchers keep their names. `wezterm-claude-snapshot`'s vault→launcher map and the cross-reference comments in `cc-assistant-{boss,personal,sc}` name the new launchers. `cc-private-external` also carries the previously uncommitted `cc-personal-external` launcher.
 - feat: point every launcher's default vault path at the renamed vault directories (`~/Documents/Obsidian/Personal` → `private-personal`, `Boss` → `private-boss`, `Brogrammers` → `seibert-brogrammers`, `OctopusAgent` → `seibert-agent`, `Data` → `seibert-data`, `StarCitizen` → `private-starcitizen`) — 28 defaults across 15 launchers. The old directory names remain as symlinks, so an `OBSIDIAN_*` override set to an old path keeps working.
 

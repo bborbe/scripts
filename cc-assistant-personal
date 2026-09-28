@@ -59,7 +59,7 @@ claude \
 --model "${ANTHROPIC_MODEL}" \
 --effort "${EFFORT_LEVEL}" \
 --permission-mode "${PERMISSION_MODE}" \
---mcp-config "$HOME/.claude/mcp-discord-assistant-personal.json" \
+--mcp-config "$HOME/.claude/mcp-assistant-personal.json" \
 --strict-mcp-config \
 --add-dir "$VAULT" \
 --add-dir "$OBSIDIAN_ROOT" \

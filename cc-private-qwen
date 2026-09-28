@@ -52,7 +52,7 @@ claude \
 --model "${ANTHROPIC_DEFAULT_OPUS_MODEL}" \
 --effort "${EFFORT_LEVEL}" \
 --permission-mode "${PERMISSION_MODE}" \
---mcp-config ~/.claude/mcp-obsidian-personal.json \
+--mcp-config ~/.claude/mcp-private-personal.json \
 --strict-mcp-config \
 --add-dir "$OBSIDIAN_ROOT" \
 --add-dir "$WORKSPACES_ROOT" \

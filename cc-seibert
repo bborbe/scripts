@@ -43,7 +43,7 @@ claude \
 --model "${ANTHROPIC_MODEL}" \
 --effort "${EFFORT_LEVEL}" \
 --permission-mode "${PERMISSION_MODE}" \
---mcp-config ~/.claude/mcp-obsidian-brogrammers.json \
+--mcp-config ~/.claude/mcp-seibert-brogrammers.json \
 --strict-mcp-config \
 --add-dir "$OBSIDIAN_ROOT" \
 --add-dir "$WORKSPACES_ROOT" \
