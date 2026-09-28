@@ -5,7 +5,7 @@
 # `mcp_config:` entry, and why the MCP set is deliberately small.
 #
 # Until 2026-08-16 sc had no claude_script of its own, so it inherited
-# cc-personal — the Personal vault AND all 16 servers — while its config said
+# cc-personal (now cc-private) — the Personal vault AND all 16 servers — while its config said
 # only that its cwd was the Gaming vault. This script is what makes the sc
 # identity actually distinct.
 

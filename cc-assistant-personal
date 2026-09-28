@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Launcher for the PERSONAL identity of discord-assistant.
 #
-# Deliberately NOT cc-personal: dedicated vault, much smaller MCP set.
+# Deliberately NOT cc-private: dedicated vault, much smaller MCP set.
 #
 # WHY A LAUNCHER AND NOT `identities: personal: mcp_config:` — the shim only
 # passes --mcp-config when NO claude_script is set:

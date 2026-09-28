@@ -4,7 +4,7 @@
 # See cc-assistant-personal for why this is a launcher rather than an
 # `mcp_config:` entry, and why the MCP set is deliberately small.
 #
-# Deliberately NOT cc-boss: same vault and same effort level, but a smaller MCP
+# Deliberately NOT cc-private-boss: same vault and same effort level, but a smaller MCP
 # set. Boss keeps the trading servers because its job is oversight over trading
 # state; it does not get browser, vision, or the tts server.
 
