@@ -33,12 +33,19 @@ RESTORE = os.path.expanduser("~/.claude/wezterm-restore.sh")
 # may not contain this repo — a bare `cc-private` would fail to spawn.
 SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# mcp-obsidian-<vault>.json on the claude command line -> launcher in this repo
+# mcp-<vault>.json on the claude command line -> launcher in this repo. Both the
+# current names (mcp-private-personal.json) and the pre-2026-09-28 ones
+# (mcp-obsidian-personal.json) are recognised, so sessions started before the
+# rename still map to a launcher.
 LAUNCHERS = {
+    "private-personal": "cc-private",
+    "seibert-brogrammers": "cc-seibert",
+    "private-boss": "cc-private-boss",
+    "seibert-data": "cc-seibert-deepseek",
     "personal": "cc-private",
     "brogrammers": "cc-seibert",
     "boss": "cc-private-boss",
-    "data": "cc-data",
+    "data": "cc-seibert-deepseek",
 }
 
 
@@ -84,7 +91,7 @@ def collect():
             continue  # stale file, process is gone
         tty, cmd = procs[pid]
         pane = panes.get(tty)
-        m = re.search(r"mcp-obsidian-(\w+)\.json", cmd)
+        m = re.search(r"mcp-(?:obsidian-)?((?:private|seibert)-[\w-]+|personal|brogrammers|boss|data)\.json", cmd)
         vault = m.group(1) if m else None
         rows.append({
             "window": pane["window_id"] if pane else None,
