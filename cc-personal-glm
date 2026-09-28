@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # TRANSITIONAL — renamed to cc-private-glm (access-group prefix scheme, 2026-09-28).
 # This wrapper keeps the old name working while callers migrate, and logs every
 # use so a caller the audit missed shows up instead of silently working.
