@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-- feat: rename the 11 vault launchers to the access-group prefix scheme — `cc-personal*` → `cc-private*`, `cc-boss` → `cc-private-boss`, `cc-brogrammers*` → `cc-seibert*` — so a launcher's name says which audience's vaults it reaches. The five `cc-assistant-*` launchers keep their names. Each old name stays as a transitional wrapper that `exec`s the new launcher and logs the call to `~/.claude/old-launcher-hits.log` (best-effort, silent on failure), so an unmigrated caller is recorded instead of silently working; the wrappers are removed once that log stays empty for a full working cycle. `wezterm-claude-snapshot`'s vault→launcher map and the cross-reference comments in `cc-assistant-{boss,personal,sc}` name the new launchers. `cc-private-external` also carries the previously uncommitted `cc-personal-external` launcher.
+- feat: rename the 11 vault launchers to the access-group prefix scheme — `cc-personal*` → `cc-private*`, `cc-boss` → `cc-private-boss`, `cc-brogrammers*` → `cc-seibert*` — so a launcher's name says which audience's vaults it reaches. The five `cc-assistant-*` launchers keep their names. `wezterm-claude-snapshot`'s vault→launcher map and the cross-reference comments in `cc-assistant-{boss,personal,sc}` name the new launchers. `cc-private-external` also carries the previously uncommitted `cc-personal-external` launcher.
 
 ## v0.8.3
 
