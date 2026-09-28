@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## v0.9.0
 
 - fix: `wezterm-claude-snapshot` recognises the renamed MCP configs (`mcp-private-*` / `mcp-seibert-*`) as well as the pre-rename `mcp-obsidian-*` names, and maps the data vault to `cc-seibert-deepseek` instead of the deleted `cc-data` — new sessions no longer fall back to a bare `claude` on restore.
 - fix: point the launchers' `--mcp-config` at the renamed MCP config files in `~/.claude` (`mcp-obsidian-*` → `mcp-private-*` / `mcp-seibert-*`, `mcp-discord-assistant-*` / `mcp-data-assistant` → `mcp-assistant-*`) — a missing config file aborted every session start.
