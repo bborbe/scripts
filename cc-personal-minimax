@@ -1,0 +1,7 @@
+#!/bin/bash
+# TRANSITIONAL — renamed to cc-private-minimax (access-group prefix scheme, 2026-09-28).
+# This wrapper keeps the old name working while callers migrate, and logs every
+# use so a caller the audit missed shows up instead of silently working.
+# Remove once ~/.claude/old-launcher-hits.log stays empty for a full working cycle.
+{ mkdir -p "$HOME/.claude" && echo "$(date -Iseconds) $0 -> cc-private-minimax $*" >> "$HOME/.claude/old-launcher-hits.log"; } 2>/dev/null || true  # best-effort: logging must never block the launch
+exec "$(dirname "$0")/cc-private-minimax" "$@"
