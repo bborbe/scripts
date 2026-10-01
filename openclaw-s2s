@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# Run OpenClaw's dedicated speech-to-speech server — the local
+# OpenAI-Realtime-compatible endpoint behind its Discord `bidi` voice mode.
+#
+# WHY A SECOND INSTANCE, NOT THE ai-assistant ONE ON :8765: the LLM is set once
+# per server, not per session. ai-assistant's instance uses the Claude shim,
+# which waits for "hey bot" and never emits tool calls — so OpenClaw's
+# `openclaw_agent_consult` never fires. This one uses DeepSeek, which does call
+# the consult tool, and has its own session slot, so the two bots never compete.
+#
+# WHY THE KEY IS AN ENV VAR, NEVER A FLAG: `--responses_api_api_key` would put
+# the token on argv, where `ps` shows it. The OpenAI SDK inside s2s reads
+# OPENAI_API_KEY instead.
+#
+#   OPENAI_API_KEY  — Seibert vLLM cluster token (TeamVault 0DaxOm)
+#
+# OpenClaw side (~/.openclaw/openclaw.json):
+#   channels.discord.voice.mode = "bidi"
+#   channels.discord.voice.realtime.providers.openai.azureEndpoint = http://127.0.0.1:8768
+#
+# Usage:
+#   openclaw-s2s             # serve on 127.0.0.1:8768
+#   S2S_PORT=8769 openclaw-s2s
+
+set -euo pipefail
+
+S2S_DIR="${S2S_DIR:-$HOME/Documents/workspaces/speech-to-speech}"
+S2S_PORT="${S2S_PORT:-8768}"
+TEAMVAULT_SEIBERT_CONFIG="${TEAMVAULT_SEIBERT_CONFIG:-$HOME/.config/teamvault-cli/seibert.json}"
+VLLM_KEY_ID="${VLLM_KEY_ID:-0DaxOm}"
+VLLM_BASE_URL="${VLLM_BASE_URL:-https://vllm.seibert.tools/v1}"
+VLLM_MODEL="${VLLM_MODEL:-deepseek-v4-flash}"
+
+command -v teamvault-cli >/dev/null 2>&1 || {
+  echo "openclaw-s2s: teamvault-cli not on PATH — cannot resolve secrets" >&2
+  exit 1
+}
+[ -x "$S2S_DIR/.venv/bin/speech-to-speech" ] || {
+  echo "openclaw-s2s: no speech-to-speech venv at $S2S_DIR/.venv" >&2
+  exit 1
+}
+
+OPENAI_API_KEY="$(teamvault-cli --teamvault-config "$TEAMVAULT_SEIBERT_CONFIG" password "$VLLM_KEY_ID")"
+export OPENAI_API_KEY
+
+cd "$S2S_DIR"
+exec .venv/bin/speech-to-speech serve \
+  --host 127.0.0.1 \
+  --port "$S2S_PORT" \
+  --device mps \
+  --stt parakeet-tdt \
+  --parakeet_tdt_language en \
+  --tts qwen3 \
+  --min_silence_ms 400 \
+  --stream_batch_sentences 1 \
+  --llm_backend chat-completions \
+  --responses_api_base_url "$VLLM_BASE_URL" \
+  --model_name "$VLLM_MODEL" \
+  --responses_api_disable_thinking \
+  --init_chat_prompt "You are OpenClaw, a voice assistant talking with Ben in Discord. Answer in one to three short spoken sentences. No markdown, no lists."
