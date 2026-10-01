@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## v0.10.0
 
 - feat: add `openclaw` — launches a native OpenClaw (`npx openclaw@2026.9.7` on nvm Node 24.21.0) with the Seibert vLLM and Discord bot tokens resolved from TeamVault at runtime, never stored in its config.
 - feat: add `openclaw-s2s` — runs OpenClaw's dedicated speech-to-speech server on 127.0.0.1:8768 (parakeet STT, DeepSeek via vLLM, qwen3 TTS) as the local OpenAI-Realtime endpoint for Discord `bidi` voice; the vLLM key reaches it through `OPENAI_API_KEY`, never argv.
