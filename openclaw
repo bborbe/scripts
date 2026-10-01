@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# Launch the local OpenClaw instance and its voice stack.
+#
+# WHY THIS IS NOT `npm install -g openclaw`: openclaw@2026.9.7 requires
+# node >=24.16 <25 || >=26.1. The system node on this Mac is v22.22.3, which
+# openclaw refuses outright. Node 24.21.0 (LTS Krypton) is installed under nvm
+# and pinned here rather than promoted to the system default — every other tool
+# on this machine still expects v22, so a global bump is a separate, riskier
+# change than adding a launcher.
+#
+# WHY NATIVE, NOT DOCKER: the voice stack runs local binaries — `whisper-cli`
+# (whisper.cpp) for STT and `say` for TTS. A container cannot exec the host's
+# binaries, so LocalClaw's Docker path would need them baked into the image.
+# Running natively gives OpenClaw direct access to both, plus its dedicated
+# speech-to-speech server on 127.0.0.1:8768 (start it with `openclaw-s2s`).
+#
+# WHY THE SECRETS ARE RESOLVED HERE, NEVER STORED: ~/.openclaw/openclaw.json
+# references them as SecretRefs (`{"source":"env","provider":"default","id":…}`),
+# so the config file holds the env var NAME, not the value. It stays
+# committable, and `ps` never shows a token.
+#
+#   VLLM_API_KEY       — Seibert vLLM cluster token (TeamVault 0DaxOm)
+#   DISCORD_BOT_TOKEN  — OpenClaw's Discord bot   (TeamVault 7qGmWO)
+#
+# Usage:
+#   openclaw-s2s             # realtime voice endpoint (start first)
+#   openclaw gateway run     # start the gateway (Discord + voice)
+#   openclaw doctor          # health check
+#   openclaw config validate
+
+set -euo pipefail
+
+export NVM_DIR="$HOME/.nvm"
+# shellcheck source=/dev/null
+. "$NVM_DIR/nvm.sh"
+nvm use 24.21.0 >/dev/null
+
+OPENCLAW_VERSION="${OPENCLAW_VERSION:-2026.9.7}"
+TEAMVAULT_CONFIG="${TEAMVAULT_CONFIG:-$HOME/.config/teamvault-cli/config.json}"
+TEAMVAULT_SEIBERT_CONFIG="${TEAMVAULT_SEIBERT_CONFIG:-$HOME/.config/teamvault-cli/seibert.json}"
+VLLM_KEY_ID="${VLLM_KEY_ID:-0DaxOm}"
+DISCORD_KEY_ID="${DISCORD_KEY_ID:-7qGmWO}"
+
+command -v teamvault-cli >/dev/null 2>&1 || {
+  echo "openclaw: teamvault-cli not on PATH — cannot resolve secrets" >&2
+  exit 1
+}
+
+VLLM_API_KEY="$(teamvault-cli --teamvault-config "$TEAMVAULT_SEIBERT_CONFIG" password "$VLLM_KEY_ID")"
+export VLLM_API_KEY
+
+DISCORD_BOT_TOKEN="$(teamvault-cli --teamvault-config "$TEAMVAULT_CONFIG" password "$DISCORD_KEY_ID")"
+export DISCORD_BOT_TOKEN
+
+exec npx --yes "openclaw@${OPENCLAW_VERSION}" "$@"
