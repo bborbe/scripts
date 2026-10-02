@@ -17,14 +17,18 @@ export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-personal"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
-export ANTHROPIC_MODEL="claude-opus-5-5[1m]"
-export EFFORT_LEVEL="medium"
-export PERMISSION_MODE="auto"
+export ANTHROPIC_DEFAULT_FABLE_MODEL="deepseek-v4-flash-ultra[1m]"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-v4-flash-max[1m]"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-v4-flash[1m]"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash[1m]"
+export CLAUDE_CODE_MAX_OUTPUT_TOKENS=64000
+export CLAUDE_CODE_AUTO_COMPACT_WINDOW=900000
+export EFFORT_LEVEL="high" # low, medium, high, xhigh
+export PERMISSION_MODE="auto" # acceptEdits, auto
 
 VAULT="${OBSIDIAN_STARCITIZEN:-$HOME/Documents/Obsidian/private-starcitizen}"
 
 cd "$VAULT" || exit 1
-
 
 # Persist transcripts even when spawned from a child/branched session
 unset CLAUDE_CODE_CHILD_SESSION
@@ -35,7 +39,7 @@ unset CLAUDE_CODE_SESSION_ID
 export CLAUDE_CODE_FORCE_SESSION_PERSISTENCE=1
 claude \
 --settings '{"theme":"custom:private-blue"}' \
---model "${ANTHROPIC_MODEL}" \
+--model "${ANTHROPIC_DEFAULT_OPUS_MODEL}" \
 --effort "${EFFORT_LEVEL}" \
 --permission-mode "${PERMISSION_MODE}" \
 --mcp-config "$HOME/.claude/mcp-assistant-sc.json" \
