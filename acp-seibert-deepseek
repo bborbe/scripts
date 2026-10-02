@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# ACP adapter launcher — Work (Seibert) context.
+#
+# Same routing/env shape as cc-seibert-deepseek, but instead of starting the
+# interactive Claude Code TUI it starts the ACP agent adapter so OpenClaw can
+# drive it as an ACP runtime session.
+#
+#   seibert-brogrammers vault -> cwd (set by the OpenClaw agent runtime)
+#   claude-code-router 8788   -> ANTHROPIC_BASE_URL
+#   deepseek-v4-flash[1m]     -> default model (switch via /model in-session)
+#
+# MCP servers are discovered from the vault's .mcp.json (cwd) plus the user
+# Claude config; no --mcp-config pinning is needed for the ACP path.
+
+set -euo pipefail
+
+ulimit -n 8000
+
+export DISABLE_AUTOUPDATER=1
+export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
+export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
+export ANTHROPIC_DEFAULT_FABLE_MODEL="deepseek-v4-flash-ultra[1m]"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-v4-flash-max[1m]"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-v4-flash[1m]"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash[1m]"
+# Unknown model IDs cap output at 32000 by default; 64000 is accepted and keeps
+# a 1M-context compaction summary from tripping the auto-compact breaker.
+export CLAUDE_CODE_MAX_OUTPUT_TOKENS=64000
+export CLAUDE_CODE_AUTO_COMPACT_WINDOW=900000
+# The adapter's bundled Claude Code SDK binary is older than the system CLI and
+# rejects the deepseek model IDs; use the installed CLI instead.
+export CLAUDE_CODE_EXECUTABLE="${CLAUDE_CODE_EXECUTABLE:-$HOME/.local/bin/claude}"
+
+ADAPTER="${CLAUDE_AGENT_ACP_ADAPTER:-/Users/bborbe/.openclaw/extensions/acpx/node_modules/@agentclientprotocol/claude-agent-acp/dist/index.js}"
+
+exec node "$ADAPTER" "$@"
