@@ -42,8 +42,8 @@ claude \
 --model "${ANTHROPIC_DEFAULT_OPUS_MODEL}" \
 --effort "${EFFORT_LEVEL}" \
 --permission-mode "${PERMISSION_MODE}" \
---mcp-config "$HOME/.claude/mcp-assistant-sc.json" \
+--mcp-config="$HOME/.claude/mcp-assistant-sc.json" \
 --strict-mcp-config \
---add-dir "$VAULT" \
---add-dir /tmp \
+--add-dir="$VAULT" \
+--add-dir=/tmp \
 "$@"

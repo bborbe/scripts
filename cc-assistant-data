@@ -36,9 +36,9 @@ claude \
 --model "${ANTHROPIC_MODEL}" \
 --effort "${EFFORT_LEVEL}" \
 --permission-mode "${PERMISSION_MODE}" \
---mcp-config "$HOME/.claude/mcp-assistant-data.json" \
+--mcp-config="$HOME/.claude/mcp-assistant-data.json" \
 --strict-mcp-config \
---add-dir "$VAULT" \
---add-dir "$VAULT_BROGRAMMERS" \
---add-dir /tmp \
+--add-dir="$VAULT" \
+--add-dir="$VAULT_BROGRAMMERS" \
+--add-dir=/tmp \
 "$@"
