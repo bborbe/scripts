@@ -18,9 +18,10 @@ ulimit -n 8000
 export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-personal"
+export TEAMVAULT_CONFIG="${TEAMVAULT_CONFIG_PERSONAL:-$HOME/.config/teamvault-cli/config.json}"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
 export ANTHROPIC_MODEL="claude-opus-5-5[1m]"
-export EFFORT_LEVEL="medium" # low, medium, high, xhigh
+export EFFORT_LEVEL="low" # low, medium, high, xhigh
 export PERMISSION_MODE="auto" # acceptEdits, auto
 
 OBSIDIAN_PERSONAL="${OBSIDIAN_PERSONAL:-$HOME/Documents/Obsidian/private-personal}"
