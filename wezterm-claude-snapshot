@@ -49,6 +49,23 @@ LAUNCHERS = {
 }
 
 
+def parent_launcher(pid):
+    """The cc-* script that started this claude, read from its parent process.
+
+    ⚠️ The vault alone does not name the launcher: one vault has several
+    (cc-private, cc-private-deepseek, cc-private-glm, …) that differ in backend
+    model, so mapping by vault resumes a deepseek session on the default one.
+    """
+    out = subprocess.run(["ps", "-o", "ppid=", "-p", str(pid)], capture_output=True, text=True).stdout.strip()
+    if not out:
+        return None
+    cmd = subprocess.run(["ps", "-o", "command=", "-p", out], capture_output=True, text=True).stdout.split()
+    for arg in cmd[:2]:
+        if os.path.basename(arg).startswith("cc-") and os.path.isfile(arg):
+            return os.path.abspath(arg)
+    return None
+
+
 def launcher_for(vault):
     name = LAUNCHERS.get(vault)
     return os.path.join(SCRIPTS_DIR, name) if name else "claude"
@@ -106,7 +123,7 @@ def collect(panes):
             "tty": tty,
             "pid": pid,
             "vault": vault,
-            "launcher": launcher_for(vault),
+            "launcher": parent_launcher(pid) or launcher_for(vault),
             "cwd": s.get("cwd"),
             "session": s.get("sessionId"),
             "name": s.get("name") or (pane["title"] if pane else ""),
