@@ -43,10 +43,10 @@ claude \
 --model "${ANTHROPIC_MODEL}" \
 --effort "${EFFORT_LEVEL}" \
 --permission-mode "${PERMISSION_MODE}" \
---mcp-config ~/.claude/mcp-seibert-brogrammers.json \
+--mcp-config="$HOME/.claude/mcp-seibert-brogrammers.json" \
 --strict-mcp-config \
---add-dir "$OBSIDIAN_ROOT" \
---add-dir "$WORKSPACES_ROOT" \
---add-dir ~/.claude/prompts \
---add-dir /tmp \
+--add-dir="$OBSIDIAN_ROOT" \
+--add-dir="$WORKSPACES_ROOT" \
+--add-dir="$HOME/.claude/prompts" \
+--add-dir=/tmp \
 "$@"
