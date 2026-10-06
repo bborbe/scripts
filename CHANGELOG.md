@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+- fix: `wezterm-claude-snapshot` refuses (exit 3) when `wezterm cli list` fails instead of silently snapshotting every session as detached — which made the restore pile all tabs into one new window — and lists with `--no-auto-start` so a vanished GUI socket cannot spawn a stray mux server; `--allow-detached` keeps the old behaviour. Restore now opens each window in its original workspace.
+
 ## v0.10.0
 
 - feat: add `openclaw` — launches a native OpenClaw (`npx openclaw@2026.9.7` on nvm Node 24.21.0) with the Seibert vLLM and Discord bot tokens resolved from TeamVault at runtime, never stored in its config.
