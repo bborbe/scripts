@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 # Launch Claude in the Personal Obsidian vault, routed through
-# claude-code-router on 127.0.0.1:8788. The router decides per-request
-# which backend to forward to based on the `model` field — defaults to
-# claude-opus-4-7 (subscription); switch mid-session with `/model <name>`.
-# See github.com/bborbe/claude-code-router for config + provider list.
+# claude-code-router on 127.0.0.1:8788, with deepseek-v4-flash[1m] as
+# the default model. The router forwards `deepseek-*` requests to
+# vllm.seibert.tools with the provider token swapped in at the router
+# (see ~/.config/claude-code-router/config.yaml); switch mid-session with
+# `/model <name>`. See github.com/bborbe/claude-code-router.
 #
-# Override paths via env (set in ~/.zshrc per machine):
+# Override paths via env (set in ~/.zshrc / direnv per machine):
 #   OBSIDIAN_PERSONAL  — Personal vault (default: $HOME/Documents/Obsidian/private-personal)
-#   OBSIDIAN_ROOT      — Obsidian parent dir for --add-dir (default: $HOME/Documents/Obsidian)
-#   WORKSPACES_ROOT    — Code workspaces parent for --add-dir (default: $HOME/Documents/workspaces)
+#   OBSIDIAN_ROOT      — Obsidian parent for --add-dir
+#   WORKSPACES_ROOT    — Code workspaces parent for --add-dir
 #   CLAUDE_CODE_ROUTER_URL — router URL (default: http://127.0.0.1:8788)
 
 set -euo pipefail
@@ -18,23 +19,13 @@ ulimit -n 8000
 export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-personal"
-# Pin TeamVault to the PERSONAL instance. Without this the launcher inherits
-# whatever $TEAMVAULT_CONFIG the calling shell had — and a shell left pointing at
-# seibert.json (work) makes every personal/nuke/quant secret lookup 404, so
-# `teamvault-cli config parse` renders an EMPTY manifest and `kubectl apply`
-# reports "no objects passed to apply" while the Makefile still exits 0.
-# Images push, nothing deploys, the run looks clean. Hit 2026-09-06 during the
-# weekly nuke rebuild: 8 quant components silently failed to apply on dev AND
-# prod. Same class as the ~296 silent apply failures of 2026-08-23 (W34).
-export TEAMVAULT_CONFIG="${TEAMVAULT_CONFIG_PERSONAL:-$HOME/.config/teamvault-cli/config.json}"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
-# [1m] suffix = Claude Code's per-model 1M opt-in (it sends the context-1m beta
-# header + base model id). Needed because the custom router base URL suppresses
-# native-1M auto-detection, so CC otherwise falls back to a 200k window — which
-# mis-scales the context meter AND triggers auto-compact ~5x too early.
-# Per-model (unlike a global CLAUDE_CODE_MAX_CONTEXT_TOKENS), so it's safe
-# alongside the non-Opus launchers (deepseek/minimax/qwen/glm).
-export ANTHROPIC_MODEL="claude-opus-5-5[1m]"
+export ANTHROPIC_DEFAULT_FABLE_MODEL="claude-opus-5-5[1m]"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-v4-flash-max[1m]"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-v4-flash[1m]"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash[1m]"
+export CLAUDE_CODE_MAX_OUTPUT_TOKENS=64000
+export CLAUDE_CODE_AUTO_COMPACT_WINDOW=900000
 export EFFORT_LEVEL="low" # low, medium, high, xhigh
 export PERMISSION_MODE="auto" # acceptEdits, auto
 
@@ -54,7 +45,7 @@ unset CLAUDE_CODE_SESSION_ID
 export CLAUDE_CODE_FORCE_SESSION_PERSISTENCE=1
 claude \
 --settings '{"theme":"custom:private-blue"}' \
---model "${ANTHROPIC_MODEL}" \
+--model "${ANTHROPIC_DEFAULT_OPUS_MODEL}" \
 --effort "${EFFORT_LEVEL}" \
 --permission-mode "${PERMISSION_MODE}" \
 --mcp-config ~/.claude/mcp-private-personal.json \
