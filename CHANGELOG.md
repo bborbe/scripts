@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - fix: `wezterm-claude-snapshot` refuses (exit 3) when `wezterm cli list` fails instead of silently snapshotting every session as detached — which made the restore pile all tabs into one new window — and lists with `--no-auto-start` so a vanished GUI socket cannot spawn a stray mux server; `--allow-detached` keeps the old behaviour. Restore now opens each window in its original workspace.
 - fix: `wezterm-claude-snapshot` records the `cc-*` launcher each session was actually started with (read from its parent process) instead of deriving it from the vault, so a `cc-private-deepseek` session is no longer resumed under `cc-private`; the vault map stays as fallback.
+- fix: the generated `wezterm-restore.sh` is idempotent — a session already live in `~/.claude/sessions` is skipped, so re-running it (or running it from a snapshotted session) never puts two writers on one conversation — and it finds the live GUI socket itself and never auto-starts a mux server, so it works from iTerm/ssh too.
 
 ## v0.10.0
 
