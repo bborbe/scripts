@@ -55,11 +55,11 @@ claude \
 --model "${ANTHROPIC_DEFAULT_OPUS_MODEL}" \
 --effort "${EFFORT_LEVEL}" \
 --permission-mode "${PERMISSION_MODE}" \
---mcp-config "$HOME/.claude/mcp-assistant-bro.json" \
+--mcp-config="$HOME/.claude/mcp-assistant-bro.json" \
 --strict-mcp-config \
---add-dir "$VAULT" \
---add-dir "$VAULT_BROGRAMMERS" \
---add-dir "$VAULT_AGENT" \
---add-dir "$VAULT_OPENBRAIN" \
---add-dir /tmp \
+--add-dir="$VAULT" \
+--add-dir="$VAULT_BROGRAMMERS" \
+--add-dir="$VAULT_AGENT" \
+--add-dir="$VAULT_OPENBRAIN" \
+--add-dir=/tmp \
 "$@"

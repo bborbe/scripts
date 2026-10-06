@@ -2,3 +2,7 @@
 /.claude
 /coverage.out
 /.mcp-*
+
+# Timestamped pre-edit backups of the cc-* launchers. Kept on disk for
+# rollback, never tracked — they are throwaway copies, one per edit.
+*.bak-*
