@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+- fix: pin `CLAUDE_CONFIG_DIR="$HOME/.claude"` in all 16 `cc-*` launchers. An inherited `CLAUDE_CONFIG_DIR` (e.g. `~/.claude-verify`, the openbrain scenario test dir) was passed straight through to `claude`, which then read user config from it — silently dropping the user-level `~/.claude/commands`, so `/ask`, `/speak`, `/ship` and 27 others vanished from the session while `~/.claude/settings.json`'s hooks and plugins still loaded. Measured 2026-10-09: `cc-private` handed `CLAUDE_CONFIG_DIR=/Users/bborbe/.claude-verify` to `claude`, and that store had already accumulated 246 session-env entries across vault, coding-bench and supervisor sessions since 2026-09-19. Pinned rather than unset so the launcher stays authoritative over ambient state; same leak shape as the `CLAUDE_CODE_SESSION_ID` fix in v0.8.1.
+
 ## v0.10.0
 
 - feat: add `openclaw` — launches a native OpenClaw (`npx openclaw@2026.9.7` on nvm Node 24.21.0) with the Seibert vLLM and Discord bot tokens resolved from TeamVault at runtime, never stored in its config.

@@ -18,6 +18,10 @@ ulimit -n 8000
 
 export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
+# Pin the config dir: an inherited CLAUDE_CONFIG_DIR (e.g. ~/.claude-verify, the openbrain
+# scenario test dir) silently drops the user-level ~/.claude/commands — /ask, /speak and 27
+# others vanish. The pin keeps the launcher authoritative over ambient state.
+export CLAUDE_CONFIG_DIR="$HOME/.claude"
 export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-personal"
 export ANTHROPIC_API_KEY="external"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
