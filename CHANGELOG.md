@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## v0.12.0
 
 - cc-private-external: route through the nuke-dev cluster router (`https://claude-code-router.dev.nuke.benjamin-borbe.de`, LAN only) instead of the local router; map Fable/Opus to `deepseek-v41-flash-max[1m]`, Sonnet to `deepseek-v41-flash-high[1m]`, Haiku to `deepseek-v41-flash[1m]` (the old Fable target `deepseek-v41-flash-ultra` does not exist on api.gpt.seibert.ai).
 
