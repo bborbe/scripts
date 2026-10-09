@@ -45,7 +45,10 @@ while :; do
 done
 
 for pid in $pids; do
-	current="$(ps -o nice= -p "$pid" | tr -d ' ')"
+	# `|| true` is load-bearing: `ps` exits non-zero for a pid that has gone,
+	# and `set -o pipefail` turns that into a non-zero command substitution,
+	# which `set -o errexit` would abort on before the -z check could run.
+	current="$(ps -o nice= -p "$pid" 2>/dev/null | tr -d ' ' || true)"
 	if [ -z "$current" ]; then
 		log "pid $pid disappeared before renice - skipping"
 		continue
@@ -55,6 +58,6 @@ for pid in $pids; do
 		continue
 	fi
 	renice "$NICE_VALUE" -p "$pid" >/dev/null
-	applied="$(ps -o nice= -p "$pid" | tr -d ' ')"
-	log "reniced $pid -> $applied"
+	applied="$(ps -o nice= -p "$pid" 2>/dev/null | tr -d ' ' || true)"
+	log "reniced $pid -> ${applied:-gone}"
 done

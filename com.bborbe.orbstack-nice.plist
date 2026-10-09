@@ -8,10 +8,10 @@
   at load and every 60s, which covers both a Mac reboot and an OrbStack restart
   (the helper gets a fresh pid each time).
 
-  The script MUST run from outside ~/Documents: launchd does not inherit the
-  shell's PATH (hence EnvironmentVariables below), and every other script-
-  running agent on this host deploys to ~/.local/bin rather than executing in
-  place from the repo.
+  The script is deployed to ~/.local/bin rather than executed in place from the
+  repo: the repo is the version-controlled source, and no agent on this host
+  runs a script from ~/Documents. launchd does not inherit the shell's PATH,
+  hence EnvironmentVariables below.
 
   Install:
     cp ~/Documents/workspaces/scripts/orbstack-nice.sh ~/.local/bin/orbstack-nice.sh
