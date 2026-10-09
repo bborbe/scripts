@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## v0.11.0
 
 - feat: add `orbstack-nice` — a LaunchAgent keeping the OrbStack VM helper at nice 10. OrbStack exposes no scheduling-priority setting (`orb config show` lists only sizing/network/k8s/app keys), so the helper runs at nice 0 and competes with foreground work; a manual `renice 10` fixes it but is lost on every OrbStack restart and every reboot. The agent re-applies it at load and every 60s, which covers both cases since the helper gets a fresh pid each restart. The script waits at most 60s for the helper before exiting 0, so a 60s interval cannot stack hung instances while OrbStack is down, and it reads the nice value back and logs `reniced <pid> -> <nice>` — so the log proves the renice happened rather than merely that the agent fired.
 
