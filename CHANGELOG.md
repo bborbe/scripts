@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## v0.13.0
 
 - feat: add `git-protect-branches` — refuse direct commits on named branches in a repo by setting `hook.protectBranches` in local config, which the global `pre-commit` hook in bborbe/dotfiles reads. Merges still land, so a deploy worktree's `git merge origin/master` keeps working.
 - feat: add `git-pin-worktree` — keep a linked worktree on its branch by setting `hook.pinBranch` in that worktree's own config, which the global `reference-transaction` hook in bborbe/dotfiles reads. Refuses in a main checkout, where a pin would block `git worktree add`.
