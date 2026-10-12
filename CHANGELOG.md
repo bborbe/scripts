@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+- feat: add `git-protect-branches` — refuse direct commits on named branches in a repo by setting `hook.protectBranches` in local config, which the global `pre-commit` hook in bborbe/dotfiles reads. Merges still land, so a deploy worktree's `git merge origin/master` keeps working.
+- feat: add `git-pin-worktree` — keep a linked worktree on its branch by setting `hook.pinBranch` in that worktree's own config, which the global `reference-transaction` hook in bborbe/dotfiles reads. Refuses in a main checkout, where a pin would block `git worktree add`.
+- chore: remove `git-hook-setup.pl` — it wrote `.git/hooks/pre-commit`, which git never runs while the global `core.hooksPath` is set, and it exited immediately when given no branch. Superseded by `git-protect-branches`.
+
 ## v0.12.0
 
 - cc-private-external: route through the nuke-dev cluster router (`https://claude-code-router.dev.nuke.benjamin-borbe.de`, LAN only) instead of the local router; map Fable/Opus to `deepseek-v41-flash-max[1m]`, Sonnet to `deepseek-v41-flash-high[1m]`, Haiku to `deepseek-v41-flash[1m]` (the old Fable target `deepseek-v41-flash-ultra` does not exist on api.gpt.seibert.ai).
