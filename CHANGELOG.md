@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-- chore: reduce `go-mod-excludes.sh` to a thin wrapper over `updater fix` — it no longer carries its own list of 39 `-dropexclude` and 2 `-dropreplace` directives, and no longer injects 5 `replace` directives. Four of those five (anthropic-sdk-go, go-header, go-diskfs, ginkgolinter/types) are in updater's own removal lists, so updater stripped them on its next run and the two writers fought on every pass; the fifth (opencontainers/runtime-spec) is in neither list. updater's `gomod_excludes.py` is now the single source of truth. `--no-git` preserves the original no-commit contract, so the caller still commits.
+- chore: reduce `go-mod-excludes.sh` to a thin wrapper over `updater fix` — it no longer carries its own list of 39 `-dropexclude` and 2 `-dropreplace` directives, and no longer injects 5 `replace` directives. Four of those five (anthropic-sdk-go, go-header, go-diskfs, ginkgolinter/types) are in updater's own removal lists, so updater stripped them on its next run and the two writers fought on every pass; the fifth (opencontainers/runtime-spec) is in neither list. updater's `gomod_excludes.py` is now the single source of truth. `--no-git` preserves the original no-commit contract, so the caller still commits. Also dropped: the four-module `go get -u` (go-git/v5, buildkit, modelcontextprotocol/go-sdk, grpc) the script used to force — `/go-update-deps` step 4 (`go-mod-update.sh`) still covers dependency updates, but a caller invoking this script standalone no longer gets them.
 
 ## v0.13.0
 
