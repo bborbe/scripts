@@ -18,6 +18,9 @@
 
 set -euo pipefail
 
+# shellcheck source=cc-env.sh
+source "$(dirname "${BASH_SOURCE[0]}")/cc-env.sh"
+
 ulimit -n 8000
 
 export DISABLE_AUTOUPDATER=1
