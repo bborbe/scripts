@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+- fix: every `cc-*` launcher sources the new `cc-env.sh`, which pins PATH (`~/.local/bin`, Homebrew, `/usr/local`, Go bin, bun, the scripts dir). A launcher started from a WezTerm tab via `bash -lc` got launchd's minimal PATH and died with `claude: command not found`; hooks and MCP servers also lost `vault-cli`, `gh` and `jq`.
+
 ## v0.14.0
 
 - feat: every `cc-*` launcher now reads `EFFORT_LEVEL` from the environment (`${EFFORT_LEVEL:-<default>}`), so a caller can start one session at a different effort without editing the script. Defaults unchanged: low for cc-private, cc-private-claude and cc-seibert-claude; medium for cc-assistant-data and cc-assistant-personal; high for the rest.
