@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+- feat: `cc-env.sh` now exports `CLAUDE_CODE_DISABLE_ALTERNATE_SCREEN=1`, so every `cc-*` launcher keeps Claude's TUI in the normal screen buffer and the session's output stays in the tab's scrollback after exit. Set unconditionally, like the other shared launcher flags.
+
 ## v0.14.1
 
 - fix: every `cc-*` launcher sources the new `cc-env.sh`, which pins PATH (`~/.local/bin`, Homebrew, `/usr/local`, Go bin, bun, the scripts dir). A launcher started from a WezTerm tab via `bash -lc` got launchd's minimal PATH and died with `claude: command not found`; hooks and MCP servers also lost `vault-cli`, `gh` and `jq`.
