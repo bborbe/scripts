@@ -35,7 +35,7 @@ export ANTHROPIC_DEFAULT_OPUS_MODEL="MiniMax-M3.1-Flash-Preview[1m]"
 export ANTHROPIC_DEFAULT_SONNET_MODEL="MiniMax-M2.7-highspeed[200k]"
 export ANTHROPIC_DEFAULT_HAIKU_MODEL="MiniMax-M2.7-highspeed[200k]"
 export EFFORT_LEVEL="${EFFORT_LEVEL:-high}" # low, medium, high, xhigh
-export PERMISSION_MODE="auto" # acceptEdits, auto
+export PERMISSION_MODE="${PERMISSION_MODE:-auto}" # acceptEdits, auto
 
 OBSIDIAN_PERSONAL="${OBSIDIAN_PERSONAL:-$HOME/Documents/Obsidian/private-personal}"
 OBSIDIAN_ROOT="${OBSIDIAN_ROOT:-$HOME/Documents/Obsidian}"

@@ -29,7 +29,7 @@ export TEAMVAULT_CONFIG="${TEAMVAULT_CONFIG_PERSONAL:-$HOME/.config/teamvault-cl
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
 export ANTHROPIC_MODEL="claude-opus-5-5[1m]"
 export EFFORT_LEVEL="${EFFORT_LEVEL:-low}" # low, medium, high, xhigh
-export PERMISSION_MODE="auto" # acceptEdits, auto
+export PERMISSION_MODE="${PERMISSION_MODE:-auto}" # acceptEdits, auto
 
 OBSIDIAN_PERSONAL="${OBSIDIAN_PERSONAL:-$HOME/Documents/Obsidian/private-personal}"
 OBSIDIAN_ROOT="${OBSIDIAN_ROOT:-$HOME/Documents/Obsidian}"

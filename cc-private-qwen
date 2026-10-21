@@ -38,7 +38,7 @@ export ANTHROPIC_DEFAULT_OPUS_MODEL="${ANTHROPIC_MODEL}"
 export ANTHROPIC_DEFAULT_SONNET_MODEL="${ANTHROPIC_MODEL}"
 export ANTHROPIC_DEFAULT_HAIKU_MODEL="${ANTHROPIC_MODEL}"
 export EFFORT_LEVEL="${EFFORT_LEVEL:-high}" # low, medium, high, xhigh
-export PERMISSION_MODE="auto" # acceptEdits, auto
+export PERMISSION_MODE="${PERMISSION_MODE:-auto}" # acceptEdits, auto
 
 OBSIDIAN_PERSONAL="${OBSIDIAN_PERSONAL:-$HOME/Documents/Obsidian/private-personal}"
 OBSIDIAN_ROOT="${OBSIDIAN_ROOT:-$HOME/Documents/Obsidian}"

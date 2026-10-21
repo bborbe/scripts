@@ -40,7 +40,7 @@ export ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-v4-flash-max[1m]"
 export ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-v4-flash[1m]"
 export ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash[1m]"
 export EFFORT_LEVEL="${EFFORT_LEVEL:-high}" # low, medium, high, xhigh
-export PERMISSION_MODE="auto"
+export PERMISSION_MODE="${PERMISSION_MODE:-auto}"
 
 VAULT="${OBSIDIAN_BROGRAMMERS_ASSISTANT:-$HOME/Documents/Assistant/Brogrammers}"
 VAULT_BROGRAMMERS="${OBSIDIAN_BROGRAMMERS:-$HOME/Documents/Obsidian/seibert-brogrammers}"
