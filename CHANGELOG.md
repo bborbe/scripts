@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+- fix: `git-status.sh` reports untracked files as `DIRTY` — it used `git diff HEAD`, which only sees tracked changes.
+
 ## v0.15.0
 
 - feat: add the sun-k3s helper set — `kubectlsun`, `k8s-delete-error-sun`, `k8s-delete-error-force-sun`, `k8s-delete-not-running-sun`, `k8s-delete-not-running-force-sun` — mirroring the nuke-dev siblings so the new cluster carries the same five commands as every other one.
