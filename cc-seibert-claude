@@ -29,7 +29,7 @@ export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-seibert"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
 export ANTHROPIC_MODEL="claude-opus-5-5[1m]"
 export EFFORT_LEVEL="${EFFORT_LEVEL:-low}" # low, medium, high, xhigh
-export PERMISSION_MODE="auto" # acceptEdits, auto
+export PERMISSION_MODE="${PERMISSION_MODE:-auto}" # acceptEdits, auto
 
 OBSIDIAN_BROGRAMMERS="${OBSIDIAN_BROGRAMMERS:-$HOME/Documents/Obsidian/seibert-brogrammers}"
 OBSIDIAN_ROOT="${OBSIDIAN_ROOT:-$HOME/Documents/Obsidian}"
