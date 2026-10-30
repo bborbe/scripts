@@ -21,19 +21,15 @@ ulimit -n 8000
 
 export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
-# Pin the config dir: an inherited CLAUDE_CONFIG_DIR (e.g. ~/.claude-verify, the openbrain
-# scenario test dir) silently drops the user-level ~/.claude/commands — /ask, /speak and 27
-# others vanish. The pin keeps the launcher authoritative over ambient state.
 export CLAUDE_CONFIG_DIR="$HOME/.claude"
 export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-personal"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
-# Pin subagent tiers (opus/sonnet/haiku) to the same backend so the
-# whole session stays on MiniMax even when Claude Code dispatches a
-# subagent by tier name. Otherwise `haiku` would route to
-# anthropic-subscription via the router's "haiku" → claude-* mapping.
-export ANTHROPIC_DEFAULT_OPUS_MODEL="MiniMax-M3.1-Flash-Preview[1m]"
-export ANTHROPIC_DEFAULT_SONNET_MODEL="MiniMax-M2.7-highspeed[200k]"
+export ANTHROPIC_DEFAULT_FABLE_MODEL="MiniMax-M3.1-Flash[1m]"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="MiniMax-M3.1-Flash[1m]"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="MiniMax-M3.1-Flash[1m]"
 export ANTHROPIC_DEFAULT_HAIKU_MODEL="MiniMax-M2.7-highspeed[200k]"
+export CLAUDE_CODE_MAX_OUTPUT_TOKENS=64000
+export CLAUDE_CODE_AUTO_COMPACT_WINDOW=900000
 export EFFORT_LEVEL="${EFFORT_LEVEL:-high}" # low, medium, high, xhigh
 export PERMISSION_MODE="${PERMISSION_MODE:-auto}" # acceptEdits, auto
 
