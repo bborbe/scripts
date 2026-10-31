@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+- feat: `cc-private` records how its pane ends. A hand-launched session — the Fleet Manager is started as `cc-private --resume "Fleet Manager"` — had no exit trap, so its death left `kind=unknown-end rc=unavailable` and nothing to explain it (measured 2026-10-30, pane 282). The launcher now writes a `spawn` line, starts claude-supervisor's detached observer, and traps `EXIT`, so a kill reads `kind=signalled kill rc=137 signal=SIGKILL`. ⚠️ **Installed only when `SESSION_EXIT_RECORD` is unset:** claude-supervisor's spawn and restart paths already wrap their launch and export it, and a second trap would write two spawn lines and two end lines for one session. Fail-open — a missing writer never stops the launcher. Verified with the real launcher and `claude` stubbed by a `sleep`: a hand launch killed with `kill -9` recorded `rc=137` from `writer=trap`, and a spawner-wrapped launch wrote no record at all.
+
 ## v0.15.2
 
 - fix: every `cc-*` launcher now DEFAULTS `PERMISSION_MODE` (`"${PERMISSION_MODE:-auto}"`) instead of assigning it unconditionally. The assignment silently overwrote any value a caller exported, so a supervisor `shipping: true` spawn could not move a tab worker to `acceptEdits` — the worker still parked on the operator's mode-switch gate. Absent or empty still resolves to `auto`, so an ordinary launch is unchanged.
