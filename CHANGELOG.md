@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## v0.16.0
 
 - feat: `cc-private` records how its pane ends. A hand-launched session — the Fleet Manager is started as `cc-private --resume "Fleet Manager"` — had no exit trap, so its death left `kind=unknown-end rc=unavailable` and nothing to explain it (measured 2026-10-30, pane 282). The launcher now writes a `spawn` line, starts claude-supervisor's detached observer, and traps `EXIT`, so a kill reads `kind=signalled kill rc=137 signal=SIGKILL`. ⚠️ **Installed only when `SESSION_EXIT_RECORD` is unset:** claude-supervisor's spawn and restart paths already wrap their launch and export it, and a second trap would write two spawn lines and two end lines for one session. The writer path is a plain shell variable, never exported, so a `cc-private` run from inside a session still installs its own trap. A `--resume <uuid>` launch records that id as the session; a `--resume <name>` launch records none rather than a name. Fail-open — a missing writer never stops the launcher. Verified with the real launcher and `claude` stubbed: a `kill -9` recorded `rc=137` with the resumed uuid, an exit 3 recorded `kind=exited rc=3`, a spawner-wrapped launch wrote no record, and `SESSION_EXIT_RECORD` no longer reaches `claude`'s environment.
 
