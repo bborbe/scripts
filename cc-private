@@ -59,16 +59,29 @@ export CLAUDE_CODE_FORCE_SESSION_PERSISTENCE=1
 # `kind=unknown-end rc=unavailable` because no trap was installed. `claude` stays a child of
 # this shell (never `exec`), which is what lets the trap see its exit status at all.
 # Fail-open: a missing writer must never stop the launcher.
+#
+# The writer path stays a plain shell variable, never exported: an exported value would reach
+# everything `claude` starts, and a cc-private run from inside that session would then read it
+# as "already recorded" and skip its own trap.
 if [ -z "${SESSION_EXIT_RECORD:-}" ]; then
 	_record="$HOME/.claude/plugins/marketplaces/claude-supervisor/scripts/session-exit-record.py"
 	if [ -f "$_record" ]; then
-		export SESSION_EXIT_RECORD="$_record"
+		# Tie the record to a session when the launch names one by id. `--resume "Fleet Manager"`
+		# is a name, not an id, so it is left out rather than recorded as one.
+		_session=""
+		_prev=""
+		for _arg in "$@"; do
+			if [ "$_prev" = "--resume" ] && [[ "$_arg" =~ ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$ ]]; then
+				_session="$_arg"
+			fi
+			_prev="$_arg"
+		done
 		_sx() {
 			local rc=$?
-			python3 "$SESSION_EXIT_RECORD" append --pid $$ --rc "$rc" || true
+			python3 "$_record" append --session "$_session" --pid $$ --rc "$rc" || true
 		}
-		python3 "$SESSION_EXIT_RECORD" append --kind spawn --pid $$ || true
-		python3 "$SESSION_EXIT_RECORD" observe --pid $$ || true
+		python3 "$_record" append --kind spawn --session "$_session" --pid $$ || true
+		python3 "$_record" observe --session "$_session" --pid $$ || true
 		trap _sx EXIT
 	fi
 fi
