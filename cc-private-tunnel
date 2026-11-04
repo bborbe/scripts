@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# Launch Claude in the Personal vault with the A2A push tunnel switched on, so a `target: k8s`
+# spawn can report status to the session that spawned it.
+#
+# Why this exists. The three settings that turn the tunnel on must be present TOGETHER at
+# process start, and one of them is a credential. `/supervisor:open` has no path for starting a
+# session with extra environment, and putting the secret on a command line or into a vault file
+# is exactly what must not happen. So the launcher reads the secret itself, at start, from
+# teamvault, and exports it — the value never reaches argv, a transcript, or the vault.
+#
+# The three settings, and why all three and not fewer:
+#
+#   SUPERVISOR_A2A_K8S_CALLBACK_URL  the URL a `k8s` worker posts its status to. It must be the
+#                                    in-cluster relay, not `host.docker.internal` — that name is
+#                                    NXDOMAIN inside a pod. The path is `/a2a/push`, the same
+#                                    path the `docker` arm uses, so the two contracts stay
+#                                    byte-identical; the relay is told apart by its HOST.
+#   A2A_PUSH_ROUTER_RELAY_URL        the relay's public pull endpoint the Mac long-polls.
+#   A2A_PUSH_ROUTER_TUNNEL_SECRET    the credential that pull must present.
+#
+# Setting one or two of them leaves the channel inert while looking deployed: the router only
+# enters tunnel mode when the relay URL AND the secret are both set (it refuses to start on one
+# without the other), and a worker handed no callback URL falls back to the docker-only host and
+# fails at ~10 s into every turn while `push_registration` still reports `attempted-ok`.
+#
+# Override any of them from the environment; the defaults are the nuke dev values.
+#
+#   A2A_PUSH_RELAY_SECRET_KEY   TeamVault lookup key for the tunnel secret (default XO7jWw)
+#   A2A_PUSH_ROUTER_RELAY_URL   default https://a2a-worker-controller.dev.nuke.benjamin-borbe.de/relay/pull
+#   SUPERVISOR_A2A_K8S_CALLBACK_URL
+#                               default http://a2a-push-relay.agent.svc.cluster.local:18082/a2a/push
+#
+# Usage: cc-private-tunnel [any arguments cc-private accepts]
+
+set -euo pipefail
+
+SECRET_KEY="${A2A_PUSH_RELAY_SECRET_KEY:-XO7jWw}"
+RELAY_URL="${A2A_PUSH_ROUTER_RELAY_URL:-https://a2a-worker-controller.dev.nuke.benjamin-borbe.de/relay/pull}"
+CALLBACK_URL="${SUPERVISOR_A2A_K8S_CALLBACK_URL:-http://a2a-push-relay.agent.svc.cluster.local:18082/a2a/push}"
+
+command -v teamvault-cli >/dev/null 2>&1 || {
+	echo "cc-private-tunnel: teamvault-cli is not on PATH; cannot resolve the tunnel secret" >&2
+	exit 1
+}
+
+# Resolved into a variable, never echoed. `set -e` would abort on a failed lookup, but an empty
+# success is the case that matters: the router refuses an empty secret at construction, so a
+# session started with one would come up with the tunnel silently off.
+secret="$(teamvault-cli password "$SECRET_KEY")"
+if [ -z "$secret" ]; then
+	echo "cc-private-tunnel: TeamVault key $SECRET_KEY resolved to nothing; refusing to start a session with the tunnel half-configured" >&2
+	exit 1
+fi
+
+export SUPERVISOR_A2A_K8S_CALLBACK_URL="$CALLBACK_URL"
+export A2A_PUSH_ROUTER_RELAY_URL="$RELAY_URL"
+export A2A_PUSH_ROUTER_TUNNEL_SECRET="$secret"
+unset secret
+
+# The launcher stays the authority over everything else — model, router URL, permission mode,
+# MCP config, session-exit recording. This wrapper only adds the three variables above.
+exec "$(dirname "${BASH_SOURCE[0]}")/cc-private" "$@"
