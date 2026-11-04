@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+- fix: `cc-private-claude` records how its pane ends, with the same trap `cc-private` gained in v0.16.0. The Fleet Manager is hand-launched as `cc-private-claude --resume "Fleet Manager"`, and that path wrote no `session-exit/pane-<pane>.log` at all (measured 2026-11-03, pane 467), so its death left no record. The launcher now writes a `spawn` line, starts claude-supervisor's detached observer, and traps `EXIT`. ⚠️ Installed only when `SESSION_EXIT_RECORD` is unset, so a spawner-wrapped pane is never double-wrapped; the writer path is never exported, so a nested launcher still installs its own trap; fail-open when the writer is missing. A `--resume <name>` launch records `session=-`.
+
 ## v0.16.1
 
 - fix: the `cc-*` launchers no longer exit when the shell's hard open-file limit is below 8000. `ulimit -n 8000` under `set -e` aborted the launcher in any WezTerm pane whose mux server was started with a 4096 hard limit (`ulimit: open files: cannot modify limit: Operation not permitted`, measured 2026-11-04). The line now falls back to the hard limit: `ulimit -n 8000 2>/dev/null || ulimit -n "$(ulimit -Hn)"`. Verified in a shell with soft and hard both 4096: the line leaves `soft=4096 hard=4096` and exits 0.
