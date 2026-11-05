@@ -39,7 +39,34 @@ set -euo pipefail
 SECRET_KEY="${A2A_PUSH_RELAY_SECRET_KEY:-XO7jWw}"
 RELAY_URL="${A2A_PUSH_ROUTER_RELAY_URL:-https://a2a-worker-controller.dev.nuke.benjamin-borbe.de/relay/pull}"
 CALLBACK_URL="${SUPERVISOR_A2A_K8S_CALLBACK_URL:-http://a2a-push-relay.agent.svc.cluster.local:18082/a2a/push}"
-ROUTER_SCRIPT="${A2A_PUSH_ROUTER_SCRIPT:-$HOME/.claude/plugins/marketplaces/claude-supervisor/scripts/a2a-push-router.mjs}"
+
+# ⚠️ RESOLVE THE ROUTER FROM THE INSTALLED PLUGIN, NOT FROM A WORKING CHECKOUT. The supervisor's
+# own server may run from a dev checkout that is dozens of commits behind — measured 2026-11-05:
+# `~/Documents/workspaces/claude-supervisor` sat 77 commits back and its
+# `server/a2a-push-router.mjs` had no tunnel mode at all. That checkout is not what this script
+# runs, but picking a router path by habit is how it becomes so. The newest installed plugin
+# version that actually CARRIES tunnel mode wins; the marketplace clone is the fallback.
+#
+# The capability check is not decoration: a router without tunnel mode starts happily, binds, and
+# receives pushes that nothing pulls — the exact "deployed but inert" shape this exists to avoid.
+resolve_router_script() {
+	if [ -n "${A2A_PUSH_ROUTER_SCRIPT:-}" ]; then
+		printf '%s' "$A2A_PUSH_ROUTER_SCRIPT"
+		return
+	fi
+	local base="$HOME/.claude/plugins/cache/claude-supervisor/supervisor" candidate
+	if [ -d "$base" ]; then
+		for version in $(find "$base" -mindepth 1 -maxdepth 1 -type d -print 2>/dev/null | sed 's#.*/##' | sort -Vr); do
+			candidate="$base/$version/scripts/a2a-push-router.mjs"
+			if grep -q 'tunnel mode' "$candidate" 2>/dev/null; then
+				printf '%s' "$candidate"
+				return
+			fi
+		done
+	fi
+	printf '%s' "$HOME/.claude/plugins/marketplaces/claude-supervisor/scripts/a2a-push-router.mjs"
+}
+ROUTER_SCRIPT="$(resolve_router_script)"
 
 command -v teamvault-cli >/dev/null 2>&1 || {
 	echo "cc-private-tunnel: teamvault-cli is not on PATH; cannot resolve the tunnel secret" >&2
@@ -51,6 +78,12 @@ command -v node >/dev/null 2>&1 || {
 }
 [ -f "$ROUTER_SCRIPT" ] || {
 	echo "cc-private-tunnel: push router not found at $ROUTER_SCRIPT" >&2
+	exit 1
+}
+# A router without tunnel mode would start, bind, and receive pushes nothing pulls. Refuse it by
+# name rather than discovering it from a silent channel later.
+grep -q 'tunnel mode' "$ROUTER_SCRIPT" || {
+	echo "cc-private-tunnel: $ROUTER_SCRIPT predates tunnel mode; update the supervisor plugin" >&2
 	exit 1
 }
 
