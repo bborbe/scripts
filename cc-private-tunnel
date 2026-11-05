@@ -37,7 +37,22 @@
 set -euo pipefail
 
 SECRET_KEY="${A2A_PUSH_RELAY_SECRET_KEY:-XO7jWw}"
-RELAY_URL="${A2A_PUSH_ROUTER_RELAY_URL:-https://a2a-worker-controller.dev.nuke.benjamin-borbe.de/relay/pull}"
+RELAY_URL="${A2A_PUSH_ROUTER_RELAY_URL:-https://a2a-worker-controller.dev.nuke.benjamin-borbe.de}"
+
+# ⚠️ **THE ROUTER APPENDS `/relay/pull` ITSELF, SO THIS MUST BE THE BASE URL.** It builds
+# `${base}/relay/pull?wait=…` from whatever it is given. Point it at the full pull path and it
+# requests `/relay/pull/relay/pull`, which misses the ingress's `pathType: Exact` rule, falls
+# through to the `/` rule on the controller's own port, and is answered **401 by the bearer-token
+# gate** — not by the relay. Measured 2026-11-05: that exact doubled path returns 401 while the
+# single path returns 200 with the same secret. The failure is indistinguishable from a wrong
+# secret, which is what makes it expensive. A trailing `/relay/pull` is stripped rather than
+# trusted, so either spelling works.
+RELAY_BASE="${RELAY_URL%/}"
+case "$RELAY_BASE" in
+	*/relay/pull) RELAY_BASE="${RELAY_BASE%/relay/pull}" ;;
+esac
+RELAY_BASE="${RELAY_BASE%/}"
+
 CALLBACK_URL="${SUPERVISOR_A2A_K8S_CALLBACK_URL:-http://a2a-push-relay.agent.svc.cluster.local:18082/a2a/push}"
 
 # ⚠️ RESOLVE THE ROUTER FROM THE INSTALLED PLUGIN, NOT FROM A WORKING CHECKOUT. The supervisor's
@@ -95,6 +110,38 @@ if [ -z "$secret" ]; then
 	echo "cc-private-tunnel: TeamVault key $SECRET_KEY resolved to nothing; refusing to start a session with the tunnel half-configured" >&2
 	exit 1
 fi
+
+# ⚠️ PROVE THE TUNNEL BEFORE THE SESSION STARTS. Everything else here can be right and the pull
+# still fail — a doubled path, a rotated secret, a relay that is down — and every one of those
+# looks identical from inside the session: a channel that is quietly inert while the launch
+# reported tunnel mode. One authenticated pull costs a request and turns all of it into a
+# refusal with a status code. The secret goes through a mode-600 config file, never argv.
+preflight="$(mktemp -t relay-preflight)"
+chmod 600 "$preflight"
+trap 'rm -f "$preflight"' EXIT
+{ printf 'header = "X-A2A-Tunnel-Secret: '; printf '%s' "$secret"; printf '"\n'; } >"$preflight"
+pull_status="$(curl -s -o /dev/null -w '%{http_code}' --max-time 15 --config "$preflight" \
+	"$RELAY_BASE/relay/pull?wait=1s" 2>/dev/null || echo 000)"
+rm -f "$preflight"
+trap - EXIT
+case "$pull_status" in
+	200) echo "cc-private-tunnel: relay preflight OK — authenticated pull accepted by $RELAY_BASE" ;;
+	401)
+		echo "cc-private-tunnel: relay preflight returned 401 against $RELAY_BASE/relay/pull" >&2
+		echo "  The secret is right but the request is not reaching the relay. Check the URL is the" >&2
+		echo "  BASE host and not a full pull path — a doubled /relay/pull falls through the ingress" >&2
+		echo "  to the bearer-gated controller router and answers 401 with the same shape." >&2
+		exit 1
+		;;
+	000)
+		echo "cc-private-tunnel: relay preflight could not reach $RELAY_BASE (no response)" >&2
+		exit 1
+		;;
+	*)
+		echo "cc-private-tunnel: relay preflight returned $pull_status against $RELAY_BASE/relay/pull" >&2
+		exit 1
+		;;
+esac
 
 # A free loopback port unless one was pinned. The socket is closed before the router binds, so
 # this is a race in principle; the router's own bind failure is what makes it safe in practice —
