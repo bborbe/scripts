@@ -2,61 +2,228 @@
 # Launch Claude in the Personal vault with the A2A push tunnel switched on, so a `target: k8s`
 # spawn can report status to the session that spawned it.
 #
-# Why this exists. The three settings that turn the tunnel on must be present TOGETHER at
-# process start, and one of them is a credential. `/supervisor:open` has no path for starting a
-# session with extra environment, and putting the secret on a command line or into a vault file
-# is exactly what must not happen. So the launcher reads the secret itself, at start, from
-# teamvault, and exports it — the value never reaches argv, a transcript, or the vault.
+# Why this exists. Turning the tunnel on needs FOUR things live at once, and one is a credential:
 #
-# The three settings, and why all three and not fewer:
+#   the relay pull URL        what the Mac long-polls for queued worker statuses
+#   the tunnel secret         the credential that pull must present
+#   the push router           the process that OWNS the stable address and does the pulling
+#   the callback URL          where a `k8s` worker posts, i.e. the in-cluster relay
 #
-#   SUPERVISOR_A2A_K8S_CALLBACK_URL  the URL a `k8s` worker posts its status to. It must be the
-#                                    in-cluster relay, not `host.docker.internal` — that name is
-#                                    NXDOMAIN inside a pod. The path is `/a2a/push`, the same
-#                                    path the `docker` arm uses, so the two contracts stay
-#                                    byte-identical; the relay is told apart by its HOST.
-#   A2A_PUSH_ROUTER_RELAY_URL        the relay's public pull endpoint the Mac long-polls.
-#   A2A_PUSH_ROUTER_TUNNEL_SECRET    the credential that pull must present.
+# `/supervisor:open` has no path for starting a session with extra environment, and putting the
+# secret on a command line or into a vault file is exactly what must not happen. So this reads
+# the secret from TeamVault itself and never echoes it.
 #
-# Setting one or two of them leaves the channel inert while looking deployed: the router only
-# enters tunnel mode when the relay URL AND the secret are both set (it refuses to start on one
-# without the other), and a worker handed no callback URL falls back to the docker-only host and
-# fails at ~10 s into every turn while `push_registration` still reports `attempted-ok`.
+# ⚠️ **THE ROUTER IS NOT STARTED BY THE SUPERVISOR.** `server/supervisor.mjs` only READS
+# `SUPERVISOR_A2A_PUSH_ROUTER_URL`; nothing spawns the router. A session that exports the relay
+# settings and stops there has no router, so nothing pulls and the callback URL is inert — the
+# exact "deployed but inert" shape this whole feature exists to remove. This launcher starts it.
 #
-# Override any of them from the environment; the defaults are the nuke dev values.
+# ⚠️ **THE ROUTER CANNOT USE ITS DEFAULT PORT.** `scripts/a2a-push-router.mjs` defaults to
+# 18083 and exits non-zero when it cannot bind, deliberately — it exists to own that address.
+# Measured 2026-11-05: an unrelated process (`orb`, an ARTEX binary) holds `*:18083` on this
+# machine, so a default-port router dies at start. A free port is picked at launch instead, and
+# loopback-only, because in tunnel mode the router dials out and never needs an inbound
+# connection from anywhere but this machine.
 #
-#   A2A_PUSH_RELAY_SECRET_KEY   TeamVault lookup key for the tunnel secret (default XO7jWw)
-#   A2A_PUSH_ROUTER_RELAY_URL   default https://a2a-worker-controller.dev.nuke.benjamin-borbe.de/relay/pull
-#   SUPERVISOR_A2A_K8S_CALLBACK_URL
-#                               default http://a2a-push-relay.agent.svc.cluster.local:18082/a2a/push
+# Override from the environment:
+#   A2A_PUSH_RELAY_SECRET_KEY       TeamVault lookup key for the tunnel secret (default XO7jWw)
+#   A2A_PUSH_ROUTER_RELAY_URL       default the nuke-dev relay pull endpoint
+#   SUPERVISOR_A2A_K8S_CALLBACK_URL default the in-cluster relay, path /a2a/push
+#   A2A_PUSH_ROUTER_PORT            pin a port instead of picking a free one
+#   A2A_PUSH_ROUTER_SCRIPT          router script path (default: the installed plugin's)
 #
 # Usage: cc-private-tunnel [any arguments cc-private accepts]
 
 set -euo pipefail
 
 SECRET_KEY="${A2A_PUSH_RELAY_SECRET_KEY:-XO7jWw}"
-RELAY_URL="${A2A_PUSH_ROUTER_RELAY_URL:-https://a2a-worker-controller.dev.nuke.benjamin-borbe.de/relay/pull}"
+RELAY_URL="${A2A_PUSH_ROUTER_RELAY_URL:-https://a2a-worker-controller.dev.nuke.benjamin-borbe.de}"
+
+# ⚠️ **THE ROUTER APPENDS `/relay/pull` ITSELF, SO THIS MUST BE THE BASE URL.** It builds
+# `${base}/relay/pull?wait=…` from whatever it is given. Point it at the full pull path and it
+# requests `/relay/pull/relay/pull`, which misses the ingress's `pathType: Exact` rule, falls
+# through to the `/` rule on the controller's own port, and is answered **401 by the bearer-token
+# gate** — not by the relay. Measured 2026-11-05: that exact doubled path returns 401 while the
+# single path returns 200 with the same secret. The failure is indistinguishable from a wrong
+# secret, which is what makes it expensive. A trailing `/relay/pull` is stripped rather than
+# trusted, so either spelling works.
+RELAY_BASE="${RELAY_URL%/}"
+case "$RELAY_BASE" in
+	*/relay/pull) RELAY_BASE="${RELAY_BASE%/relay/pull}" ;;
+esac
+RELAY_BASE="${RELAY_BASE%/}"
+
 CALLBACK_URL="${SUPERVISOR_A2A_K8S_CALLBACK_URL:-http://a2a-push-relay.agent.svc.cluster.local:18082/a2a/push}"
+
+# ⚠️ RESOLVE THE ROUTER FROM THE INSTALLED PLUGIN, NOT FROM A WORKING CHECKOUT. The supervisor's
+# own server may run from a dev checkout that is dozens of commits behind — measured 2026-11-05:
+# `~/Documents/workspaces/claude-supervisor` sat 77 commits back and its
+# `server/a2a-push-router.mjs` had no tunnel mode at all. That checkout is not what this script
+# runs, but picking a router path by habit is how it becomes so. The newest installed plugin
+# version that actually CARRIES tunnel mode wins; the marketplace clone is the fallback.
+#
+# The capability check is not decoration: a router without tunnel mode starts happily, binds, and
+# receives pushes that nothing pulls — the exact "deployed but inert" shape this exists to avoid.
+resolve_router_script() {
+	if [ -n "${A2A_PUSH_ROUTER_SCRIPT:-}" ]; then
+		printf '%s' "$A2A_PUSH_ROUTER_SCRIPT"
+		return
+	fi
+	local base="$HOME/.claude/plugins/cache/claude-supervisor/supervisor" candidate
+	if [ -d "$base" ]; then
+		for version in $(find "$base" -mindepth 1 -maxdepth 1 -type d -print 2>/dev/null | sed 's#.*/##' | sort -Vr); do
+			candidate="$base/$version/scripts/a2a-push-router.mjs"
+			if grep -q 'tunnel mode' "$candidate" 2>/dev/null; then
+				printf '%s' "$candidate"
+				return
+			fi
+		done
+	fi
+	printf '%s' "$HOME/.claude/plugins/marketplaces/claude-supervisor/scripts/a2a-push-router.mjs"
+}
+ROUTER_SCRIPT="$(resolve_router_script)"
 
 command -v teamvault-cli >/dev/null 2>&1 || {
 	echo "cc-private-tunnel: teamvault-cli is not on PATH; cannot resolve the tunnel secret" >&2
 	exit 1
 }
+command -v node >/dev/null 2>&1 || {
+	echo "cc-private-tunnel: node is not on PATH; cannot start the push router" >&2
+	exit 1
+}
+[ -f "$ROUTER_SCRIPT" ] || {
+	echo "cc-private-tunnel: push router not found at $ROUTER_SCRIPT" >&2
+	exit 1
+}
+# A router without tunnel mode would start, bind, and receive pushes nothing pulls. Refuse it by
+# name rather than discovering it from a silent channel later.
+grep -q 'tunnel mode' "$ROUTER_SCRIPT" || {
+	echo "cc-private-tunnel: $ROUTER_SCRIPT predates tunnel mode; update the supervisor plugin" >&2
+	exit 1
+}
 
-# Resolved into a variable, never echoed. `set -e` would abort on a failed lookup, but an empty
-# success is the case that matters: the router refuses an empty secret at construction, so a
-# session started with one would come up with the tunnel silently off.
+# Resolved into a variable, never echoed. An empty success is the case that matters: the router
+# refuses an empty secret at construction, so the session would come up with the tunnel silently
+# off.
 secret="$(teamvault-cli password "$SECRET_KEY")"
 if [ -z "$secret" ]; then
 	echo "cc-private-tunnel: TeamVault key $SECRET_KEY resolved to nothing; refusing to start a session with the tunnel half-configured" >&2
 	exit 1
 fi
 
-export SUPERVISOR_A2A_K8S_CALLBACK_URL="$CALLBACK_URL"
-export A2A_PUSH_ROUTER_RELAY_URL="$RELAY_URL"
-export A2A_PUSH_ROUTER_TUNNEL_SECRET="$secret"
+# ⚠️ PROVE THE TUNNEL BEFORE THE SESSION STARTS. Everything else here can be right and the pull
+# still fail — a doubled path, a rotated secret, a relay that is down — and every one of those
+# looks identical from inside the session: a channel that is quietly inert while the launch
+# reported tunnel mode. One authenticated pull costs a request and turns all of it into a
+# refusal with a status code. The secret goes through a mode-600 config file, never argv.
+preflight="$(mktemp -t relay-preflight)"
+chmod 600 "$preflight"
+trap 'rm -f "$preflight"' EXIT
+{ printf 'header = "X-A2A-Tunnel-Secret: '; printf '%s' "$secret"; printf '"\n'; } >"$preflight"
+pull_status="$(curl -s -o /dev/null -w '%{http_code}' --max-time 15 --config "$preflight" \
+	"$RELAY_BASE/relay/pull?wait=1s" 2>/dev/null || echo 000)"
+rm -f "$preflight"
+trap - EXIT
+case "$pull_status" in
+	200) echo "cc-private-tunnel: relay preflight OK — authenticated pull accepted by $RELAY_BASE" ;;
+	401)
+		echo "cc-private-tunnel: relay preflight returned 401 against $RELAY_BASE/relay/pull" >&2
+		echo "  The secret is right but the request is not reaching the relay. Check the URL is the" >&2
+		echo "  BASE host and not a full pull path — a doubled /relay/pull falls through the ingress" >&2
+		echo "  to the bearer-gated controller router and answers 401 with the same shape." >&2
+		exit 1
+		;;
+	000)
+		echo "cc-private-tunnel: relay preflight could not reach $RELAY_BASE (no response)" >&2
+		exit 1
+		;;
+	*)
+		echo "cc-private-tunnel: relay preflight returned $pull_status against $RELAY_BASE/relay/pull" >&2
+		exit 1
+		;;
+esac
+
+# A free loopback port unless one was pinned. The socket is closed before the router binds, so
+# this is a race in principle; the router's own bind failure is what makes it safe in practice —
+# it exits non-zero rather than silently listening on something else.
+port_owner() {
+	lsof -nP -iTCP:"$1" -sTCP:LISTEN 2>/dev/null | awk 'NR==2 {printf "%s (pid %s)", $1, $2}'
+}
+
+if [ -n "${A2A_PUSH_ROUTER_PORT:-}" ]; then
+	ROUTER_PORT="$A2A_PUSH_ROUTER_PORT"
+	# ⚠️ NAME THE OWNER WHEN A PINNED PORT IS TAKEN. "could not bind" sends the reader looking
+	# at this script; "orb (pid 92027) holds it" sends them at the actual occupant, which on this
+	# machine is the common case — measured 2026-11-05, an unrelated ARTEX binary sits on 18083,
+	# the router's own default.
+	if held="$(port_owner "$ROUTER_PORT")" && [ -n "$held" ]; then
+		echo "cc-private-tunnel: port $ROUTER_PORT is already held by $held; pin another with A2A_PUSH_ROUTER_PORT or unset it to auto-pick" >&2
+		exit 1
+	fi
+else
+	ROUTER_PORT="$(python3 -c 'import socket; s=socket.socket(); s.bind(("127.0.0.1",0)); print(s.getsockname()[1]); s.close()')"
+fi
+ROUTER_URL="http://127.0.0.1:$ROUTER_PORT"
+
+ROUTER_LOG="$(mktemp -t a2a-push-router)"
+
+# The router inherits the secret through its own environment, never through argv.
+A2A_PUSH_ROUTER_HOST=127.0.0.1 \
+A2A_PUSH_ROUTER_PORT="$ROUTER_PORT" \
+A2A_PUSH_ROUTER_RELAY_URL="$RELAY_URL" \
+A2A_PUSH_ROUTER_TUNNEL_SECRET="$secret" \
+	node "$ROUTER_SCRIPT" >"$ROUTER_LOG" 2>&1 &
+ROUTER_PID=$!
 unset secret
 
+# shellcheck disable=SC2329  # invoked by the trap below, which shellcheck cannot see
+cleanup() {
+	kill "$ROUTER_PID" 2>/dev/null || true
+	wait "$ROUTER_PID" 2>/dev/null || true
+	rm -f "$ROUTER_LOG"
+}
+trap cleanup EXIT INT TERM
+
+# Wait for the bind line rather than sleeping blindly. The router exits non-zero on a bind
+# failure, so a dead pid is the failure signal and a missing line is a timeout.
+bound=""
+for _ in $(seq 1 100); do
+	if ! kill -0 "$ROUTER_PID" 2>/dev/null; then
+		echo "cc-private-tunnel: the push router exited during startup:" >&2
+		sed 's/^/  /' "$ROUTER_LOG" >&2
+		# ⚠️ NEVER EXPORT A ROUTER URL NOBODY SERVES. The router's own message says only that
+		# the bind failed; naming the occupant is what turns it into a diagnosis.
+		if held="$(port_owner "$ROUTER_PORT")" && [ -n "$held" ]; then
+			echo "cc-private-tunnel: port $ROUTER_PORT is held by $held" >&2
+		fi
+		exit 1
+	fi
+	bound="$(grep -m1 'listening on' "$ROUTER_LOG" 2>/dev/null || true)"
+	[ -n "$bound" ] && break
+	sleep 0.1
+done
+if [ -z "$bound" ]; then
+	echo "cc-private-tunnel: the push router did not report a bind within 10s:" >&2
+	sed 's/^/  /' "$ROUTER_LOG" >&2
+	exit 1
+fi
+
+# Printed on purpose: this is the line to quote when confirming a session really came up in
+# tunnel mode, and the port it names is the one the supervisor must be pointed at.
+echo "cc-private-tunnel: $bound"
+if grep -q 'tunnel mode' "$ROUTER_LOG"; then
+	echo "cc-private-tunnel: tunnel mode confirmed — pulling $RELAY_URL"
+else
+	echo "cc-private-tunnel: ⚠️ the router did NOT report tunnel mode; the relay settings did not take" >&2
+fi
+
+export SUPERVISOR_A2A_K8S_CALLBACK_URL="$CALLBACK_URL"
+export SUPERVISOR_A2A_PUSH_ROUTER_URL="$ROUTER_URL"
+export A2A_PUSH_ROUTER_RELAY_URL="$RELAY_URL"
+
 # The launcher stays the authority over everything else — model, router URL, permission mode,
-# MCP config, session-exit recording. This wrapper only adds the three variables above.
-exec "$(dirname "${BASH_SOURCE[0]}")/cc-private" "$@"
+# MCP config, session-exit recording. Run as a child, not `exec`, so the trap can stop the
+# router when the session ends.
+"$(dirname "${BASH_SOURCE[0]}")/cc-private" "$@"
+status=$?
+exit "$status"
