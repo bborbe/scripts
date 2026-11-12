@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  orbstack-nice LaunchAgent - keeps the OrbStack VM helper at nice 10.
+
+  OrbStack exposes no scheduling-priority setting, so its VM helper runs at
+  nice 0 and competes with foreground work. This agent re-applies `renice 10`
+  at load and every 60s, which covers both a Mac reboot and an OrbStack restart
+  (the helper gets a fresh pid each time).
+
+  The script is deployed to ~/.local/bin rather than executed in place from the
+  repo: the repo is the version-controlled source, and no agent on this host
+  runs a script from ~/Documents. launchd does not inherit the shell's PATH,
+  hence EnvironmentVariables below.
+
+  Install:
+    cp ~/Documents/workspaces/scripts/orbstack-nice.sh ~/.local/bin/orbstack-nice.sh
+    chmod +x ~/.local/bin/orbstack-nice.sh
+    cp ~/Documents/workspaces/scripts/com.bborbe.orbstack-nice.plist ~/Library/LaunchAgents/
+    launchctl load ~/Library/LaunchAgents/com.bborbe.orbstack-nice.plist
+  Re-deploy after any script change:
+    cp ~/Documents/workspaces/scripts/orbstack-nice.sh ~/.local/bin/orbstack-nice.sh
+  Uninstall:
+    launchctl unload ~/Library/LaunchAgents/com.bborbe.orbstack-nice.plist
+    rm ~/Library/LaunchAgents/com.bborbe.orbstack-nice.plist
+-->
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.bborbe.orbstack-nice</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/Users/bborbe/.local/bin/orbstack-nice.sh</string>
+	</array>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>PATH</key>
+		<string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+	</dict>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>StartInterval</key>
+	<integer>60</integer>
+	<key>ProcessType</key>
+	<string>Background</string>
+	<key>StandardOutPath</key>
+	<string>/Users/bborbe/Library/Logs/orbstack-nice.log</string>
+	<key>StandardErrorPath</key>
+	<string>/Users/bborbe/Library/Logs/orbstack-nice.log</string>
+</dict>
+</plist>

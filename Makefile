@@ -1,7 +1,8 @@
 test: check
 
 check:
-	shellcheck -S error *.sh
+	shellcheck -S error *.sh git-protect-branches git-pin-worktree
+	bash test-branch-guards.sh
 
 precommit: check
 

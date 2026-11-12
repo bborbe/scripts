@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+#
+# git-pin-worktree — keep this linked worktree on its current branch.
+#
+#   git-pin-worktree            pin this worktree to the branch it is on
+#   git-pin-worktree dev        same, asserting the branch is `dev`
+#   git-pin-worktree --show     show this worktree's pin
+#   git-pin-worktree --unset    remove this worktree's pin
+#
+# Sets `hook.pinBranch` in this worktree's own config (`git config --worktree`),
+# which the global reference-transaction hook in bborbe/dotfiles reads. A switch,
+# `checkout -b` or detach in a pinned tree is then refused for every writer —
+# shell, script, IDE or daemon. Enables `extensions.worktreeConfig` for the repo
+# on first use; without it a --worktree value would land in the shared config.
+#
+# Refuses in a MAIN checkout: the hook cannot tell `git worktree add` from a
+# switch there, so a pinned main checkout could not create worktrees.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+die() {
+	echo "git-pin-worktree: $1" >&2
+	exit 1
+}
+
+gitdir=$(git rev-parse --path-format=absolute --git-dir 2>/dev/null) || die "not inside a git repository"
+commondir=$(git rev-parse --path-format=absolute --git-common-dir)
+if [ "$gitdir" = "$commondir" ]; then
+	die "this is a main checkout — pins work on linked worktrees only (a pinned main checkout could not run git worktree add)"
+fi
+
+case "${1:-}" in
+	--show)
+		pin=$(git config --worktree --get hook.pinBranch 2>/dev/null || true)
+		echo "pinned: ${pin:-none}"
+		exit 0
+		;;
+	--unset)
+		git config --worktree --unset hook.pinBranch 2>/dev/null || true
+		echo "pinned: none"
+		exit 0
+		;;
+	-h|--help)
+		sed -n '3,8p' "$0" | sed 's/^# \{0,1\}//'
+		exit 0
+		;;
+	-*)
+		echo "git-pin-worktree: unknown option '$1'" >&2
+		exit 2
+		;;
+esac
+
+branch=$(git symbolic-ref --quiet --short HEAD) || die "HEAD is detached — check out the branch to pin first"
+if [ -n "${1:-}" ] && [ "$1" != "$branch" ]; then
+	die "this worktree is on '$branch', not '$1' — check out '$1' first, then pin"
+fi
+
+if [ "$(git config --local --get extensions.worktreeConfig || true)" != "true" ]; then
+	git config --local extensions.worktreeConfig true
+	echo "enabled extensions.worktreeConfig for this repo"
+fi
+git config --worktree hook.pinBranch "$branch"
+echo "pinned: $branch"

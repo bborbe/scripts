@@ -11,6 +11,64 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix: `wezterm-claude-snapshot` records the `cc-*` launcher each session was actually started with (read from its parent process) instead of deriving it from the vault, so a `cc-private-deepseek` session is no longer resumed under `cc-private`; the vault map stays as fallback.
 - fix: the generated `wezterm-restore.sh` is idempotent — a session already live in `~/.claude/sessions` is skipped, so re-running it (or running it from a snapshotted session) never puts two writers on one conversation — and it finds the live GUI socket itself and never auto-starts a mux server, so it works from iTerm/ssh too.
 
+## v0.16.3
+
+- chore: restate the do-not-merge contract in the gate workflow
+
+## v0.16.2
+
+- fix: `cc-private-claude` records how its pane ends, with the same trap `cc-private` gained in v0.16.0. The Fleet Manager is hand-launched as `cc-private-claude --resume "Fleet Manager"`, and that path wrote no `session-exit/pane-<pane>.log` at all (measured 2026-11-03, pane 467), so its death left no record. The launcher now writes a `spawn` line, starts claude-supervisor's detached observer, and traps `EXIT`. ⚠️ Installed only when `SESSION_EXIT_RECORD` is unset, so a spawner-wrapped pane is never double-wrapped; the writer path is never exported, so a nested launcher still installs its own trap; fail-open when the writer is missing. A `--resume <uuid>` launch records that id; a `--resume <name>` launch records `session=-`. Verified with the real launcher and `claude` stubbed: an exit 3 recorded `kind=exited rc=3`, a SIGTERM to `claude` recorded `kind=signalled kill rc=143 signal=SIGTERM`, the spawn and observer heartbeat lines carried the same `pid=`, a spawner-wrapped launch wrote no record, and `SESSION_EXIT_RECORD` did not reach `claude`'s environment.
+
+## v0.16.1
+
+- fix: the `cc-*` launchers no longer exit when the shell's hard open-file limit is below 8000. `ulimit -n 8000` under `set -e` aborted the launcher in any WezTerm pane whose mux server was started with a 4096 hard limit (`ulimit: open files: cannot modify limit: Operation not permitted`, measured 2026-11-04). The line now falls back to the hard limit: `ulimit -n 8000 2>/dev/null || ulimit -n "$(ulimit -Hn)"`. Verified in a shell with soft and hard both 4096: the line leaves `soft=4096 hard=4096` and exits 0.
+
+## v0.16.0
+
+- feat: `cc-private` records how its pane ends. A hand-launched session — the Fleet Manager is started as `cc-private --resume "Fleet Manager"` — had no exit trap, so its death left `kind=unknown-end rc=unavailable` and nothing to explain it (measured 2026-10-30, pane 282). The launcher now writes a `spawn` line, starts claude-supervisor's detached observer, and traps `EXIT`, so a kill reads `kind=signalled kill rc=137 signal=SIGKILL`. ⚠️ **Installed only when `SESSION_EXIT_RECORD` is unset:** claude-supervisor's spawn and restart paths already wrap their launch and export it, and a second trap would write two spawn lines and two end lines for one session. The writer path is a plain shell variable, never exported, so a `cc-private` run from inside a session still installs its own trap. A `--resume <uuid>` launch records that id as the session; a `--resume <name>` launch records none rather than a name. Fail-open — a missing writer never stops the launcher. Verified with the real launcher and `claude` stubbed: a `kill -9` recorded `rc=137` with the resumed uuid, an exit 3 recorded `kind=exited rc=3`, a spawner-wrapped launch wrote no record, and `SESSION_EXIT_RECORD` no longer reaches `claude`'s environment.
+
+## v0.15.2
+
+- fix: every `cc-*` launcher now DEFAULTS `PERMISSION_MODE` (`"${PERMISSION_MODE:-auto}"`) instead of assigning it unconditionally. The assignment silently overwrote any value a caller exported, so a supervisor `shipping: true` spawn could not move a tab worker to `acceptEdits` — the worker still parked on the operator's mode-switch gate. Absent or empty still resolves to `auto`, so an ordinary launch is unchanged.
+
+## v0.15.1
+
+- fix: `git-status.sh` reports untracked files as `DIRTY` — it used `git diff HEAD`, which only sees tracked changes.
+
+## v0.15.0
+
+- feat: add the sun-k3s helper set — `kubectlsun`, `k8s-delete-error-sun`, `k8s-delete-error-force-sun`, `k8s-delete-not-running-sun`, `k8s-delete-not-running-force-sun` — mirroring the nuke-dev siblings so the new cluster carries the same five commands as every other one.
+
+## v0.14.1
+
+- fix: every `cc-*` launcher sources the new `cc-env.sh`, which pins PATH (`~/.local/bin`, Homebrew, `/usr/local`, Go bin, bun, the scripts dir). A launcher started from a WezTerm tab via `bash -lc` got launchd's minimal PATH and died with `claude: command not found`; hooks and MCP servers also lost `vault-cli`, `gh` and `jq`.
+
+## v0.14.0
+
+- feat: every `cc-*` launcher now reads `EFFORT_LEVEL` from the environment (`${EFFORT_LEVEL:-<default>}`), so a caller can start one session at a different effort without editing the script. Defaults unchanged: low for cc-private, cc-private-claude and cc-seibert-claude; medium for cc-assistant-data and cc-assistant-personal; high for the rest.
+
+## v0.13.1
+
+- chore: reduce `go-mod-excludes.sh` to a thin wrapper over `updater fix` — it no longer carries its own list of 39 `-dropexclude` and 2 `-dropreplace` directives, and no longer injects 5 `replace` directives. Four of those five (anthropic-sdk-go, go-header, go-diskfs, ginkgolinter/types) are in updater's own removal lists, so updater stripped them on its next run and the two writers fought on every pass; the fifth (opencontainers/runtime-spec) is in neither list. updater's `gomod_excludes.py` is now the single source of truth. `--no-git` preserves the original no-commit contract, so the caller still commits. Also dropped: the four-module `go get -u` (go-git/v5, buildkit, modelcontextprotocol/go-sdk, grpc) the script used to force — `/go-update-deps` step 4 (`go-mod-update.sh`) still covers dependency updates, but a caller invoking this script standalone no longer gets them.
+
+## v0.13.0
+
+- feat: add `git-protect-branches` — refuse direct commits on named branches in a repo by setting `hook.protectBranches` in local config, which the global `pre-commit` hook in bborbe/dotfiles reads. Merges still land, so a deploy worktree's `git merge origin/master` keeps working.
+- feat: add `git-pin-worktree` — keep a linked worktree on its branch by setting `hook.pinBranch` in that worktree's own config, which the global `reference-transaction` hook in bborbe/dotfiles reads. Refuses in a main checkout, where a pin would block `git worktree add`.
+- chore: remove `git-hook-setup.pl` — it wrote `.git/hooks/pre-commit`, which git never runs while the global `core.hooksPath` is set, and it exited immediately when given no branch. Superseded by `git-protect-branches`.
+
+## v0.12.0
+
+- cc-private-external: route through the nuke-dev cluster router (`https://claude-code-router.dev.nuke.benjamin-borbe.de`, LAN only) instead of the local router; map Fable/Opus to `deepseek-v41-flash-max[1m]`, Sonnet to `deepseek-v41-flash-high[1m]`, Haiku to `deepseek-v41-flash[1m]` (the old Fable target `deepseek-v41-flash-ultra` does not exist on api.gpt.seibert.ai).
+
+## v0.11.0
+
+- feat: add `orbstack-nice` — a LaunchAgent keeping the OrbStack VM helper at nice 10. OrbStack exposes no scheduling-priority setting (`orb config show` lists only sizing/network/k8s/app keys), so the helper runs at nice 0 and competes with foreground work; a manual `renice 10` fixes it but is lost on every OrbStack restart and every reboot. The agent re-applies it at load and every 60s, which covers both cases since the helper gets a fresh pid each restart. The script waits at most 60s for the helper before exiting 0, so a 60s interval cannot stack hung instances while OrbStack is down, and it reads the nice value back and logs `reniced <pid> -> <nice>` — so the log proves the renice happened rather than merely that the agent fired.
+
+## v0.10.1
+
+- fix: pin `CLAUDE_CONFIG_DIR="$HOME/.claude"` in all 16 `cc-*` launchers. An inherited `CLAUDE_CONFIG_DIR` (e.g. `~/.claude-verify`, the openbrain scenario test dir) was passed straight through to `claude`, which then read user config from it — silently dropping the user-level `~/.claude/commands`, so `/ask`, `/speak`, `/ship` and 27 others vanished from the session while `~/.claude/settings.json`'s hooks and plugins still loaded. Measured 2026-10-09: `cc-private` handed `CLAUDE_CONFIG_DIR=/Users/bborbe/.claude-verify` to `claude`, and that store had already accumulated 246 session-env entries across vault, coding-bench and supervisor sessions since 2026-09-19. Pinned rather than unset so the launcher stays authoritative over ambient state; same leak shape as the `CLAUDE_CODE_SESSION_ID` fix in v0.8.1.
+
 ## v0.10.0
 
 - feat: add `openclaw` — launches a native OpenClaw (`npx openclaw@2026.9.7` on nvm Node 24.21.0) with the Seibert vLLM and Discord bot tokens resolved from TeamVault at runtime, never stored in its config.

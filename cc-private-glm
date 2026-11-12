@@ -14,18 +14,25 @@
 
 set -euo pipefail
 
-ulimit -n 8000
+# shellcheck source=cc-env.sh
+source "$(dirname "${BASH_SOURCE[0]}")/cc-env.sh"
+
+ulimit -n 8000 2>/dev/null || ulimit -n "$(ulimit -Hn)"
 
 export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
+# Pin the config dir: an inherited CLAUDE_CONFIG_DIR (e.g. ~/.claude-verify, the openbrain
+# scenario test dir) silently drops the user-level ~/.claude/commands — /ask, /speak and 27
+# others vanish. The pin keeps the launcher authoritative over ambient state.
+export CLAUDE_CONFIG_DIR="$HOME/.claude"
 export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-personal"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
 export ANTHROPIC_DEFAULT_FABLE_MODEL="glm-5.3[1m]"
 export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5.3-flash[1m]"
 export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-5.3-flash[1m]"
 export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-5.3-flash[1m]" # NOT glm-5.3-fast — Z.ai 400s: unknown model
-export EFFORT_LEVEL="high" # low, medium, high, xhigh
-export PERMISSION_MODE="auto" # acceptEdits, auto
+export EFFORT_LEVEL="${EFFORT_LEVEL:-high}" # low, medium, high, xhigh
+export PERMISSION_MODE="${PERMISSION_MODE:-auto}" # acceptEdits, auto
 
 OBSIDIAN_PERSONAL="${OBSIDIAN_PERSONAL:-$HOME/Documents/Obsidian/private-personal}"
 OBSIDIAN_ROOT="${OBSIDIAN_ROOT:-$HOME/Documents/Obsidian}"
@@ -46,10 +53,10 @@ claude \
 --model "${ANTHROPIC_DEFAULT_OPUS_MODEL}" \
 --effort "${EFFORT_LEVEL}" \
 --permission-mode "${PERMISSION_MODE}" \
---mcp-config ~/.claude/mcp-private-personal.json \
+--mcp-config="$HOME/.claude/mcp-private-personal.json" \
 --strict-mcp-config \
---add-dir "$OBSIDIAN_ROOT" \
---add-dir "$WORKSPACES_ROOT" \
---add-dir ~/.claude/prompts \
---add-dir /tmp \
+--add-dir="$OBSIDIAN_ROOT" \
+--add-dir="$WORKSPACES_ROOT" \
+--add-dir="$HOME/.claude/prompts" \
+--add-dir=/tmp \
 "$@"

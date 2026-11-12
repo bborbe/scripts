@@ -1,42 +1,40 @@
 #!/usr/bin/env bash
 # Launch Claude in the Personal Obsidian vault, routed through
-# claude-code-router on 127.0.0.1:8788. The router decides per-request
-# which backend to forward to based on the `model` field — defaults to
-# claude-opus-4-7 (subscription); switch mid-session with `/model <name>`.
-# See github.com/bborbe/claude-code-router for config + provider list.
+# claude-code-router on 127.0.0.1:8788, with deepseek-v4-flash[1m] as
+# the default model. The router forwards `deepseek-*` requests to
+# vllm.seibert.tools with the provider token swapped in at the router
+# (see ~/.config/claude-code-router/config.yaml); switch mid-session with
+# `/model <name>`. See github.com/bborbe/claude-code-router.
 #
-# Override paths via env (set in ~/.zshrc per machine):
+# Override paths via env (set in ~/.zshrc / direnv per machine):
 #   OBSIDIAN_PERSONAL  — Personal vault (default: $HOME/Documents/Obsidian/private-personal)
-#   OBSIDIAN_ROOT      — Obsidian parent dir for --add-dir (default: $HOME/Documents/Obsidian)
-#   WORKSPACES_ROOT    — Code workspaces parent for --add-dir (default: $HOME/Documents/workspaces)
+#   OBSIDIAN_ROOT      — Obsidian parent for --add-dir
+#   WORKSPACES_ROOT    — Code workspaces parent for --add-dir
 #   CLAUDE_CODE_ROUTER_URL — router URL (default: http://127.0.0.1:8788)
 
 set -euo pipefail
 
-ulimit -n 8000
+# shellcheck source=cc-env.sh
+source "$(dirname "${BASH_SOURCE[0]}")/cc-env.sh"
+
+ulimit -n 8000 2>/dev/null || ulimit -n "$(ulimit -Hn)"
 
 export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
+# Pin the config dir: an inherited CLAUDE_CONFIG_DIR (e.g. ~/.claude-verify, the openbrain
+# scenario test dir) silently drops the user-level ~/.claude/commands — /ask, /speak and 27
+# others vanish. The pin keeps the launcher authoritative over ambient state.
+export CLAUDE_CONFIG_DIR="$HOME/.claude"
 export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-personal"
-# Pin TeamVault to the PERSONAL instance. Without this the launcher inherits
-# whatever $TEAMVAULT_CONFIG the calling shell had — and a shell left pointing at
-# seibert.json (work) makes every personal/nuke/quant secret lookup 404, so
-# `teamvault-cli config parse` renders an EMPTY manifest and `kubectl apply`
-# reports "no objects passed to apply" while the Makefile still exits 0.
-# Images push, nothing deploys, the run looks clean. Hit 2026-09-06 during the
-# weekly nuke rebuild: 8 quant components silently failed to apply on dev AND
-# prod. Same class as the ~296 silent apply failures of 2026-08-23 (W34).
-export TEAMVAULT_CONFIG="${TEAMVAULT_CONFIG_PERSONAL:-$HOME/.config/teamvault-cli/config.json}"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
-# [1m] suffix = Claude Code's per-model 1M opt-in (it sends the context-1m beta
-# header + base model id). Needed because the custom router base URL suppresses
-# native-1M auto-detection, so CC otherwise falls back to a 200k window — which
-# mis-scales the context meter AND triggers auto-compact ~5x too early.
-# Per-model (unlike a global CLAUDE_CODE_MAX_CONTEXT_TOKENS), so it's safe
-# alongside the non-Opus launchers (deepseek/minimax/qwen/glm).
-export ANTHROPIC_MODEL="claude-opus-5-5[1m]"
-export EFFORT_LEVEL="low" # low, medium, high, xhigh
-export PERMISSION_MODE="auto" # acceptEdits, auto
+export ANTHROPIC_DEFAULT_FABLE_MODEL="deepseek-v4-flash-ultra[1m]"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-v4-flash-max[1m]"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-v4-flash[1m]"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash[1m]"
+export CLAUDE_CODE_MAX_OUTPUT_TOKENS=64000
+export CLAUDE_CODE_AUTO_COMPACT_WINDOW=900000
+export EFFORT_LEVEL="${EFFORT_LEVEL:-low}" # low, medium, high, xhigh
+export PERMISSION_MODE="${PERMISSION_MODE:-auto}" # acceptEdits, auto
 
 OBSIDIAN_PERSONAL="${OBSIDIAN_PERSONAL:-$HOME/Documents/Obsidian/private-personal}"
 OBSIDIAN_ROOT="${OBSIDIAN_ROOT:-$HOME/Documents/Obsidian}"
@@ -52,15 +50,51 @@ unset CLAUDE_CODE_CHILD_SESSION
 # name (measured 3x 2026-09-14: ae186815, f4c8fd2d, a4de4005). No-op on a plain launch.
 unset CLAUDE_CODE_SESSION_ID
 export CLAUDE_CODE_FORCE_SESSION_PERSISTENCE=1
+
+# Record how this pane ends, so a dead session can be explained afterwards. claude-supervisor's
+# spawn and restart paths already wrap their launch in this trap and export
+# SESSION_EXIT_RECORD, so the guard installs it only for a HAND launch — wrapping twice would
+# write two spawn lines and two end lines for one session. Measured 2026-10-30: the Fleet
+# Manager, hand-launched as `cc-private --resume "Fleet Manager"`, ended
+# `kind=unknown-end rc=unavailable` because no trap was installed. `claude` stays a child of
+# this shell (never `exec`), which is what lets the trap see its exit status at all.
+# Fail-open: a missing writer must never stop the launcher.
+#
+# The writer path stays a plain shell variable, never exported: an exported value would reach
+# everything `claude` starts, and a cc-private run from inside that session would then read it
+# as "already recorded" and skip its own trap.
+if [ -z "${SESSION_EXIT_RECORD:-}" ]; then
+	_record="$HOME/.claude/plugins/marketplaces/claude-supervisor/scripts/session-exit-record.py"
+	if [ -f "$_record" ]; then
+		# Tie the record to a session when the launch names one by id. `--resume "Fleet Manager"`
+		# is a name, not an id, so it is left out rather than recorded as one.
+		_session=""
+		_prev=""
+		for _arg in "$@"; do
+			if [ "$_prev" = "--resume" ] && [[ "$_arg" =~ ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$ ]]; then
+				_session="$_arg"
+			fi
+			_prev="$_arg"
+		done
+		_sx() {
+			local rc=$?
+			python3 "$_record" append --session "$_session" --pid $$ --rc "$rc" || true
+		}
+		python3 "$_record" append --kind spawn --session "$_session" --pid $$ || true
+		python3 "$_record" observe --session "$_session" --pid $$ || true
+		trap _sx EXIT
+	fi
+fi
+
 claude \
 --settings '{"theme":"custom:private-blue"}' \
---model "${ANTHROPIC_MODEL}" \
+--model "${ANTHROPIC_DEFAULT_OPUS_MODEL}" \
 --effort "${EFFORT_LEVEL}" \
 --permission-mode "${PERMISSION_MODE}" \
---mcp-config ~/.claude/mcp-private-personal.json \
+--mcp-config="$HOME/.claude/mcp-private-personal.json" \
 --strict-mcp-config \
---add-dir "$OBSIDIAN_ROOT" \
---add-dir "$WORKSPACES_ROOT" \
---add-dir ~/.claude/prompts \
---add-dir /tmp \
+--add-dir="$OBSIDIAN_ROOT" \
+--add-dir="$WORKSPACES_ROOT" \
+--add-dir="$HOME/.claude/prompts" \
+--add-dir=/tmp \
 "$@"
