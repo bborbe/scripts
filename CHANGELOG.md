@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+- feat: `nuke-power-off.sh` shuts the nuke host down on a power outage, run by hand on the host: guests get an ACPI shutdown so their own systemd stops K3s and Kafka, the host waits for them (bounded, `--timeout`), syncs, then powers off. Needs no network — `virsh shutdown` rides the QEMU unix socket and no guest has a network mount, so a dead LAN or DNS changes nothing. Logs to `/var/log/nuke-power-off.log` for the post-mortem.
+- feat: `nuke-k3s-quiesce.sh` is the on-host twin of `remote-k3s-shutdown-nuke.sh` — same per-host stop sequence, but run from nuke with LAN+DNS up. Derives the node list from `virsh list --state-running` instead of a hardcoded list that went stale (2026-08-23: decommissioned nodes aborted the run under `errexit` before the kafka and master blocks), keeps the workers → kafka → masters order, attempts every host and reports `[SUCCESS]`/`[FAILED]` plus a summary instead of aborting on the first failure, and separates a DNS failure from an SSH-key failure in preflight.
+
 ## v0.18.1
 
 - fix: `cc-private-tunnel` starts its push router and picks a free port instead of leaving the tunnel inert, resolves the router from the installed plugin rather than a fixed path, and hands it the base URL instead of the full pull path.
