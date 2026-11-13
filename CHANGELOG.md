@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - fix: `cc-private-tunnel` starts its push router and picks a free port instead of leaving the tunnel inert, resolves the router from the installed plugin rather than a fixed path, and hands it the base URL instead of the full pull path.
 
+## v0.18.0
+
+
+- feat: `cc-env.sh` now exports `CLAUDE_CODE_DISABLE_ALTERNATE_SCREEN=1`, so every `cc-*` launcher keeps Claude's TUI in the normal screen buffer and the session's output stays in the tab's scrollback after exit. Set unconditionally, like the other shared launcher flags.
+
 ## v0.17.0
 
 - fix: `wezterm-claude-snapshot` refuses (exit 3) when `wezterm cli list` fails instead of silently snapshotting every session as detached — which made the restore pile all tabs into one new window — and lists with `--no-auto-start` so a vanished GUI socket cannot spawn a stray mux server; `--allow-detached` keeps the old behaviour. Restore now opens each window in its original workspace.
