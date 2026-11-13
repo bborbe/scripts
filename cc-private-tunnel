@@ -170,7 +170,7 @@ ROUTER_LOG="$(mktemp -t a2a-push-router)"
 # The router inherits the secret through its own environment, never through argv.
 A2A_PUSH_ROUTER_HOST=127.0.0.1 \
 A2A_PUSH_ROUTER_PORT="$ROUTER_PORT" \
-A2A_PUSH_ROUTER_RELAY_URL="$RELAY_URL" \
+A2A_PUSH_ROUTER_RELAY_URL="$RELAY_BASE" \
 A2A_PUSH_ROUTER_TUNNEL_SECRET="$secret" \
 	node "$ROUTER_SCRIPT" >"$ROUTER_LOG" 2>&1 &
 ROUTER_PID=$!
@@ -212,14 +212,14 @@ fi
 # tunnel mode, and the port it names is the one the supervisor must be pointed at.
 echo "cc-private-tunnel: $bound"
 if grep -q 'tunnel mode' "$ROUTER_LOG"; then
-	echo "cc-private-tunnel: tunnel mode confirmed — pulling $RELAY_URL"
+	echo "cc-private-tunnel: tunnel mode confirmed — pulling $RELAY_BASE"
 else
 	echo "cc-private-tunnel: ⚠️ the router did NOT report tunnel mode; the relay settings did not take" >&2
 fi
 
 export SUPERVISOR_A2A_K8S_CALLBACK_URL="$CALLBACK_URL"
 export SUPERVISOR_A2A_PUSH_ROUTER_URL="$ROUTER_URL"
-export A2A_PUSH_ROUTER_RELAY_URL="$RELAY_URL"
+export A2A_PUSH_ROUTER_RELAY_URL="$RELAY_BASE"
 
 # The launcher stays the authority over everything else — model, router URL, permission mode,
 # MCP config, session-exit recording. Run as a child, not `exec`, so the trap can stop the
