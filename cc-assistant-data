@@ -11,7 +11,7 @@ set -euo pipefail
 # shellcheck source=cc-env.sh
 source "$(dirname "${BASH_SOURCE[0]}")/cc-env.sh"
 
-ulimit -n 8000
+ulimit -n 8000 2>/dev/null || ulimit -n "$(ulimit -Hn)"
 
 export DISABLE_AUTOUPDATER=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
@@ -23,7 +23,7 @@ export MCP_REMOTE_CONFIG_DIR="$HOME/.mcp-data-assistant"
 export ANTHROPIC_BASE_URL="${CLAUDE_CODE_ROUTER_URL:-http://127.0.0.1:8788}"
 export ANTHROPIC_MODEL="claude-opus-5-5[1m]"
 export EFFORT_LEVEL="${EFFORT_LEVEL:-medium}"
-export PERMISSION_MODE="auto"
+export PERMISSION_MODE="${PERMISSION_MODE:-auto}"
 
 VAULT="${OBSIDIAN_DATA_ASSISTANT:-$HOME/Documents/Assistant/Data}"
 VAULT_BROGRAMMERS="${OBSIDIAN_BROGRAMMERS:-$HOME/Documents/Obsidian/seibert-brogrammers}"
