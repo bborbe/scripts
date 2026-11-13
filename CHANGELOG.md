@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v0.17.0
+
+- fix: `wezterm-claude-snapshot` refuses (exit 3) when `wezterm cli list` fails instead of silently snapshotting every session as detached — which made the restore pile all tabs into one new window — and lists with `--no-auto-start` so a vanished GUI socket cannot spawn a stray mux server; `--allow-detached` keeps the old behaviour. Restore now opens each window in its original workspace.
+- fix: `wezterm-claude-snapshot` records the `cc-*` launcher each session was actually started with (read from its parent process) instead of deriving it from the vault, so a `cc-private-deepseek` session is no longer resumed under `cc-private`; the vault map stays as fallback.
+- fix: the generated `wezterm-restore.sh` is idempotent — a session already live in `~/.claude/sessions` is skipped, so re-running it (or running it from a snapshotted session) never puts two writers on one conversation — and it finds the live GUI socket itself and never auto-starts a mux server, so it works from iTerm/ssh too.
+
+## v0.16.3
+
+- chore: restate the do-not-merge contract in the gate workflow
+
 ## v0.16.2
 
 - fix: `cc-private-claude` records how its pane ends, with the same trap `cc-private` gained in v0.16.0. The Fleet Manager is hand-launched as `cc-private-claude --resume "Fleet Manager"`, and that path wrote no `session-exit/pane-<pane>.log` at all (measured 2026-11-03, pane 467), so its death left no record. The launcher now writes a `spawn` line, starts claude-supervisor's detached observer, and traps `EXIT`. ⚠️ Installed only when `SESSION_EXIT_RECORD` is unset, so a spawner-wrapped pane is never double-wrapped; the writer path is never exported, so a nested launcher still installs its own trap; fail-open when the writer is missing. A `--resume <uuid>` launch records that id; a `--resume <name>` launch records `session=-`. Verified with the real launcher and `claude` stubbed: an exit 3 recorded `kind=exited rc=3`, a SIGTERM to `claude` recorded `kind=signalled kill rc=143 signal=SIGTERM`, the spawn and observer heartbeat lines carried the same `pid=`, a spawner-wrapped launch wrote no record, and `SESSION_EXIT_RECORD` did not reach `claude`'s environment.
