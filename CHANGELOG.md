@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+- feat: add a `check-task-link` gate that fails a PR whose body carries no `Task: <task_identifier>` line
+
 ## v0.19.0
 
 - feat: `nuke-power-off.sh` shuts the nuke host down on a power outage, run by hand on the host: guests get an ACPI shutdown so their own systemd stops K3s and Kafka, the host waits for them (bounded, `--timeout`), syncs, then powers off. Needs no network — `virsh shutdown` rides the QEMU unix socket and no guest has a network mount, so a dead LAN or DNS changes nothing. Logs to `/var/log/nuke-power-off.log` for the post-mortem.
