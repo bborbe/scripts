@@ -10,13 +10,6 @@ if which parallel-ssh &> /dev/null; then
 fi
 
 # -P
-# Decommissioned 2026-08-22 — cordoned (SchedulingDisabled) + powered off, VMs to be
-# deleted. Workloads migrated to the nuke-dev / nuke-prod clusters. Left in place they
-# fail pssh, and `set -o errexit` aborts the script before the kafka and master blocks.
-#  -H nuke-k3s-agent-0.hm.benjamin-borbe.de \
-#  -H nuke-k3s-dev-0.hm.benjamin-borbe.de \
-#  -H nuke-k3s-prod-0.hm.benjamin-borbe.de \
-
 $CMD -o /tmp/pssh-k3s.log -l bborbe -t 300 -p 100 \
   -H nuke-k3s-prod-worker-0.hm.benjamin-borbe.de \
   -H nuke-k3s-dev-worker-0.hm.benjamin-borbe.de \
