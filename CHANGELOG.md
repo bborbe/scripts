@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+- chore: drop `nuke-boss`, `nuke-workspace`, `nuke-k3s-agent-0`, `nuke-k3s-dev-0` and `nuke-k3s-prod-0` from `virsh-start-all.sh` (EXCLUDE now empty), `update-all.sh` and `remote-k3s-shutdown-nuke.sh` — all five VMs were undefined and their LVs removed on nuke 2026-11-15 (~1.5 TB returned to vg0). Also drops the dead `nuke-k3s-prod` / `nuke-k3s-dev` EXCLUDE entries (destroyed 2026-07-20).
+
 ## v0.20.0
 
 - feat: add a `check-task-link` gate that fails a PR whose body carries no `Task: <task_identifier>` line
