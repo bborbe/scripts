@@ -24,3 +24,22 @@ for dir in \
 	esac
 done
 export PATH
+
+# Keep pyenv's shims off PATH. On macOS 26 every direct exec of a `#!` script
+# leaks ~1 KiB into data.kalloc.1024 (kernel panics 2026-10-17, 11-13, 11-17),
+# and a shim call is a chain of them (shim -> pyenv-exec -> pyenv-version-name
+# -> ...). `pyenv global` is `system`, so the shims resolve to
+# /opt/homebrew/bin/python3 anyway; a script that needs the `claude-scripts`
+# venv must call that venv's python by absolute path.
+_cc_path_dirs=()
+IFS=':' read -r -a _cc_path_dirs <<< "$PATH"
+_cc_kept=()
+for _cc_dir in "${_cc_path_dirs[@]}"; do
+	case "$_cc_dir" in
+	"$HOME/.pyenv/shims" | "$HOME/.pyenv/plugins/pyenv-virtualenv/shims") ;;
+	*) _cc_kept+=("$_cc_dir") ;;
+	esac
+done
+PATH=$(IFS=':'; printf '%s' "${_cc_kept[*]}")
+export PATH
+unset _cc_path_dirs _cc_kept _cc_dir
