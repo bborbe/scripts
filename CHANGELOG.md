@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v0.20.1
+
+- chore: drop `nuke-boss`, `nuke-workspace`, `nuke-k3s-agent-0`, `nuke-k3s-dev-0` and `nuke-k3s-prod-0` from `virsh-start-all.sh` (EXCLUDE now empty), `update-all.sh` and `remote-k3s-shutdown-nuke.sh` — all five VMs were undefined and their LVs removed on nuke 2026-11-15 (~1.5 TB returned to vg0). Also drops the dead `nuke-k3s-prod` / `nuke-k3s-dev` EXCLUDE entries (destroyed 2026-07-20).
+
+## v0.20.0
+
+- feat: add a `check-task-link` gate that fails a PR whose body carries no `Task: <task_identifier>` line
+
+## v0.19.0
+
+- feat: `nuke-power-off.sh` shuts the nuke host down on a power outage, run by hand on the host: guests get an ACPI shutdown so their own systemd stops K3s and Kafka, the host waits for them (bounded, `--timeout`), syncs, then powers off. Needs no network — `virsh shutdown` rides the QEMU unix socket and no guest has a network mount, so a dead LAN or DNS changes nothing. Logs to `/var/log/nuke-power-off.log` for the post-mortem.
+- feat: `nuke-k3s-quiesce.sh` is the on-host twin of `remote-k3s-shutdown-nuke.sh` — same per-host stop sequence, but run from nuke with LAN+DNS up. Derives the node list from `virsh list --state-running` instead of a hardcoded list that went stale (2026-08-23: decommissioned nodes aborted the run under `errexit` before the kafka and master blocks), keeps the workers → kafka → masters order, attempts every host and reports `[SUCCESS]`/`[FAILED]` plus a summary instead of aborting on the first failure, and separates a DNS failure from an SSH-key failure in preflight.
+
+## v0.18.1
+
+- fix: `cc-private-tunnel` starts its push router and picks a free port instead of leaving the tunnel inert, resolves the router from the installed plugin rather than a fixed path, and hands it the base URL instead of the full pull path.
+
+## v0.18.0
+
+
+- feat: `cc-env.sh` now exports `CLAUDE_CODE_DISABLE_ALTERNATE_SCREEN=1`, so every `cc-*` launcher keeps Claude's TUI in the normal screen buffer and the session's output stays in the tab's scrollback after exit. Set unconditionally, like the other shared launcher flags.
+
+## v0.17.0
+
+- fix: `wezterm-claude-snapshot` refuses (exit 3) when `wezterm cli list` fails instead of silently snapshotting every session as detached — which made the restore pile all tabs into one new window — and lists with `--no-auto-start` so a vanished GUI socket cannot spawn a stray mux server; `--allow-detached` keeps the old behaviour. Restore now opens each window in its original workspace.
+- fix: `wezterm-claude-snapshot` records the `cc-*` launcher each session was actually started with (read from its parent process) instead of deriving it from the vault, so a `cc-private-deepseek` session is no longer resumed under `cc-private`; the vault map stays as fallback.
+- fix: the generated `wezterm-restore.sh` is idempotent — a session already live in `~/.claude/sessions` is skipped, so re-running it (or running it from a snapshotted session) never puts two writers on one conversation — and it finds the live GUI socket itself and never auto-starts a mux server, so it works from iTerm/ssh too.
+
 ## v0.16.3
 
 - chore: restate the do-not-merge contract in the gate workflow

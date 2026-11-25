@@ -7,6 +7,10 @@
 # vault-cli) were not found. Pin the PATH here so a launcher works the same
 # from zsh, `bash -lc`, launchd or a supervisor spawn.
 
+# Keep Claude's TUI in the normal screen buffer instead of the alternate
+# screen, so the session's output stays in the tab's scrollback afterwards.
+export CLAUDE_CODE_DISABLE_ALTERNATE_SCREEN=1
+
 CC_SCRIPTS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 for dir in \
