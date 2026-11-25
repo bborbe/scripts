@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## v0.21.0
 
 - feat: `cc-seibert`, `cc-seibert-claude` and `cc-seibert-deepseek` start in the private `seibert-personal` vault instead of the team-shared `seibert-brogrammers`, so the project `.claude` is no longer team-shared; `OBSIDIAN_BROGRAMMERS` is renamed `OBSIDIAN_VAULT`. Brogrammers stays readable via `--add-dir`.
 
